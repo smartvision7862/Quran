@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Block WordPress admin paths (no longer used but good practice)
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /wp-content/plugins/
+Disallow: /wp-json/
+Disallow: /feed/
+Disallow: /comments/
+
+Sitemap: https://smartvision7862.github.io/Quran/sitemap.xml
