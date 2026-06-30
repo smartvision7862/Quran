@@ -1,0 +1,1189 @@
+/* Modern Premium CSS Design System */
+:root {
+  /* Color System */
+  --bg-primary: #0b0f19;
+  --bg-secondary: #131a2c;
+  --bg-tertiary: #1e293b;
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  --accent-teal: #0d9488;
+  --accent-teal-glow: rgba(13, 148, 136, 0.15);
+  --accent-gold: #eab308;
+  --accent-gold-glow: rgba(234, 179, 8, 0.2);
+  --border-color: #1e293b;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  
+  /* Fonts */
+  --font-sans: 'Outfit', sans-serif;
+  --font-arabic: 'Noto Naskh Arabic', 'Amiri', serif;
+  --font-urdu: 'Noto Naskh Arabic', sans-serif;
+}
+
+/* Light Theme Variables */
+.light-theme {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  
+  --accent-teal: #0f766e;
+  --accent-teal-glow: rgba(15, 118, 110, 0.1);
+  --accent-gold: #d97706;
+  --accent-gold-glow: rgba(217, 119, 6, 0.15);
+  --border-color: #e2e8f0;
+  --shadow-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Emerald Luxury Theme Variables */
+.emerald-theme {
+  --bg-primary: #022c22;
+  --bg-secondary: #064e3b;
+  --bg-tertiary: #115e59;
+  
+  --text-primary: #f0fdf4;
+  --text-secondary: #a7f3d0;
+  --text-muted: #34d399;
+  
+  --accent-teal: #34d399;
+  --accent-teal-glow: rgba(52, 211, 153, 0.15);
+  --accent-gold: #fbbf24;
+  --accent-gold-glow: rgba(251, 191, 36, 0.2);
+  --border-color: #065f46;
+  --shadow-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Global Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  overflow: hidden;
+  height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Main Container Layout */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 280px;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s ease;
+}
+
+.sidebar-header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  font-size: 24px;
+}
+
+.logo-text {
+  font-weight: 700;
+  font-size: 20px;
+  background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-toggle, .menu-btn {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.sidebar-toggle:hover, .menu-btn:hover {
+  background-color: var(--bg-tertiary);
+}
+
+.sidebar-nav {
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  color: var(--text-primary);
+  background-color: var(--bg-tertiary);
+}
+
+.nav-item.active {
+  color: var(--text-primary);
+  background-color: var(--accent-teal);
+  box-shadow: 0 4px 12px var(--accent-teal-glow);
+}
+
+.nav-icon {
+  font-size: 18px;
+}
+
+.sidebar-footer {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border-color);
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Main Content Area Styling */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Top bar */
+.top-bar {
+  height: 70px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 90;
+}
+
+.menu-btn {
+  display: none; /* Only visible on small screens */
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+.top-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.theme-toggle-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--text-secondary);
+}
+
+/* Viewport Containers */
+.view-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  position: relative;
+}
+
+.app-view {
+  display: none;
+  animation: fadeIn 0.3s ease;
+  height: 100%;
+}
+
+.app-view.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* General Card Design */
+.card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 4px 6px var(--shadow-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px var(--shadow-color);
+}
+
+/* Dashboard Home UI */
+.dashboard-hero {
+  background: linear-gradient(135deg, var(--accent-teal) 0%, #047857 100%);
+  padding: 32px;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(4, 120, 87, 0.2);
+}
+
+.dashboard-hero h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #ffffff;
+}
+
+.dashboard-hero p {
+  color: #d1fae5;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.verse-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.badge {
+  background-color: var(--accent-teal-glow);
+  color: var(--accent-teal);
+  border: 1px solid var(--accent-teal);
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.arabic-text {
+  font-family: var(--font-arabic);
+  font-size: 28px;
+  line-height: 1.8;
+  text-align: right;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.translation-text {
+  font-family: var(--font-urdu);
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+
+.reference {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.shortcut-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  cursor: pointer;
+}
+
+.shortcut-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  background-color: var(--bg-tertiary);
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shortcut-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.shortcut-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Learn Quran Tabs and Grids */
+.course-selector {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 16px;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.tab-btn.active {
+  color: var(--accent-teal);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: var(--accent-teal);
+  border-radius: 99px;
+}
+
+.lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.lesson-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lesson-number {
+  font-size: 14px;
+  color: var(--accent-teal);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.lesson-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* Interactive Sabaq Player styling */
+.lesson-player {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 32px;
+  box-shadow: 0 8px 24px var(--shadow-color);
+  animation: fadeIn 0.4s ease;
+}
+
+.lesson-player h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.player-header-text, .player-footer-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+  white-space: pre-line;
+  line-height: 1.7;
+}
+
+.player-header-text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lesson-kicker {
+  background-color: var(--accent-teal);
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.player-footer-text {
+  margin-top: 24px;
+  margin-bottom: 0;
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+}
+
+/* Sabaq word-by-word player grid */
+.word-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  direction: rtl; /* Reads right to left for Quran */
+  justify-content: flex-start;
+  margin: 32px 0;
+}
+
+.lesson-workbook {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin: 28px 0 8px;
+}
+
+.lesson-section {
+  border-top: 1px solid var(--border-color);
+  padding-top: 24px;
+}
+
+.lesson-section:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.lesson-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.lesson-section-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 28px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  background-color: var(--accent-teal);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lesson-section-text {
+  color: var(--text-secondary);
+  line-height: 1.9;
+  white-space: pre-line;
+  font-family: var(--font-urdu);
+  font-size: 16px;
+}
+
+.lesson-audio-btn {
+  background-color: var(--accent-gold);
+  border: 0;
+  color: #111827;
+  border-radius: 6px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+.lesson-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+.word-block {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 140px;
+  text-align: center;
+}
+
+.lesson-word-card {
+  border: 0;
+  border-right: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 0;
+  min-height: 170px;
+  position: relative;
+}
+
+.lesson-word-card:hover {
+  transform: none;
+}
+
+.word-block:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-gold);
+  box-shadow: 0 6px 12px var(--accent-gold-glow);
+}
+
+.word-block.playing {
+  background-color: var(--accent-teal-glow);
+  border-color: var(--accent-teal);
+  box-shadow: 0 0 16px var(--accent-teal-glow);
+  transform: scale(1.05);
+}
+
+.word-arabic {
+  font-family: var(--font-arabic);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.word-translation {
+  font-family: var(--font-urdu);
+  font-size: 16px;
+  color: var(--accent-gold);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.word-detail {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: pre-line;
+  line-height: 1.4;
+  direction: ltr; /* Details are standard left-to-right */
+}
+
+.lesson-count {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background-color: var(--accent-gold-glow);
+  color: var(--accent-gold);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lesson-section-footer {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-left: 3px solid var(--accent-teal);
+  color: var(--text-secondary);
+  background-color: var(--accent-teal-glow);
+  line-height: 1.8;
+  font-family: var(--font-urdu);
+}
+
+.arabic-highlight {
+  font-family: var(--font-arabic);
+  color: var(--accent-gold);
+  font-weight: 700;
+}
+
+/* Hadith Screen, Search and Cards */
+.search-bar-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.search-bar-container input {
+  flex: 1;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 14px 20px;
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.search-bar-container input:focus {
+  outline: none;
+  border-color: var(--accent-teal);
+}
+
+.search-btn, .action-btn {
+  background-color: var(--accent-teal);
+  color: #ffffff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: background-color 0.2s ease;
+}
+
+.search-btn:hover {
+  background-color: #0f766e;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.book-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-icon {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.book-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.book-card p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.chapters-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.chapter-row {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 18px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.chapter-row:hover {
+  border-color: var(--accent-teal);
+  background-color: var(--bg-tertiary);
+  transform: translateX(4px);
+}
+
+.chapter-number {
+  font-weight: 700;
+  color: var(--accent-teal);
+  margin-right: 16px;
+}
+
+.chapter-title-ur {
+  font-family: var(--font-urdu);
+  font-size: 18px;
+  text-align: right;
+  flex: 1;
+  color: var(--text-primary);
+}
+
+.chapter-title-en {
+  font-size: 14px;
+  color: var(--text-secondary);
+  flex: 1;
+  padding-left: 24px;
+}
+
+/* Hadith Cards and Translation Layout */
+.hadith-cards-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 20px;
+  margin-bottom: 32px;
+}
+
+.hadith-card {
+  position: relative;
+}
+
+.hadith-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.hadith-number {
+  font-weight: 700;
+  color: var(--accent-teal);
+}
+
+.hadith-meta-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.bookmark-btn, .lang-toggle-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.bookmark-btn:hover, .lang-toggle-btn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.bookmark-btn.bookmarked {
+  background-color: var(--accent-gold-glow);
+  color: var(--accent-gold);
+  border-color: var(--accent-gold);
+}
+
+.hadith-ravi {
+  font-family: var(--font-urdu);
+  font-size: 17px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 16px;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent-gold);
+}
+
+.hadith-arabic {
+  font-family: var(--font-arabic);
+  font-size: 28px;
+  line-height: 2;
+  text-align: right;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+  font-weight: 500;
+  direction: rtl;
+}
+
+.hadith-translation {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.hadith-translation.ur {
+  font-family: var(--font-urdu);
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.hadith-translation.en {
+  color: var(--text-secondary);
+}
+
+/* Pagination Controls */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 32px 0;
+}
+
+.pagination-controls button {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  border-color: var(--accent-teal);
+  background-color: var(--bg-tertiary);
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 99 Names Grid & Flip Cards */
+.names-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.name-card {
+  perspective: 1000px;
+  height: 140px;
+  cursor: pointer;
+}
+
+.name-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.name-card:hover .name-card-inner {
+  transform: rotateY(180deg);
+}
+
+.name-front, .name-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+}
+
+.name-front {
+  background-color: var(--bg-secondary);
+}
+
+.name-back {
+  background-color: var(--accent-teal-glow);
+  border-color: var(--accent-teal);
+  transform: rotateY(180deg);
+}
+
+.name-front .arabic {
+  font-family: var(--font-arabic);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  margin-bottom: 4px;
+}
+
+.name-front .translit {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.name-back .meaning {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.name-back .meaning-ur {
+  font-family: var(--font-urdu);
+  font-size: 13px;
+}
+
+/* Settings Forms styling */
+.settings-container {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.setting-group {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.setting-group h3 {
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.setting-row:last-child {
+  margin-bottom: 0;
+}
+
+.setting-row label {
+  font-weight: 500;
+}
+
+.setting-row select, .setting-row input[type="range"] {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: var(--font-sans);
+}
+
+.setting-row input[type="range"] {
+  flex: 1;
+  max-width: 200px;
+}
+
+.action-btn.danger {
+  background-color: #ef4444;
+}
+
+.action-btn.danger:hover {
+  background-color: #dc2626;
+}
+
+/* Empty States */
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  color: var(--text-secondary);
+  font-size: 15px;
+}
+
+/* Scrollbar customizations */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+  }
+  
+  .menu-btn {
+    display: block;
+  }
+  
+  .top-bar {
+    padding: 0 16px;
+  }
+  
+  .view-container {
+    padding: 16px;
+  }
+  
+  .word-grid {
+    gap: 16px;
+  }
+  
+  .word-block {
+    min-width: calc(50% - 8px);
+    padding: 12px 14px;
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Test Player styling */
+.test-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin: 32px 0;
+}
+
+.option-card {
+  background-color: var(--bg-primary);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.option-card:hover {
+  transform: scale(1.02);
+  border-color: var(--accent-gold);
+}
+
+.option-card img {
+  max-width: 100%;
+  max-height: 140px;
+  border-radius: 8px;
+}
+
+.option-card.correct {
+  border-color: #22c55e !important;
+  background-color: rgba(34, 197, 94, 0.1) !important;
+  box-shadow: 0 0 16px rgba(34, 197, 94, 0.2);
+}
+
+.option-card.incorrect {
+  border-color: #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.2);
+}
+
+.test-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+  margin-top: 24px;
+}
+
+#test-feedback-text {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.feedback-correct {
+  color: #22c55e;
+}
+
+.feedback-incorrect {
+  color: #ef4444;
+}

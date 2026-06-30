@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quran360 AI Web Edition</title>
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">📖</span>
+          <span class="logo-text">Quran360 AI</span>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Toggle Navigation">☰</button>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" id="nav-dashboard">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="#sabaq" class="nav-item" id="nav-sabaq">
+          <span class="nav-icon">🎓</span>
+          <span class="nav-label">Learn Quran</span>
+        </a>
+        <a href="#hadith" class="nav-item" id="nav-hadith">
+          <span class="nav-icon">📚</span>
+          <span class="nav-label">Hadith Library</span>
+        </a>
+        <a href="#names" class="nav-item" id="nav-names">
+          <span class="nav-icon">✨</span>
+          <span class="nav-label">99 Names</span>
+        </a>
+        <a href="#bookmarks" class="nav-item" id="nav-bookmarks">
+          <span class="nav-icon">🔖</span>
+          <span class="nav-label">Bookmarks</span>
+        </a>
+        <a href="#settings" class="nav-item" id="nav-settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <p>Offline Edition</p>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top header bar -->
+      <header class="top-bar">
+        <button class="menu-btn" id="menuBtn">☰</button>
+        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        <div class="top-bar-actions">
+          <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Theme">🌙</button>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <div class="view-container">
+        
+        <!-- DASHBOARD VIEW -->
+        <section id="view-dashboard" class="app-view active">
+          <div class="dashboard-hero">
+            <h2>Assalamu Alaikum</h2>
+            <p id="hijri-date">Loading date...</p>
+          </div>
+          <div class="dashboard-grid">
+            <div class="card verse-card full-width">
+              <div class="card-header">
+                <h3>Daily Inspiration</h3>
+                <span class="badge">Quran</span>
+              </div>
+              <div class="card-body">
+                <p class="arabic-text" dir="rtl">اِنَّمَا الۡاَعۡمَالُ بِالنِّيَّاتِ ؕ وَ اِنَّمَا لِكُلِّ امۡرِیِٴٍ مَّا نَوٰی ؕ</p>
+                <p class="translation-text">"اعمال کا دارومدار نیتوں پر ہے، اور ہر انسان کے لیے وہی ہے جس کی اس نے نیت کی۔"</p>
+                <p class="reference">Sahih al-Bukhari, Hadith 1</p>
+              </div>
+            </div>
+            <div class="card shortcut-card" onclick="location.hash='#sabaq'">
+              <div class="shortcut-icon">🎓</div>
+              <h3>Learn Quran</h3>
+              <p>Word-by-word Urdu grammar & translation courses.</p>
+            </div>
+            <div class="card shortcut-card" onclick="location.hash='#hadith'">
+              <div class="shortcut-icon">📚</div>
+              <h3>Hadith Library</h3>
+              <p>Explore 9 core Hadith books with translations.</p>
+            </div>
+            <div class="card shortcut-card" onclick="location.hash='#names'">
+              <div class="shortcut-icon">✨</div>
+              <h3>99 Names</h3>
+              <p>Beautify your day with Allah's Names & meanings.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- LEARN QURAN (SABAQ) VIEW -->
+        <section id="view-sabaq" class="app-view">
+          <div class="course-selector">
+            <button class="tab-btn active" id="tab-lessonA">Lesson A (Grammar)</button>
+            <button class="tab-btn" id="tab-lessonB">Lesson B (Quran Text)</button>
+            <button class="tab-btn" id="tab-tests">Tests</button>
+          </div>
+          <div class="lessons-grid" id="lessons-grid">
+            <!-- Dynamically populated lesson cards -->
+          </div>
+          
+          <!-- Interactive Lesson Player -->
+          <div class="lesson-player hidden" id="lesson-player">
+            <button class="back-btn" id="closePlayerBtn">← Back to Lessons</button>
+            <h2 id="player-lesson-title">Lesson 1A</h2>
+            <div class="player-header-text" id="player-header-text"></div>
+            
+            <div class="word-grid" id="player-word-grid">
+              <!-- Dynamically populated vocabulary blocks -->
+            </div>
+            
+            <div class="player-footer-text" id="player-footer-text"></div>
+          </div>
+
+          <!-- Interactive Test Player -->
+          <div class="lesson-player hidden" id="test-player">
+            <button class="back-btn" id="closeTestBtn">← Back to Lessons</button>
+            <h2 id="player-test-title">Test 1</h2>
+            
+            <div class="test-question-container">
+              <div class="question-number" id="test-q-num" style="font-weight: 700; color: var(--accent-teal); margin-bottom: 8px;">Question 1</div>
+              <div class="question-text arabic-text" id="test-q-text" style="text-align: center; font-size: 40px; margin: 24px 0; font-weight: 700;">هُوَ</div>
+              
+              <div class="test-options-grid" id="test-options-grid">
+                <!-- 4 image cards go here -->
+              </div>
+            </div>
+            
+            <div class="test-controls hidden" id="test-controls">
+              <span id="test-feedback-text"></span>
+              <button class="search-btn" id="nextQuestionBtn" style="padding: 10px 24px; margin-left: 20px;">Next Question</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- HADITH LIBRARY VIEW -->
+        <section id="view-hadith" class="app-view">
+          <!-- Book Selection Screen -->
+          <div id="hadith-books-screen">
+            <div class="search-bar-container">
+              <input type="text" id="hadithGlobalSearch" placeholder="Search Hadiths (e.g. Bukhari 1, or keywords in Urdu/English)...">
+              <button class="search-btn" id="hadithSearchBtn">Search</button>
+            </div>
+            <div class="books-grid" id="books-grid">
+              <!-- Dynamic Book Cards -->
+            </div>
+          </div>
+
+          <!-- Chapters Screen -->
+          <div id="hadith-chapters-screen" class="hidden">
+            <button class="back-btn" id="backToBooksBtn">← Back to Books</button>
+            <h2 id="selected-book-title">Sahih al-Bukhari</h2>
+            <div class="chapters-list" id="chapters-list">
+              <!-- Dynamic Chapters List -->
+            </div>
+          </div>
+
+          <!-- Hadith List Screen -->
+          <div id="hadith-list-screen" class="hidden">
+            <button class="back-btn" id="backToChaptersBtn">← Back to Chapters</button>
+            <h2 id="selected-chapter-title">Chapter 1</h2>
+            <div class="hadith-cards-container" id="hadith-cards-container">
+              <!-- Dynamic Hadith Cards -->
+            </div>
+            <div class="pagination-controls">
+              <button id="prevPageBtn">Previous</button>
+              <span id="pageInfo">Page 1 of 1</span>
+              <button id="nextPageBtn">Next</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 99 NAMES OF ALLAH VIEW -->
+        <section id="view-names" class="app-view">
+          <div class="names-grid" id="names-grid">
+            <!-- Dynamically populated Allah names cards -->
+          </div>
+        </section>
+
+        <!-- BOOKMARKS VIEW -->
+        <section id="view-bookmarks" class="app-view">
+          <div class="bookmarks-list" id="bookmarks-list">
+            <p class="empty-state">No bookmarks saved yet. Click the bookmark icon on any Hadith to save it here.</p>
+          </div>
+        </section>
+
+        <!-- SETTINGS VIEW -->
+        <section id="view-settings" class="app-view">
+          <div class="settings-container">
+            <div class="setting-group">
+              <h3>Appearance</h3>
+              <div class="setting-row">
+                <label for="themeSelect">Theme</label>
+                <select id="themeSelect">
+                  <option value="dark">Dark Theme</option>
+                  <option value="light">Light Theme</option>
+                  <option value="emerald">Emerald Theme</option>
+                </select>
+              </div>
+            </div>
+            <div class="setting-group">
+              <h3>Typography</h3>
+              <div class="setting-row">
+                <label for="arabicFontSize">Arabic Font Size</label>
+                <input type="range" id="arabicFontSize" min="20" max="48" value="28">
+                <span id="arabicSizeVal">28px</span>
+              </div>
+              <div class="setting-row">
+                <label for="translationFontSize">Translation Font Size</label>
+                <input type="range" id="translationFontSize" min="14" max="28" value="16">
+                <span id="translationSizeVal">16px</span>
+              </div>
+            </div>
+            <div class="setting-group">
+              <h3>Language Preference</h3>
+              <div class="setting-row">
+                <label for="defaultHadithLang">Default Hadith Language</label>
+                <select id="defaultHadithLang">
+                  <option value="1">Urdu</option>
+                  <option value="2">English</option>
+                </select>
+              </div>
+            </div>
+            <div class="setting-group">
+              <h3>Database Settings</h3>
+              <div class="setting-row">
+                <button class="action-btn danger" id="clearAllBookmarksBtn">Clear All Bookmarks</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Audio elements helper -->
+  <audio id="sabaqAudio"></audio>
+
+  <script src="lessons_data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
