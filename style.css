@@ -1117,6 +1117,58 @@ body {
     min-width: calc(50% - 8px);
     padding: 12px 14px;
   }
+
+  /* Responsive Chatbot View */
+  .chatbot-container {
+    height: calc(100vh - 110px);
+  }
+  .chatbot-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 12px;
+  }
+  .avatar-card {
+    flex-direction: row;
+    padding: 12px 16px;
+    height: auto;
+    gap: 16px;
+    justify-content: flex-start;
+  }
+  .glow-ring-container {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+  }
+  .avatar-image-container {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+  }
+  .waveform-container {
+    bottom: 4px;
+    height: 12px;
+    gap: 1px;
+  }
+  .waveform-container .bar {
+    width: 2px;
+    height: 2px;
+  }
+  .status-indicator {
+    font-size: 12px;
+  }
+  .chat-body {
+    padding: 16px;
+    gap: 12px;
+  }
+  .chat-footer {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+  .message .msg-content {
+    max-width: 85%;
+    padding: 10px 14px;
+    font-size: 14px;
+  }
 }
 
 .hidden {
@@ -1547,5 +1599,59 @@ body {
 .rtl-dir #closeTestBtn, 
 .rtl-dir .back-btn {
   transform: scaleX(-1);
+}
+
+/* Responsive overrides for Chatbot on Mobile viewports (placed at end to cascade correctly) */
+@media (max-width: 768px) {
+  .chatbot-container {
+    height: calc(100vh - 120px) !important;
+  }
+  .chatbot-grid {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto 1fr !important;
+    gap: 12px !important;
+  }
+  .avatar-card {
+    flex-direction: row !important;
+    padding: 12px 16px !important;
+    height: auto !important;
+    gap: 16px !important;
+    justify-content: flex-start !important;
+  }
+  .glow-ring-container {
+    width: 60px !important;
+    height: 60px !important;
+    flex-shrink: 0 !important;
+  }
+  .avatar-image-container {
+    width: 52px !important;
+    height: 52px !important;
+    font-size: 24px !important;
+  }
+  .waveform-container {
+    bottom: 4px !important;
+    height: 12px !important;
+    gap: 1px !important;
+  }
+  .waveform-container .bar {
+    width: 2px !important;
+    height: 2px !important;
+  }
+  .status-indicator {
+    font-size: 12px !important;
+  }
+  .chat-body {
+    padding: 16px !important;
+    gap: 12px !important;
+  }
+  .chat-footer {
+    padding: 12px 16px !important;
+    gap: 8px !important;
+  }
+  .message .msg-content {
+    max-width: 85% !important;
+    padding: 10px 14px !important;
+    font-size: 14px !important;
+  }
 }
 
