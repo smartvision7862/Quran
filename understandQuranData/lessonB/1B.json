@@ -1,0 +1,49 @@
+{
+  "tables": [
+    {
+      "header": {
+        "text": "گرامر:اس سبق میں ہم چھ الفاظ سیکھیں گے: _a_هُوَ _/a_، _a_هُمْ _/a_، _a_أَنْتَ _/a_، _a_أَنَا _/a_، _a_أَنْتُمْ _/a_، _a_نَحْنُ _/a_ یہ چھ الفاظ قرآن کریم میں  1295  بار آئے ہیں، ان كی TPI (TPI: Total Physical Interaction  یعنی كامل جسمانی تعامل)کے طریقے سے اچھی طرح پریكٹس كر لیجیے،  TPI  کا مطلب یہ ہے کہ آپ اپنے پورے وجود كا استعمال كریں، آنكھوں سے دیکھیں، كانوں سے سنیں، منہ سے بولیں، ہاتھ سے اشاره کریں اور ساتھ ساتھ دماغ سے سمجھیں اور دل سے یعنی شوق سے پڑھیں، یہ ساری چیزیں کریں گے تو آپ ان شاء الله بہت جلد سیکھیں گے، ہاتھ سے اشارے كرنے كے طريقے نيچے بتائے جا رهے هيں۔",
+        "audioPath": "sabaq_1B_001.mp3"
+      },
+      "rows": [
+        {
+          "arabic": "هُوَ",
+          "secondaryText": "وہ",
+          "isSecondaryTextArabic": true,
+          "imagePath": "",
+          "audioPath": "sabaq_1B_002.mp3"
+        },
+        {
+          "arabic": "هُمْ",
+          "secondaryText": "وہ سب",
+          "isSecondaryTextArabic": true,
+          "audioPath": "sabaq_1B_002.mp3"
+        },
+        {
+          "arabic": "أَنْتَ",
+          "secondaryText": "آپ",
+          "isSecondaryTextArabic": true,
+          "audioPath": "sabaq_1B_003.mp3"
+        },
+        {
+          "arabic": "أَنْتُمْ",
+          "secondaryText": "آپ سب",
+          "isSecondaryTextArabic": true,
+          "audioPath": "sabaq_1B_003.mp3"
+        },
+        {
+          "arabic": "أَنَا",
+          "secondaryText": "میں",
+          "isSecondaryTextArabic": true,
+          "audioPath": "sabaq_1B_004.mp3"
+        },
+        {
+          "arabic": "نَحْنُ",
+          "secondaryText": "ہم",
+          "isSecondaryTextArabic": true,
+          "audioPath": "sabaq_1B_004.mp3"
+        }
+      ]
+    }
+  ]
+}

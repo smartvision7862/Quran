@@ -1,0 +1,140 @@
+{
+  "tables": [
+    {
+      "header": {
+        "text": "(831) مَنْ ؟  کون",
+        "audioPath": ""
+      },
+      "rows": [
+        {
+          "arabic": "مَنْ أَنْتَ؟",
+          "secondaryText": "_a_أَنَا مُسْلِم _/a_ْ",
+          "imagePath": "",
+          "audioPath": ""
+        },
+        {
+          "arabic": "مَنْ أَنْتُمْ؟",
+          "secondaryText": "_a_نَحْنُ مُسْلِمُوْن _/a_",
+          "audioPath": ""
+        },
+        {
+          "arabic": "مَنْ هُوَ؟",
+          "secondaryText": "_a_هُوَ مُسْلِم _/a_",
+          "audioPath": ""
+        },
+        {
+          "arabic": "مَنْ هُمْ؟",
+          "secondaryText": "_a_هُمْ مُسْلِمُوْن _/a_",
+          "audioPath": ""
+        }
+      ]
+    },
+    {
+      "header": {
+        "text": "(93) هَلْ؟ کیا      (176) خَيْر: بہتر",
+        "audioPath": ""
+      },
+      "rows": [
+        {
+          "arabic": "هَلْ هُوَ بِخَيْر؟",
+          "secondaryText": "_a_نَعَمْ، هُوَ بِخًيْر، اَلْحَمْدُ لِله _/a_ْ",
+          "imagePath": "",
+          "audioPath": ""
+        },
+        {
+          "arabic": "هَلْ هُمْ بِخَيْر؟",
+          "secondaryText": "_a_نَعَمْ، هُمْ بِخًيْر، اَلْحَمْدُ لِله _/a_",
+          "audioPath": ""
+        },
+        {
+          "arabic": "هَلْ أَنْتَ بِخَيْر؟",
+          "secondaryText": "_a_نَعَمْ، أَنَا بِخَيْر، اَلْحَمْدُ لِله _/a_",
+          "audioPath": ""
+        },
+        {
+          "arabic": "هَلْ أَنْتُمْ بِخَيْر؟",
+          "secondaryText": "_a_نَعَمْ، نَحْنُ بِخَيْر، اَلْحَمْدُ لِله _/a_",
+          "audioPath": ""
+        }
+      ]
+    },
+    {
+      "header": {
+        "text": "وَ: اور",
+        "audioPath": ""
+      },
+      "rows": [
+        {
+          "arabic": "وَهُوَ",
+          "secondaryText": "اور وہ",
+          "imagePath": "",
+          "audioPath": ""
+        },
+        {
+          "arabic": "وَهُمْ",
+          "secondaryText": "اور وہ سب",
+          "audioPath": ""
+        },
+        {
+          "arabic": "وَأَنْتَ",
+          "secondaryText": "اور آپ",
+          "audioPath": ""
+        },
+        {
+          "arabic": "وَأَنْتُمْ",
+          "secondaryText": "اور آپ سب",
+          "audioPath": ""
+        },
+        {
+          "arabic": "وَأَنَا",
+          "secondaryText": "اور میں",
+          "audioPath": ""
+        },
+        {
+          "arabic": "وَنَحْنُ",
+          "secondaryText": "اور ہم سب",
+          "audioPath": ""
+        }
+      ]
+    },
+    {
+      "header": {
+        "text": "فَ: پس",
+        "audioPath": ""
+      },
+      "rows": [
+        {
+          "arabic": "فَهُوَ",
+          "secondaryText": "پس وہ",
+          "imagePath": "",
+          "audioPath": ""
+        },
+        {
+          "arabic": "فَهُمْ",
+          "secondaryText": "پس وہ سب",
+          "audioPath": ""
+        },
+        {
+          "arabic": "فَأَنْتَ",
+          "secondaryText": "پس آپ",
+          "audioPath": ""
+        },
+        {
+          "arabic": "فَأَنْتُمْ",
+          "secondaryText": "پس آپ سب",
+          "audioPath": ""
+        },
+        {
+          "arabic": "فَأَنَا",
+          "secondaryText": "پس میں",
+          "audioPath": ""
+        },
+        {
+          "arabic": "فَنَحْنُ",
+          "secondaryText": "پس ہم سب",
+          "audioPath": ""
+        }
+      ]
+    }
+  ]
+}

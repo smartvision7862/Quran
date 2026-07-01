@@ -1,0 +1,81 @@
+{
+  "tables": [
+    {
+      "columns": [
+        {
+          "arabic": "قُلْ",
+          "detail": "آپ کہہ دیجیے (فعلِ امر)",
+          "count": "332",
+          "audioName": "sabaq_21B_001.mp3",
+          "translation": "کہہ دیجیے"
+        },
+        {
+          "arabic": "هُوَ اللَّهُ",
+          "detail": "وہ   |   اللہ ہے",
+          "count": "",
+          "audioName": "sabaq_21B_002.mp3",
+          "translation": "وہ   |   اللہ ہے"
+        },
+        {
+          "arabic": "أَحَدٌ",
+          "detail": "ایک، یکتا (کوئی دوسرا شریک نہیں)",
+          "count": "85",
+          "audioName": "sabaq_21B_003.mp3",
+          "translation": "ایک ہے"
+        }
+      ],
+      "footerText": "کہہ دیجیے کہ وہ اللہ ایک ہے"
+    },
+    {
+      "columns": [
+        {
+          "arabic": "اللَّهُ الصَّمَدُ",
+          "detail": "اللہ   |   بے نیاز (سب اس کے محتاج ہیں، وہ کسی کا محتاج نہیں)",
+          "count": "",
+          "audioName": "sabaq_21B_004.mp3",
+          "translation": "اللہ   |   بے نیاز ہے"
+        }
+      ],
+      "footerText": "اللہ بے نیاز ہے"
+    },
+    {
+      "columns": [
+        {
+          "arabic": "لَمْ يَلِدْ",
+          "detail": "نہ اس نے کسی کو جنا (نہ اس کی کوئی اولاد ہے)",
+          "count": "",
+          "audioName": "sabaq_21B_005.mp3",
+          "translation": "نہ اس نے جنا"
+        },
+        {
+          "arabic": "وَلَمْ يُولَدْ",
+          "detail": "اور نہ وہ خود جنا گیا (نہ وہ کسی کی اولاد ہے)",
+          "count": "",
+          "audioName": "sabaq_21B_006.mp3",
+          "translation": "اور نہ وہ جنا گیا"
+        }
+      ],
+      "footerText": "نہ اس کی کوئی اولاد ہے اور نہ وہ کسی کی اولاد ہے"
+    },
+    {
+      "columns": [
+        {
+          "arabic": "وَلَمْ يَكُنْ لَهُ",
+          "detail": "اور نہیں   |   ہے   |   اس کے لیے",
+          "count": "",
+          "audioName": "sabaq_21B_007.mp3",
+          "translation": "اور نہیں ہے اس کے لیے"
+        },
+        {
+          "arabic": "كُفُوًا أَحَدٌ",
+          "detail": "ہمسر / برابر   |   کوئی ایک",
+          "count": "",
+          "audioName": "sabaq_21B_008.mp3",
+          "translation": "کوئی ہمسر"
+        }
+      ],
+      "footerText": "اور کوئی اس کا ہمسر نہیں ہے"
+    }
+  ],
+  "lessonID": "021B"
+}

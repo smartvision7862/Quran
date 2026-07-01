@@ -1,0 +1,53 @@
+{
+  "tables": [
+    {
+      "columns": [
+        {
+          "arabic": "لَهُ",
+          "detail": "لِ + هُ (اس کے لیے)",
+          "count": "248",
+          "audioName": "sabaq_22A_001.mp3",
+          "translation": "اس کے لیے"
+        },
+        {
+          "arabic": "لَهُمْ",
+          "detail": "لِ + هُمْ (ان سب کے لیے)",
+          "count": "310",
+          "audioName": "sabaq_22A_002.mp3",
+          "translation": "ان سب کے لیے"
+        },
+        {
+          "arabic": "لَكَ",
+          "detail": "لِ + كَ (آپ کے لیے)",
+          "count": "150",
+          "audioName": "sabaq_22A_003.mp3",
+          "translation": "آپ کے لیے"
+        },
+        {
+          "arabic": "لَكُمْ",
+          "detail": "لِ + كُمْ (آپ سب کے لیے)",
+          "count": "212",
+          "audioName": "sabaq_22A_004.mp3",
+          "translation": "آپ سب کے لیے"
+        },
+        {
+          "arabic": "لِيْ / لَيَّ",
+          "detail": "لِ + يْ (میرے لیے)",
+          "count": "98",
+          "audioName": "sabaq_22A_005.mp3",
+          "translation": "میرے لیے"
+        },
+        {
+          "arabic": "لَنَا",
+          "detail": "لِ + نَا (ہمارے لیے)",
+          "count": "115",
+          "audioName": "sabaq_22A_006.mp3",
+          "translation": "ہمارے لیے"
+        }
+      ],
+      "headerText": "اس سبق میں ہم حروفِ جار (Prepositions) کے ساتھ متصل ضمیریں سیکھیں گے۔ حرف 'لِ' (لیے) جب ضمیروں کے ساتھ ملتا ہے تو زبر (لَ) میں تبدیل ہو جاتا ہے (سوائے 'لِيْ' کے)۔",
+      "footerText": "مشق: لَهُ دِيْنُهُ (اس کے لیے اس کا دین ہے)، لَكُمْ دِيْنُكُمْ (تمہارے لیے تمہارا دین ہے)۔"
+    }
+  ],
+  "lessonID": "022A"
+}
