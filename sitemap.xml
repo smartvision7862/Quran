@@ -1,147 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- Homepage -->
+  <!-- Homepage / Dashboard -->
   <url>
     <loc>https://smartvision7862.github.io/Quran/</loc>
-    <lastmod>2026-05-04</lastmod>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- About / Vision -->
+  <!-- Learn Quran (Sabaq) -->
   <url>
-    <loc>https://smartvision7862.github.io/Quran/vision/</loc>
-    <lastmod>2026-05-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Services Overview -->
-  <url>
-    <loc>https://smartvision7862.github.io/Quran/service-offerings/</loc>
-    <lastmod>2026-05-04</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://smartvision7862.github.io/Quran/#sabaq</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- CCTV Solutions -->
+  <!-- Hadith Library -->
   <url>
-    <loc>https://smartvision7862.github.io/Quran/cctv-solutions/</loc>
-    <lastmod>2026-05-04</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://smartvision7862.github.io/Quran/#hadith</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- Access Control -->
+  <!-- Quran Reader (Mushaf) -->
   <url>
-    <loc>https://smartvision7862.github.io/Quran/access-control/</loc>
-    <lastmod>2026-05-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Fire Fighting Systems -->
-  <url>
-    <loc>https://smartvision7862.github.io/Quran/fire-fighting-systems/</loc>
-    <lastmod>2026-05-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Fire Alarm Solutions -->
-  <url>
-    <loc>https://smartvision7862.github.io/Quran/fire-alarm-solutions/</loc>
-    <lastmod>2026-05-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Building Automation -->
-  <url>
-    <loc>https://smartvision7862.github.io/Quran/building-automation/</loc>
-    <lastmod>2026-05-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Structured Cabling -->
-  <url>
-    <loc>https://smartvision7862.github.io/Quran/structured-cabling/</loc>
-    <lastmod>2026-05-04</lastmod>
+    <loc>https://smartvision7862.github.io/Quran/#quran-read</loc>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Lighting Control Systems -->
+  <!-- Fahm-ul-Quran Vocabulary -->
   <url>
-    <loc>https://smartvision7862.github.io/Quran/lighting-control-systems/</loc>
-    <lastmod>2026-05-04</lastmod>
+    <loc>https://smartvision7862.github.io/Quran/#fahm</loc>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Public Address System -->
+  <!-- Talkbot AI Chatbot -->
   <url>
-    <loc>https://smartvision7862.github.io/Quran/public-address-system/</loc>
-    <lastmod>2026-05-04</lastmod>
+    <loc>https://smartvision7862.github.io/Quran/#chatbot</loc>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
-  <!-- Building Management -->
+  <!-- Duas Center -->
   <url>
-    <loc>https://smartvision7862.github.io/Quran/building-management/</loc>
-    <lastmod>2026-05-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Electrical Solutions -->
-  <url>
-    <loc>https://smartvision7862.github.io/Quran/electrical/</loc>
-    <lastmod>2026-05-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Plumbing Solutions -->
-  <url>
-    <loc>https://smartvision7862.github.io/Quran/plumbing/</loc>
-    <lastmod>2026-05-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- HVAC Solutions -->
-  <url>
-    <loc>https://smartvision7862.github.io/Quran/hvac/</loc>
-    <lastmod>2026-05-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Clients -->
-  <url>
-    <loc>https://smartvision7862.github.io/Quran/clients/</loc>
-    <lastmod>2026-05-04</lastmod>
+    <loc>https://smartvision7862.github.io/Quran/#duas</loc>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
-  <!-- Contact Us -->
+  <!-- Quran Topics -->
   <url>
-    <loc>https://smartvision7862.github.io/Quran/contact-us/</loc>
-    <lastmod>2026-05-04</lastmod>
+    <loc>https://smartvision7862.github.io/Quran/#topics</loc>
+    <lastmod>2026-07-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
 
-  <!-- Careers -->
+  <!-- 99 Names -->
   <url>
-    <loc>https://smartvision7862.github.io/Quran/careers/</loc>
-    <lastmod>2026-05-04</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://smartvision7862.github.io/Quran/#names</loc>
+    <lastmod>2026-07-01</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
 

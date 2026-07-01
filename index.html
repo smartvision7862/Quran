@@ -3,7 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quran360 AI Web Edition</title>
+  <title>Quran360 AI Web Edition - Advanced AI Quran Study & Hadith Library</title>
+  <meta name="description" content="Explore and learn the Holy Quran with Quran360 AI. Featuring word-by-word translations, interactive grammar lessons, a comprehensive Hadith library, dynamic search, and an intelligent Talkbot AI companion.">
+  <meta name="keywords" content="Quran, AI Quran, Quran360, Talkbot AI, Learn Quran, Hadith, Arabic Grammar, Word by Word Quran, Quran Translation, Islamic App">
+  <meta name="author" content="SmartVision Developers">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://smartvision7862.github.io/Quran/">
+  
+  <!-- Favicon Links -->
+  <link rel="icon" type="image/png" href="images/icon_badge_transparent.png">
+  <link rel="apple-touch-icon" href="images/icon_badge_transparent.png">
+
+  <!-- Open Graph / Facebook Meta Tags -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://smartvision7862.github.io/Quran/">
+  <meta property="og:title" content="Quran360 AI - Learn & Explore Quran with AI">
+  <meta property="og:description" content="Advanced AI-powered Quran platform featuring interactive lessons, comprehensive translations, audio recitations, and an intelligent Talkbot companion.">
+  <meta property="og:image" content="https://smartvision7862.github.io/Quran/images/logo_badge_transparent.png">
+
+  <!-- Twitter Meta Tags -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://smartvision7862.github.io/Quran/">
+  <meta property="twitter:title" content="Quran360 AI - Learn & Explore Quran with AI">
+  <meta property="twitter:description" content="Advanced AI-powered Quran platform featuring interactive lessons, comprehensive translations, audio recitations, and an intelligent Talkbot companion.">
+  <meta property="twitter:image" content="https://smartvision7862.github.io/Quran/images/logo_badge_transparent.png">
+
+  <!-- Structured Schema Markup (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Quran360 AI Web Edition",
+    "alternateName": "Quran360 AI",
+    "description": "An advanced AI-powered Quran study, exploration, and learning platform. Search, chat with Talkbot AI, read mushaf, listen to audio recitation, and understand Quran grammar.",
+    "url": "https://smartvision7862.github.io/Quran/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "genre": "Education",
+    "about": {
+      "@type": "Thing",
+      "name": "Quran Study & Exploration"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0.00",
+      "priceCurrency": "USD"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "SmartVision Developers",
+      "url": "https://smartvision7862.github.io/Quran/"
+    }
+  }
+  </script>
+
   <!-- Google Fonts for premium typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +70,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="logo">
-          <span class="logo-icon">📖</span>
+          <img id="sidebarLogoImg" src="images/icon_badge_transparent.png" alt="Quran360 AI Logo" class="logo-img-mark">
           <span class="logo-text">Quran360 AI</span>
         </div>
         <button class="sidebar-toggle" id="sidebarToggleBtn" aria-label="Toggle Navigation">☰</button>
@@ -46,6 +100,22 @@
           <span class="nav-icon">💬</span>
           <span class="nav-label" data-i18n="nav.chatbot">Talkbot AI</span>
         </a>
+        <a href="#quran-read" class="nav-item" id="nav-quran-read">
+          <span class="nav-icon">📖</span>
+          <span class="nav-label">Quran Reader</span>
+        </a>
+        <a href="#fahm" class="nav-item" id="nav-fahm">
+          <span class="nav-icon">🕌</span>
+          <span class="nav-label">Fahm-ul-Quran</span>
+        </a>
+        <a href="#duas" class="nav-item" id="nav-duas">
+          <span class="nav-icon">🤲</span>
+          <span class="nav-label">Duas Center</span>
+        </a>
+        <a href="#topics" class="nav-item" id="nav-topics">
+          <span class="nav-icon">🏷️</span>
+          <span class="nav-label">Quran Topics</span>
+        </a>
         <a href="#settings" class="nav-item" id="nav-settings">
           <span class="nav-icon">⚙️</span>
           <span class="nav-label" data-i18n="nav.settings">Settings</span>
@@ -53,6 +123,9 @@
       </nav>
       <div class="sidebar-footer">
         <p>Offline Edition</p>
+        <a href="https://wa.me/97430544802?text=Assalamu%20Alaikum%2C%20I%20have%20feedback%20regarding%20Quran360%20AI" target="_blank" class="whatsapp-feedback-link">
+          💬 WhatsApp Feedback
+        </a>
       </div>
     </aside>
 
@@ -97,39 +170,274 @@
         
         <!-- DASHBOARD VIEW -->
         <section id="view-dashboard" class="app-view active">
-          <div class="dashboard-hero">
-            <h2 data-i18n="dashboard.welcome">Assalamu Alaikum</h2>
-            <p id="hijri-date">Loading date...</p>
-          </div>
-          <div class="dashboard-grid">
-            <div class="card verse-card full-width">
-              <div class="card-header">
-                <h3 data-i18n="dashboard.inspiration">Daily Inspiration</h3>
-                <span class="badge">Quran</span>
-              </div>
-              <div class="card-body">
-                <p class="arabic-text" dir="rtl">اِنَّمَا الۡاَعۡمَالُ بِالنِّيَّاتِ ؕ وَ اِنَّمَا لِكُلِّ امۡرِیِٴٍ مَّا نَوٰی ؕ</p>
-                <p class="translation-text">"اعمال کا دارومدار نیتوں پر ہے، اور ہر انسان کے لیے وہی ہے جس کی اس نے نیت۔"</p>
-                <p class="reference" data-i18n="dashboard.reference">Sahih al-Bukhari, Hadith 1</p>
+          <!-- Premium Hero Header -->
+          <div class="dashboard-hero landing-hero">
+            <div class="hero-left">
+              <h2 data-i18n="dashboard.welcome">Assalamu Alaikum</h2>
+              <h1 class="landing-subtitle">Learn the Quran with Quran360 AI</h1>
+              <p class="landing-lead">Those eager to learn the Holy Quran and benefit from its infinite wisdom will find everything needed to understand every word and what each verse is referring to.</p>
+              <div class="hero-buttons">
+                <button class="cta-btn active" onclick="location.hash='#sabaq'" data-i18n="nav.sabaq">Learn Quran</button>
+                <a href="app-debug.apk" class="cta-btn secondary" download>📥 Download App</a>
               </div>
             </div>
-            <div class="card shortcut-card" onclick="location.hash='#sabaq'">
-              <div class="shortcut-icon">🎓</div>
-              <h3 data-i18n="nav.sabaq">Learn Quran</h3>
-              <p data-i18n="dashboard.learn_desc">Word-by-word Urdu grammar & translation courses.</p>
-            </div>
-            <div class="card shortcut-card" onclick="location.hash='#hadith'">
-              <div class="shortcut-icon">📚</div>
-              <h3 data-i18n="nav.hadith">Hadith Library</h3>
-              <p data-i18n="dashboard.hadith_desc">Explore 9 core Hadith books with translations.</p>
-            </div>
-            <div class="card shortcut-card" onclick="location.hash='#names'">
-              <div class="shortcut-icon">✨</div>
-              <h3 data-i18n="nav.names">99 Names</h3>
-              <p data-i18n="dashboard.names_desc">Beautify your day with Allah's Names & meanings.</p>
+            <div class="hero-right">
+              <div class="hero-logo-container">
+                <img id="heroLogoImg" src="images/logo_badge_transparent.png" alt="Quran360 AI Logo" class="hero-logo-img">
+              </div>
+              <div class="hero-date-card">
+                <span class="calendar-icon">📅</span>
+                <p id="hijri-date">Loading date...</p>
+              </div>
             </div>
           </div>
+
+          <!-- Quran Core Features Highlights -->
+          <h2 class="section-title">Core Quran Features</h2>
+          <div class="features-grid">
+            <div class="feature-card glass-card" onclick="location.hash='#sabaq'">
+              <div class="feature-icon-wrapper">🎓</div>
+              <h3>Understand Quran</h3>
+              <p>Explore dynamic and interactive grammar vocabulary lessons (Lessons 1-22) with full audio pronunciations.</p>
+            </div>
+            <div class="feature-card glass-card" onclick="location.hash='#word-by-word'">
+              <div class="feature-icon-wrapper">📚</div>
+              <h3>Word By Word Quran</h3>
+              <p>Deep dive into the word-by-word meaning, syntax, and Urdu/English translations of Holy Quran verses.</p>
+            </div>
+            <div class="feature-card glass-card" onclick="location.hash='#chatbot'">
+              <div class="feature-icon-wrapper">💬</div>
+              <h3>Talkbot AI Chatbot</h3>
+              <p>Ask questions about Quran subjects, offline Hadith lookup databases, or practice Arabic vocabulary in real-time.</p>
+            </div>
+            <div class="feature-card glass-card" onclick="location.hash='#quran-read'">
+              <div class="feature-icon-wrapper">📖</div>
+              <h3>15 Line Quran</h3>
+              <p>Read the Holy Quran in the classic 15-line format, highly optimized for memorization and standard reading.</p>
+            </div>
+            <div class="feature-card glass-card" onclick="location.hash='#fahm'">
+              <div class="feature-icon-wrapper">🕌</div>
+              <h3>Fahm-ul-Quran</h3>
+              <p>Gain absolute comprehension through detailed Tafseer, translation, and summaries of Holy verses.</p>
+            </div>
+            <div class="feature-card glass-card" onclick="location.hash='#duas'">
+              <div class="feature-icon-wrapper">🤲</div>
+              <h3>Supplications & Duas</h3>
+              <p>Read daily Masnoon supplications, Fasting Duas (Roza), and the Funeral Prayer guide.</p>
+            </div>
+            <div class="feature-card glass-card" onclick="location.hash='#topics'">
+              <div class="feature-icon-wrapper">🏷️</div>
+              <h3>Quranic Topics Index</h3>
+              <p>Explore verses by subjects, covering human nature, guidance, belief, society, and commandments.</p>
+            </div>
+            <div class="feature-card glass-card" onclick="location.hash='#seerat'">
+              <div class="feature-icon-wrapper">🎬</div>
+              <h3>Seerat un Nabi (S.A.W)</h3>
+              <p>Learn from the extraordinary life of Prophet Muhammad (SAW) through intuitive video biographies.</p>
+            </div>
+          </div>
+
+          <!-- Renowned Reciters Section -->
+          <h2 class="section-title">Renowned Reciters of the Holy Quran</h2>
+          <p class="section-subtitle">Listen to melodious recitations from the world's most prominent Qaris</p>
+          <div class="reciters-grid">
+            <div class="reciter-card glass-card" id="qari-sudais">
+              <div class="qari-avatar">🎙️</div>
+              <div class="qari-info">
+                <h3>Sheikh Abdul Rahman Al-Sudais</h3>
+                <p>Chief Imam of the Grand Mosque in Mecca</p>
+              </div>
+              <button class="qari-play-btn" onclick="toggleQariRecitation('sudais', 'https://download.quranicaudio.com/quran/abdurrahmaan_as-sudais/001.mp3')">▶ Play Sample</button>
+            </div>
+            <div class="reciter-card glass-card" id="qari-basit">
+              <div class="qari-avatar">🎙️</div>
+              <div class="qari-info">
+                <h3>Qari Abdul Basit Abdul Samad</h3>
+                <p>Legendary Egyptian Qari renowned worldwide</p>
+              </div>
+              <button class="qari-play-btn" onclick="toggleQariRecitation('basit', 'https://download.quranicaudio.com/quran/abdul_basit_mujawwad/001.mp3')">▶ Play Sample</button>
+            </div>
+            <div class="reciter-card glass-card" id="qari-ghamdi">
+              <div class="qari-avatar">🎙️</div>
+              <div class="qari-info">
+                <h3>Saad Al-Ghamdi</h3>
+                <p>Imam and highly popular Saudi reciter</p>
+              </div>
+              <button class="qari-play-btn" onclick="toggleQariRecitation('ghamdi', 'https://download.quranicaudio.com/quran/saad_al_ghaamidi/complete/001.mp3')">▶ Play Sample</button>
+            </div>
+            <div class="reciter-card glass-card" id="qari-shuraim">
+              <div class="qari-avatar">🎙️</div>
+              <div class="qari-info">
+                <h3>Sheikh Saud Al-Shuraim</h3>
+                <p>Former Imam and Khatib of Masjid al-Haram</p>
+              </div>
+              <button class="qari-play-btn" onclick="toggleQariRecitation('shuraim', 'https://download.quranicaudio.com/quran/sa3ood_ash-shuraym/001.mp3')">▶ Play Sample</button>
+            </div>
+            <div class="reciter-card glass-card" id="qari-ajmi">
+              <div class="qari-avatar">🎙️</div>
+              <div class="qari-info">
+                <h3>Sheikh Ahmed Al-Ajmi</h3>
+                <p>Imam of the Grand Mosque of Khobar</p>
+              </div>
+              <button class="qari-play-btn" onclick="toggleQariRecitation('ajmi', 'https://download.quranicaudio.com/quran/ahmed_al_ajmee/001.mp3')">▶ Play Sample</button>
+            </div>
+            <div class="reciter-card glass-card" id="qari-rifai">
+              <div class="qari-avatar">🎙️</div>
+              <div class="qari-info">
+                <h3>Sheikh Hani Ar-Rifai</h3>
+                <p>Imam of Anani Mosque in Jeddah</p>
+              </div>
+              <button class="qari-play-btn" onclick="toggleQariRecitation('rifai', 'https://download.quranicaudio.com/quran/hani_ar-rifai/001.mp3')">▶ Play Sample</button>
+            </div>
+          </div>
+
+          <!-- Translators & Interpreters -->
+          <h2 class="section-title">Best Translators & Interpreters</h2>
+          <div class="translators-panel glass-card">
+            <div class="translators-badge-row">
+              <span class="t-badge">Fateh Muhammad Jalandhari</span>
+              <span class="t-badge">Taiseer-ul-Quran</span>
+              <span class="t-badge">Dr. Mohsin Khan</span>
+              <span class="t-badge">Sahih International</span>
+            </div>
+            <p class="translators-desc">Our database packs translation resources in major languages. We verify each word against classical translations to provide Quran students with absolute confidence in theological accuracy, syntax definitions, and historical context.</p>
+          </div>
+
+          <!-- Dawat aur Tabligh Section -->
+          <h2 class="section-title dawat-section-title">
+            <span class="dawat-title-icon">🕌</span>
+            دعوت اور تبلیغ
+            <span class="dawat-title-sub">Dawat aur Tabligh</span>
+          </h2>
+          <p class="dawat-section-desc">اللہ کی راہ میں دعوت دینا اور لوگوں کو حق کی طرف بلانا ہر مسلمان کی ذمہ داری ہے</p>
+
+          <!-- World Language Selector for Dawat -->
+          <div class="dawat-lang-bar" id="dawat-lang-bar">
+            <div class="dawat-lang-label">🌍 Select Language / زبان چنیں:</div>
+            <div class="dawat-lang-btns" id="dawat-lang-btns">
+              <button class="dlang-btn active" data-lang="ur" onclick="setDawatLang('ur')"><span class="dflag">🇵🇰</span><span class="dname">اردو</span></button>
+              <button class="dlang-btn" data-lang="en" onclick="setDawatLang('en')"><span class="dflag">🇬🇧</span><span class="dname">English</span></button>
+              <button class="dlang-btn" data-lang="ar" onclick="setDawatLang('ar')"><span class="dflag">🇸🇦</span><span class="dname">العربية</span></button>
+              <button class="dlang-btn" data-lang="hi" onclick="setDawatLang('hi')"><span class="dflag">🇮🇳</span><span class="dname">हिन्दी</span></button>
+              <button class="dlang-btn" data-lang="bn" onclick="setDawatLang('bn')"><span class="dflag">🇧🇩</span><span class="dname">বাংলা</span></button>
+              <button class="dlang-btn" data-lang="pa" onclick="setDawatLang('pa')"><span class="dflag">🇮🇳</span><span class="dname">ਪੰਜਾਬੀ</span></button>
+              <button class="dlang-btn" data-lang="id" onclick="setDawatLang('id')"><span class="dflag">🇮🇩</span><span class="dname">Indonesia</span></button>
+              <button class="dlang-btn" data-lang="ms" onclick="setDawatLang('ms')"><span class="dflag">🇲🇾</span><span class="dname">Melayu</span></button>
+              <button class="dlang-btn" data-lang="tr" onclick="setDawatLang('tr')"><span class="dflag">🇹🇷</span><span class="dname">Türkçe</span></button>
+              <button class="dlang-btn" data-lang="fa" onclick="setDawatLang('fa')"><span class="dflag">🇮🇷</span><span class="dname">فارسی</span></button>
+              <button class="dlang-btn" data-lang="fr" onclick="setDawatLang('fr')"><span class="dflag">🇫🇷</span><span class="dname">Français</span></button>
+              <button class="dlang-btn" data-lang="es" onclick="setDawatLang('es')"><span class="dflag">🇪🇸</span><span class="dname">Español</span></button>
+              <button class="dlang-btn" data-lang="de" onclick="setDawatLang('de')"><span class="dflag">🇩🇪</span><span class="dname">Deutsch</span></button>
+              <button class="dlang-btn" data-lang="ru" onclick="setDawatLang('ru')"><span class="dflag">🇷🇺</span><span class="dname">Русский</span></button>
+              <button class="dlang-btn" data-lang="zh" onclick="setDawatLang('zh')"><span class="dflag">🇨🇳</span><span class="dname">中文</span></button>
+              <button class="dlang-btn" data-lang="ja" onclick="setDawatLang('ja')"><span class="dflag">🇯🇵</span><span class="dname">日本語</span></button>
+              <button class="dlang-btn" data-lang="sw" onclick="setDawatLang('sw')"><span class="dflag">🇰🇪</span><span class="dname">Kiswahili</span></button>
+              <button class="dlang-btn" data-lang="ha" onclick="setDawatLang('ha')"><span class="dflag">🇳🇬</span><span class="dname">Hausa</span></button>
+              <button class="dlang-btn" data-lang="so" onclick="setDawatLang('so')"><span class="dflag">🇸🇴</span><span class="dname">Somali</span></button>
+              <button class="dlang-btn" data-lang="ta" onclick="setDawatLang('ta')"><span class="dflag">🇱🇰</span><span class="dname">தமிழ்</span></button>
+              <button class="dlang-btn" data-lang="te" onclick="setDawatLang('te')"><span class="dflag">🇮🇳</span><span class="dname">తెలుగు</span></button>
+              <button class="dlang-btn" data-lang="pt" onclick="setDawatLang('pt')"><span class="dflag">🇧🇷</span><span class="dname">Português</span></button>
+              <button class="dlang-btn" data-lang="it" onclick="setDawatLang('it')"><span class="dflag">🇮🇹</span><span class="dname">Italiano</span></button>
+              <button class="dlang-btn" data-lang="nl" onclick="setDawatLang('nl')"><span class="dflag">🇳🇱</span><span class="dname">Nederlands</span></button>
+              <button class="dlang-btn" data-lang="ps" onclick="setDawatLang('ps')"><span class="dflag">🇦🇫</span><span class="dname">پښتو</span></button>
+              <button class="dlang-btn" data-lang="ug" onclick="setDawatLang('ug')"><span class="dflag">🇨🇳</span><span class="dname">ئۇيغۇر</span></button>
+              <button class="dlang-btn" data-lang="az" onclick="setDawatLang('az')"><span class="dflag">🇦🇿</span><span class="dname">Azərbaycan</span></button>
+              <button class="dlang-btn" data-lang="uz" onclick="setDawatLang('uz')"><span class="dflag">🇺🇿</span><span class="dname">O'zbek</span></button>
+            </div>
+
+          </div>
+
+          <div class="dawat-cards-grid">
+
+            <!-- Card 1: Purane Sathiyon ko Hidayat -->
+            <div class="dawat-card glass-card" id="dawat-card-sathiyon">
+              <div class="dawat-card-header">
+                <div class="dawat-card-icon-wrap">🤝</div>
+                <div class="dawat-card-title-group">
+                  <h3 class="dawat-card-title" id="dawat-card1-title">پرانے ساتھیوں کو ہدایت</h3>
+                  <p class="dawat-card-subtitle" id="dawat-card1-sub">Purane Sathiyon ko Hidayat</p>
+                </div>
+              </div>
+              <p class="dawat-card-desc" id="dawat-card1-desc">
+                پرانے دوستوں اور ساتھیوں کو دین کی طرف واپس لانے کا طریقہ، حکمت اور محبت سے دعوت دینے کے اصول۔
+              </p>
+              <button class="dawat-action-btn primary-dawat-btn" id="btn-sathiyon-hidayat" onclick="openDawatModal('sathiyon')">
+                <span class="btn-icon">📖</span>
+                <span id="dawat-btn1-label">پڑھیں — Hidayat ka Tariqa</span>
+              </button>
+            </div>
+
+            <!-- Card 2: Dawat ke Fayde aur Nuksan -->
+            <div class="dawat-card glass-card" id="dawat-card-fayde-nuksan">
+              <div class="dawat-card-header">
+                <div class="dawat-card-icon-wrap">⚖️</div>
+                <div class="dawat-card-title-group">
+                  <h3 class="dawat-card-title" id="dawat-card2-title">دعوت کا کام</h3>
+                  <p class="dawat-card-subtitle" id="dawat-card2-sub">Dawat ka Kaam — Fayde &amp; Nuksan</p>
+                </div>
+              </div>
+              <p class="dawat-card-desc" id="dawat-card2-desc">
+                دعوت کا کام نہ کرنے کے نقصانات اور دعوت کا کام کرنے کے فوائد — قرآن و حدیث کی روشنی میں۔
+              </p>
+              <div class="dawat-btn-row">
+                <button class="dawat-action-btn danger-dawat-btn" id="btn-dawat-nuksan" onclick="openDawatModal('nuksan')">
+                  <span class="btn-icon">⚠️</span>
+                  <span id="dawat-btn-nuksan-label">نہ کرنے کا نقصان</span>
+                </button>
+                <button class="dawat-action-btn success-dawat-btn" id="btn-dawat-fayde" onclick="openDawatModal('fayde')">
+                  <span class="btn-icon">✨</span>
+                  <span id="dawat-btn-fayde-label">کرنے کے فوائد</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Dawat Modal -->
+          <div id="dawat-modal-overlay" class="dawat-modal-overlay hidden" onclick="closeDawatModal(event)">
+            <div class="dawat-modal glass-card" id="dawat-modal">
+              <button class="dawat-modal-close-btn" onclick="closeDawatModal(null, true)" aria-label="Close">✕</button>
+              <div class="dawat-modal-icon" id="dawat-modal-icon">📖</div>
+              <h2 class="dawat-modal-title" id="dawat-modal-title">Title</h2>
+              <!-- Language switcher inside modal -->
+              <div class="dawat-modal-lang-bar" id="dawat-modal-lang-bar">
+                <div class="dawat-modal-lang-btns" id="dawat-modal-lang-btns">
+                  <button class="dmlang-btn active" data-lang="ur" onclick="setDawatModalLang('ur')">🇵🇰 اردو</button>
+                  <button class="dmlang-btn" data-lang="en" onclick="setDawatModalLang('en')">🇬🇧 EN</button>
+                  <button class="dmlang-btn" data-lang="ar" onclick="setDawatModalLang('ar')">🇸🇦 AR</button>
+                  <button class="dmlang-btn" data-lang="hi" onclick="setDawatModalLang('hi')">🇮🇳 HI</button>
+                  <button class="dmlang-btn" data-lang="bn" onclick="setDawatModalLang('bn')">🇧🇩 BN</button>
+                  <button class="dmlang-btn" data-lang="pa" onclick="setDawatModalLang('pa')">🇮🇳 PA</button>
+                  <button class="dmlang-btn" data-lang="id" onclick="setDawatModalLang('id')">🇮🇩 ID</button>
+                  <button class="dmlang-btn" data-lang="ms" onclick="setDawatModalLang('ms')">🇲🇾 MS</button>
+                  <button class="dmlang-btn" data-lang="tr" onclick="setDawatModalLang('tr')">🇹🇷 TR</button>
+                  <button class="dmlang-btn" data-lang="fa" onclick="setDawatModalLang('fa')">🇮🇷 FA</button>
+                  <button class="dmlang-btn" data-lang="fr" onclick="setDawatModalLang('fr')">🇫🇷 FR</button>
+                  <button class="dmlang-btn" data-lang="es" onclick="setDawatModalLang('es')">🇪🇸 ES</button>
+                  <button class="dmlang-btn" data-lang="de" onclick="setDawatModalLang('de')">🇩🇪 DE</button>
+                  <button class="dmlang-btn" data-lang="ru" onclick="setDawatModalLang('ru')">🇷🇺 RU</button>
+                  <button class="dmlang-btn" data-lang="zh" onclick="setDawatModalLang('zh')">🇨🇳 ZH</button>
+                  <button class="dmlang-btn" data-lang="ja" onclick="setDawatModalLang('ja')">🇯🇵 JA</button>
+                  <button class="dmlang-btn" data-lang="sw" onclick="setDawatModalLang('sw')">🇰🇪 SW</button>
+                  <button class="dmlang-btn" data-lang="ha" onclick="setDawatModalLang('ha')">🇳🇬 HA</button>
+                  <button class="dmlang-btn" data-lang="so" onclick="setDawatModalLang('so')">🇸🇴 SO</button>
+                  <button class="dmlang-btn" data-lang="ta" onclick="setDawatModalLang('ta')">🇱🇰 TA</button>
+                  <button class="dmlang-btn" data-lang="te" onclick="setDawatModalLang('te')">🇮🇳 TE</button>
+                  <button class="dmlang-btn" data-lang="pt" onclick="setDawatModalLang('pt')">🇧🇷 PT</button>
+                  <button class="dmlang-btn" data-lang="it" onclick="setDawatModalLang('it')">🇮🇹 IT</button>
+                  <button class="dmlang-btn" data-lang="nl" onclick="setDawatModalLang('nl')">🇳🇱 NL</button>
+                  <button class="dmlang-btn" data-lang="ps" onclick="setDawatModalLang('ps')">🇦🇫 PS</button>
+                  <button class="dmlang-btn" data-lang="ug" onclick="setDawatModalLang('ug')">🇨🇳 UG</button>
+                  <button class="dmlang-btn" data-lang="az" onclick="setDawatModalLang('az')">🇦🇿 AZ</button>
+                  <button class="dmlang-btn" data-lang="uz" onclick="setDawatModalLang('uz')">🇺🇿 UZ</button>
+                </div>
+              </div>
+              <div class="dawat-modal-body" id="dawat-modal-body">Content</div>
+            </div>
+          </div>
+
         </section>
+
 
         <!-- LEARN QURAN (SABAQ) VIEW -->
         <section id="view-sabaq" class="app-view">
@@ -236,7 +544,7 @@
                 <div class="glow-ring-container">
                   <div id="glowRing" class="glow-ring idle"></div>
                   <div class="avatar-image-container">
-                    <div class="avatar-img-fallback">🤖</div>
+                    <img id="chatbotAvatarImg" src="images/logo_badge_transparent.png" alt="Quran360 AI Assistant Logo" class="avatar-img-logo">
                     <!-- Waveform indicator overlay when speaking -->
                     <div id="waveformOverlay" class="waveform-container">
                       <span class="bar"></span>
@@ -290,6 +598,15 @@
                   <option value="dark">Dark Theme</option>
                   <option value="light">Light Theme</option>
                   <option value="emerald">Emerald Theme</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <label for="logoSelect">Logo Style</label>
+                <select id="logoSelect">
+                  <option value="badge">Circular Badge (Default)</option>
+                  <option value="dome">Futuristic Glass Dome</option>
+                  <option value="typo">3D Metallic Typographic</option>
+                  <option value="shield">Shield/Brain Emblem</option>
                 </select>
               </div>
             </div>
@@ -352,9 +669,269 @@
               </div>
             </div>
             <div class="setting-group">
+              <h3>Help & Feedback</h3>
+              <div class="setting-row" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 8px;">Have any questions, suggestions, or feedback? Send us a message on WhatsApp:</p>
+                <a href="https://wa.me/97430544802?text=Assalamu%20Alaikum%2C%20I%20have%20feedback%20regarding%20Quran360%20AI" target="_blank" class="whatsapp-btn-link">
+                  💬 Chat on WhatsApp (+974 30544802)
+                </a>
+              </div>
+            </div>
+            <div class="setting-group">
               <h3 data-i18n="settings.db_settings">Database Settings</h3>
               <div class="setting-row">
                 <button class="action-btn danger" id="clearAllBookmarksBtn" data-i18n="settings.clear_bookmarks">Clear All Bookmarks</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEERAT VIEW -->
+        <section id="view-seerat" class="app-view">
+          <div class="view-header flex-header">
+            <div>
+              <h2>Seerat un Nabi (S.A.W)</h2>
+              <p>Learn from the extraordinary life of Prophet Muhammad (SAW) to improve oneself in every aspect of life.</p>
+            </div>
+            <button class="back-btn action-btn" onclick="location.hash='#dashboard'">Back to Dashboard</button>
+          </div>
+
+          <!-- Tab Bar Toggle -->
+          <div class="seerat-tabs">
+            <button class="seerat-tab-btn active" onclick="switchSeeratTab(this, 'book')">📖 Read Book</button>
+            <button class="seerat-tab-btn" onclick="switchSeeratTab(this, 'videos')">🎥 Watch Biography</button>
+            <button class="seerat-tab-btn" onclick="switchSeeratTab(this, 'lectures')">🎙️ Islamic Lectures</button>
+          </div>
+
+          <!-- Book Reader Tab Panel -->
+          <div id="seerat-panel-book" class="seerat-panel active">
+            <div class="book-reader-container glass-card">
+              <iframe src="https://archive.org/embed/SEERATUNNABIS.A.WVOL1/SEERAT_UN_NABI_%28S.A.W%29_VOL_1/page/n9/mode/2up?ui=embed" width="100%" height="650" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <!-- Video Biography Tab Panel -->
+          <div id="seerat-panel-videos" class="seerat-panel">
+            <div class="seerat-grid" style="grid-template-columns: 1fr; max-width: 800px; margin: 0 auto;">
+              <div class="video-card glass-card">
+                <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                  <iframe src="https://www.youtube-nocookie.com/embed/kbb7btNBcYc?autoplay=1&mute=1&rel=0" title="Seerat un Nabi (S.A.W) Biography" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen referrerpolicy="no-referrer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                </div>
+                <div class="video-info">
+                  <h3>Seerat un Nabi (S.A.W) - Full Biography</h3>
+                  <p>Watch the complete and detailed biography of Prophet Muhammad (SAW), exploring his birth, character, marriage, prophethood, migration, key battles, establishment of Medina, and legacy.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Islamic Lectures Tab Panel -->
+          <div id="seerat-panel-lectures" class="seerat-panel">
+            <div style="text-align: center; margin-bottom: 24px;">
+              <a href="https://www.youtube.com/@IslamicTeachingsOfficial" target="_blank" class="action-btn" style="display: inline-flex; align-items: center; gap: 8px; background-color: #ff0000; color: #ffffff; text-decoration: none; border-color: #ff0000; box-shadow: 0 4px 12px rgba(255,0,0,0.25);">
+                🎥 Visit Islamic Teachings YouTube Channel
+              </a>
+            </div>
+            <div class="seerat-grid">
+              <div class="video-card glass-card">
+                <div class="video-container">
+                  <iframe src="https://www.youtube-nocookie.com/embed/FpH2tLzV9c4" title="The Power of Forgiveness" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>
+                </div>
+                <div class="video-info">
+                  <h3>Tawbah & Forgiveness</h3>
+                  <p>A soul-stirring lecture by Maulana Tariq Jameel on the infinite mercy of Allah and the power of repentance.</p>
+                </div>
+              </div>
+
+              <div class="video-card glass-card">
+                <div class="video-container">
+                  <iframe src="https://www.youtube-nocookie.com/embed/z2vD7P9Xj3E" title="Mout Aur Aakhirat" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>
+                </div>
+                <div class="video-info">
+                  <h3>Life & Death (Aakhirat)</h3>
+                  <p>An emotional and life-changing sermon discussing the reality of death, grave, and preparation for the hereafter.</p>
+                </div>
+              </div>
+
+              <div class="video-card glass-card">
+                <div class="video-container">
+                  <iframe src="https://www.youtube-nocookie.com/embed/Wz2rN_v3h2o" title="Salah & Akhlaq" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>
+                </div>
+                <div class="video-info">
+                  <h3>Salah & Good Character</h3>
+                  <p>Maulana Tariq Jameel describes the deep connection between regular prayers (Salah) and maintaining beautiful moral conduct.</p>
+                </div>
+              </div>
+
+              <div class="video-card glass-card">
+                <div class="video-container">
+                  <iframe src="https://www.youtube-nocookie.com/embed/p4v3vLzJm6A" title="Love of Allah" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>
+                </div>
+                <div class="video-info">
+                  <h3>The Love of Allah</h3>
+                  <p>Explore the importance of turning back to Allah and establishing a strong relationship of love and devotion with the Creator.</p>
+                </div>
+              </div>
+
+              <div class="video-card glass-card">
+                <div class="video-container">
+                  <iframe src="https://www.youtube-nocookie.com/embed/l44v5Z9uKxM" title="Prophet Muhammad (SAW) Character" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>
+                </div>
+                <div class="video-info">
+                  <h3>Exemplary Morals of Prophet ﷺ</h3>
+                  <p>Learn about the unparalleled modesty, kindness, forgiving nature, and daily character of Prophet Muhammad (SAW).</p>
+                </div>
+              </div>
+
+              <div class="video-card glass-card">
+                <div class="video-container">
+                  <iframe src="https://www.youtube-nocookie.com/embed/kRk62q_PivM" title="Dignity of Women" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="no-referrer"></iframe>
+                </div>
+                <div class="video-info">
+                  <h3>Dignity of Women in Islam</h3>
+                  <p>An inspiring lecture on the rights, status, and high respect given to daughters, wives, and mothers in Islamic teachings.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WORD BY WORD QURAN VIEW -->
+        <section id="view-word-by-word" class="app-view">
+          <div class="view-header flex-header">
+            <div>
+              <h2>Word By Word Quran</h2>
+              <p>Explore the complete Holy Quran with word-by-word Urdu translation, complete translations, and recitations.</p>
+            </div>
+            <button class="back-btn action-btn" onclick="location.hash='#dashboard'">Back to Dashboard</button>
+          </div>
+
+          <!-- Selection Controls Row -->
+          <div class="wbw-controls-row glass-card">
+            <div class="control-select-group">
+              <label for="wbwSurahSelect">Select Surah (سورۃ)</label>
+              <select id="wbwSurahSelect" onchange="onWbwSurahChange()"></select>
+            </div>
+            <div class="control-select-group">
+              <label for="wbwAyahSelect">Select Ayah (آیت)</label>
+              <select id="wbwAyahSelect" onchange="onWbwAyahChange()"></select>
+            </div>
+          </div>
+
+          <!-- Quran Verses List Container -->
+          <div id="wbwVersesContainer" class="wbw-verses-list">
+            <!-- Dynamically populated verses go here -->
+          </div>
+
+          <!-- Pagination / Load More button -->
+          <div class="wbw-load-more-row">
+            <button id="wbwLoadMoreBtn" class="action-btn" onclick="loadMoreWbwVerses()" style="display:none;">Load More Verses</button>
+          </div>
+        </section>
+
+        <!-- QURAN READER VIEW -->
+        <section id="view-quran-read" class="app-view">
+          <div class="view-header flex-header">
+            <div>
+              <h2>Quran Reader (Mushaf)</h2>
+              <p>Read the Holy Quran in a beautiful, distraction-free reading layout.</p>
+            </div>
+            <button class="back-btn action-btn" onclick="location.hash='#dashboard'">Back to Dashboard</button>
+          </div>
+
+          <div class="quran-reader-controls glass-card">
+            <div class="control-select-group">
+              <label for="quranReadSurahSelect">Select Surah</label>
+              <select id="quranReadSurahSelect" onchange="onQuranReadSurahChange()"></select>
+            </div>
+            <div class="reader-option-group">
+              <label class="switch-container">
+                <input type="checkbox" id="quranReadTranslationToggle" onchange="toggleReaderTranslation()" checked>
+                <span class="switch-label">Show Translation</span>
+              </label>
+              <div class="font-size-controls">
+                <button class="font-btn" onclick="adjustReaderFontSize(-2)">A-</button>
+                <span class="font-label">Size</span>
+                <button class="font-btn" onclick="adjustReaderFontSize(2)">A+</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="quranReaderContainer" class="quran-reader-flow">
+            <!-- Quran clean text will be loaded here -->
+          </div>
+        </section>
+
+        <!-- FAHM-UL-QURAN VIEW -->
+        <section id="view-fahm" class="app-view">
+          <div class="view-header flex-header">
+            <div>
+              <h2>Fahm-ul-Quran Vocabulary</h2>
+              <p>Search and learn from over 1,100 essential Quranic words, roots, and phrases.</p>
+            </div>
+            <button class="back-btn action-btn" onclick="location.hash='#dashboard'">Back to Dashboard</button>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="fahm-search-bar glass-card">
+            <input type="text" id="fahmSearchInput" onkeyup="filterFahmVocabulary()" placeholder="🔍 Search by Arabic word, translation, or meaning...">
+          </div>
+
+          <div id="fahmContainer" class="fahm-words-grid">
+            <!-- Dynamic vocabulary cards go here -->
+          </div>
+        </section>
+
+        <!-- DUAS CENTER VIEW -->
+        <section id="view-duas" class="app-view">
+          <div class="view-header flex-header">
+            <div>
+              <h2>Islamic Supplications & Duas</h2>
+              <p>Read daily Masnoon supplications, Fasting (Roza) rules, and Funeral Prayer guides.</p>
+            </div>
+            <button class="back-btn action-btn" onclick="location.hash='#dashboard'">Back to Dashboard</button>
+          </div>
+
+          <div class="seerat-tabs">
+            <button class="seerat-tab-btn active" id="dua-tab-daily" onclick="switchDuaTab('daily')">🤲 Daily Duas</button>
+            <button class="seerat-tab-btn" id="dua-tab-roza" onclick="switchDuaTab('roza')">🌙 Roza (Fasting)</button>
+            <button class="seerat-tab-btn" id="dua-tab-janaza" onclick="switchDuaTab('janaza')">⚰️ Namaz-e-Janaza</button>
+            <button class="seerat-tab-btn" id="dua-tab-sunnah" onclick="switchDuaTab('sunnah')">✨ Sunnah & Etiquettes</button>
+          </div>
+
+          <div id="duasContainer" class="duas-list-panel">
+            <!-- Dynamic Supplications go here -->
+          </div>
+        </section>
+
+        <!-- QURANIC TOPICS VIEW -->
+        <section id="view-topics" class="app-view">
+          <div class="view-header flex-header">
+            <div>
+              <h2>Quranic Subject Index</h2>
+              <p>Explore verses grouped by topics such as belief, guidance, human nature, and commandments.</p>
+            </div>
+            <button class="back-btn action-btn" onclick="location.hash='#dashboard'">Back to Dashboard</button>
+          </div>
+
+          <!-- Search Bar -->
+          <div class="topics-search-bar glass-card">
+            <input type="text" id="topicsSearchInput" onkeyup="filterQuranTopics()" placeholder="🔍 Search topics (e.g. Guidance, Taqwa, Fasting)...">
+          </div>
+
+          <div id="topicsContainer" class="topics-grid">
+            <!-- Dynamic topic rows go here -->
+          </div>
+
+          <!-- Verses Modal overlay when a topic is clicked -->
+          <div id="topicVersesModal" class="topic-modal" style="display: none;">
+            <div class="topic-modal-content glass-card">
+              <div class="topic-modal-header">
+                <h3 id="topicModalTitle">Topic Verses</h3>
+                <button class="close-modal-btn" onclick="closeTopicModal()">✕</button>
+              </div>
+              <div id="topicModalBody" class="topic-modal-body">
+                <!-- Verses will load here -->
               </div>
             </div>
           </div>
@@ -366,6 +943,13 @@
 
   <!-- Audio elements helper -->
   <audio id="sabaqAudio"></audio>
+
+  <!-- Floating WhatsApp Feedback Widget -->
+  <a href="https://wa.me/97430544802?text=Assalamu%20Alaikum%2C%20I%20have%20feedback%20regarding%20Quran360%20AI" target="_blank" class="floating-whatsapp" title="Send Feedback on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12.012 2c-5.506 0-9.988 4.482-9.988 9.988 0 1.76.46 3.47 1.332 4.978L2 22l5.228-1.372a9.923 9.923 0 004.78 1.218h.004c5.502 0 9.988-4.486 9.988-9.992C22 4.482 17.514 2 12.012 2zm5.82 13.916c-.244.686-1.226 1.266-1.74 1.34-.47.066-.948.156-3.056-.666-2.528-.986-4.148-3.568-4.276-3.738-.124-.17-1.042-1.386-1.042-2.646 0-1.258.646-1.876.874-2.128.226-.252.5-.316.666-.316h.47c.152 0 .362-.058.566.39.206.452.704 1.72.766 1.846.064.128.106.276.02.444-.086.17-.128.276-.256.424-.128.15-.27.336-.384.45-.128.128-.262.268-.112.524.15.254.664 1.096 1.42 1.77.974.87 1.794 1.138 2.05 1.268.256.128.406.106.556-.064.15-.17.646-.75.816-.998.17-.25.338-.206.566-.128.232.078 1.464.69 1.72.82.256.128.424.192.488.3.064.106.064.614-.18 1.302z"/>
+    </svg>
+  </a>
 
   <script src="lessons_data.js"></script>
   <script src="i18n.js"></script>

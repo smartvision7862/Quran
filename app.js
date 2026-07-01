@@ -69,7 +69,26 @@ async function queryDatabase(dbFile, sql, argsArray = []) {
       return [];
     }
   } else {
-    // Return mock data for standard web browser environment
+    // Use real server-side SQLite API (available when running via server.js)
+    try {
+      const response = await fetch('/api/query', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dbFile, sql, args: argsArray })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // If server returned an error object (no DB available), fall through to mock
+        if (!Array.isArray(data)) {
+          console.warn("API returned non-array, using mock data:", data);
+          return getMockData(dbFile, sql, argsArray);
+        }
+        return data;
+      }
+    } catch (e) {
+      console.warn("API query failed, falling back to mock data:", e.message);
+    }
+    // Fallback: mock data when server API is unavailable
     return getMockData(dbFile, sql, argsArray);
   }
 }
@@ -118,6 +137,11 @@ document.addEventListener('DOMContentLoaded', () => {
   loadHadithBooks();
   loadAllahNames();
   initChatbot();
+  initWbwQuran();
+  initQuranReader();
+  loadFahmVocabulary();
+  loadSupplications();
+  loadQuranTopics();
   
   // Listen for hash changes
   window.addEventListener('hashchange', handleRouting);
@@ -174,7 +198,12 @@ function handleRouting() {
     '#names': '99 Names of Allah',
     '#bookmarks': 'My Bookmarks',
     '#chatbot': 'Talkbot AI',
-    '#settings': 'Settings'
+    '#settings': 'Settings',
+    '#seerat': 'Seerat un Nabi (S.A.W)',
+    '#quran-read': 'Quran Reader (Mushaf)',
+    '#fahm': 'Fahm-ul-Quran Vocabulary',
+    '#duas': 'Islamic Supplications',
+    '#topics': 'Quran Subject Index'
   };
   const titleKey = {
     '#dashboard': 'nav.dashboard',
@@ -183,12 +212,55 @@ function handleRouting() {
     '#names': 'nav.names',
     '#bookmarks': 'nav.bookmarks',
     '#chatbot': 'nav.chatbot',
-    '#settings': 'nav.settings'
+    '#settings': 'nav.settings',
+    '#seerat': 'nav.seerat',
+    '#quran-read': 'nav.quran_read',
+    '#fahm': 'nav.fahm',
+    '#duas': 'nav.duas',
+    '#topics': 'nav.topics'
   }[hash] || 'nav.dashboard';
 
   const translatedTitle = (window.i18n && window.i18n[titleKey] && window.i18n[titleKey][window.currentLang || 'en']) || titles[hash] || 'Quran360 AI';
   document.getElementById('pageTitle').textContent = translatedTitle;
+  document.title = `${translatedTitle} - Quran360 AI`;
   state.activeView = hash.substring(1);
+
+  // Stop Qari audio recitation if playing and user changes pages
+  if (typeof activeQariAudio !== 'undefined' && activeQariAudio) {
+    if (isAndroid) {
+      try {
+        QuranAndroidBridge.stopAudio();
+      } catch (e) {
+        console.error("Bridge stop audio error:", e);
+      }
+    } else {
+      activeQariAudio.pause();
+    }
+    activeQariAudio = null;
+    activeQariId = null;
+    document.querySelectorAll('.qari-play-btn').forEach(btn => {
+      btn.classList.remove('playing');
+      btn.textContent = '▶ Play Sample';
+    });
+  }
+
+  // Stop active verse recitation if playing and user changes pages
+  if (typeof stopActiveVerseAudio === 'function') {
+    stopActiveVerseAudio();
+  }
+
+  // Load view content dynamically if needed
+  if (hash === '#word-by-word') {
+    loadWbwVerses();
+  } else if (hash === '#quran-read') {
+    loadQuranReaderVerses();
+  } else if (hash === '#fahm') {
+    loadFahmVocabulary();
+  } else if (hash === '#duas') {
+    loadSupplications();
+  } else if (hash === '#topics') {
+    loadQuranTopics();
+  }
 }
 
 // Themes setup
@@ -271,6 +343,9 @@ function loadSettings() {
       speakToggleBtn.textContent = state.voiceEnabled ? "🔊" : "🔇";
     }
   }
+
+  const savedLogoStyle = localStorage.getItem('logoStyle') || 'badge';
+  applyLogoStyle(savedLogoStyle);
 }
 
 function saveSettings() {
@@ -280,7 +355,43 @@ function saveSettings() {
   localStorage.setItem('hadithLang', state.hadithLang.toString());
   localStorage.setItem('chatbot_api_key', state.chatbotKey || '');
   localStorage.setItem('voice_enabled', state.voiceEnabled.toString());
+  
+  const logoSelect = document.getElementById('logoSelect');
+  if (logoSelect) {
+    localStorage.setItem('logoStyle', logoSelect.value);
+  }
 }
+
+function applyLogoStyle(style) {
+  const sidebarLogoImg = document.getElementById('sidebarLogoImg');
+  const heroLogoImg = document.getElementById('heroLogoImg');
+  const logoSelect = document.getElementById('logoSelect');
+  
+  if (logoSelect) {
+    logoSelect.value = style;
+  }
+  
+  let markSrc = 'images/icon_badge_transparent.png';
+  let fullSrc = 'images/logo_badge_transparent.png';
+  
+  if (style === 'dome') {
+    markSrc = 'images/icon_dome_transparent.png';
+    fullSrc = 'images/logo_dome_transparent.png';
+  } else if (style === 'typo') {
+    markSrc = 'images/logo_typo_transparent.png';
+    fullSrc = 'images/logo_typo_transparent.png';
+  } else if (style === 'shield') {
+    markSrc = 'images/icon_shield_transparent.png';
+    fullSrc = 'images/logo_shield_transparent.png';
+  }
+  
+  if (sidebarLogoImg) sidebarLogoImg.src = markSrc;
+  if (heroLogoImg) heroLogoImg.src = fullSrc;
+  
+  const chatbotAvatarImg = document.getElementById('chatbotAvatarImg');
+  if (chatbotAvatarImg) chatbotAvatarImg.src = fullSrc;
+}
+
 
 function saveBookmark(item) {
   // Check if already bookmarked
@@ -387,6 +498,14 @@ function setupSettingsListeners() {
       }
     }
   });
+
+  const logoSelect = document.getElementById('logoSelect');
+  if (logoSelect) {
+    logoSelect.addEventListener('change', (e) => {
+      applyLogoStyle(e.target.value);
+      saveSettings();
+    });
+  }
 }
 
 // Dynamic Dates Info
@@ -1188,6 +1307,85 @@ function getMockData(dbFile, sql, args) {
       }
     ];
   }
+
+  // 4. Quran database count mock
+  if (sql.includes("COUNT(*) as total FROM tbl_QuranComplete")) {
+    return [{ total: 7 }];
+  }
+
+  // 5. Quran verses database mock
+  if (sql.includes("FROM tbl_QuranComplete")) {
+    return [
+      { id: 1, ayat_number: 1, arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", translation_urdu: "شروع اللہ کے نام سے جو بڑا مہربان نہایت رحم والا ہے۔", translation_english: "In the name of Allah, the Entirely Merciful, the Especially Merciful." },
+      { id: 2, ayat_number: 2, arabic: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ", translation_urdu: "سب تعریفیں اللہ ہی کے لیے ہیں جو تمام جہانوں کا پالنے والا ہے۔", translation_english: "All praise is due to Allah, Lord of the worlds." }
+    ];
+  }
+
+  // 6. Quran word by word database mock
+  if (sql.includes("FROM tbl_word_by_word_new")) {
+    return [
+      { ayat_number: 1, translation: "بِسْمِ& نام سے@اللَّهِ& اللہ کے@الرَّحْمَٰنِ& جو بڑا مہربان@الرَّحِيمِ& نہایت رحم والا ہے" },
+      { ayat_number: 2, translation: "الْحَمْدُ& سب تعریف@لِلَّهِ& اللہ کے لیے ہے@رَبِّ& جو رب ہے@الْعَالَمِينَ& تمام جہانوں کا" }
+    ];
+  }
+
+  // 7. Fahm-ul-Quran database mock
+  if (sql.includes("FROM faham_quran")) {
+    return [
+      { id: 1, ayat: "حم", urdu: "حا۔میم۔", english: "Ha, Meem." },
+      { id: 2, ayat: "الر", urdu: "الف۔ لام۔را۔", english: "Alif.Lam.Ra." },
+      { id: 3, ayat: "یٰۤاَبَتِ", urdu: "اے میرے ابا۔", english: "O my father." }
+    ];
+  }
+
+  // 8. Supplications database mock
+  if (sql.includes("FROM tbl_dua_Urdu")) {
+    return [
+      { category: "حمد و ثنا اور توبہ و استغفار", serial_no: 1, virtues: "رسول اللہ صلی اللہ علیہ وآلہ وسلم نے فرمایا: جو شخص سو مرتبہ کہے اس کے تمام گناہ معاف کر دیے جاتے ہیں چاہے وہ سمندر کی جھاگ کے برابر ہی کیوں نہ ہوں۔", dua: "سُبْحَانَ اللّٰہِ وَبِحَمْدِہٖ", translation: "پاک ہے اللہ اپنی خوبیوں سمیت۔", reference: "صحیح البخاری: 6405" },
+      { category: "صبح و شام کی مسنون دعائیں", serial_no: 2, virtues: "رسول اللہ صلی اللہ علیہ وآلہ وسلم نے فرمایا: جو شخص صبح اور شام تین تین مرتبہ یہ دعا پڑھے، اسے کوئی چیز نقصان نہیں پہنچا سکتی۔", dua: "بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ", translation: "اللہ کے نام کے ساتھ جس کے نام کی برکت سے زمین اور آسمان میں کوئی چیز نقصان نہیں پہنچا سکتی، اور وہی سب کچھ سننے والا اور جاننے والا ہے۔", reference: "سنن ابی داود: 5088" },
+      { category: "صبح و شام کی مسنون دعائیں", serial_no: 3, virtues: "سید الاستغفار (بخشش کی سب سے بڑی دعا)۔ رسول اللہ صلی اللہ علیہ وآلہ وسلم نے فرمایا: جو شخص یقین کے ساتھ دن میں اسے پڑھے اور اسی دن شام سے پہلے فوت ہو جائے تو وہ اہل جنت میں سے ہے۔ اور جو رات کو پڑھے اور صبح سے پہلے فوت ہو جائے تو وہ اہل جنت میں سے ہے۔", dua: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ خَلَقْتَنِي وَأَنَا عَبْدُكَ وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوءُ لَکَ بِذَنْبِي فَاغْفِرْ لِي فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ", translation: "اے اللہ! تو ہی میرا رب ہے، تیرے سوا کوئی معبود نہیں، تو نے ہی مجھے پیدا کیا اور میں تیرا بندہ ہوں اور میں اپنی طاقت کے مطابق تیرے عہد اور وعدے پر قائم ہوں، میں اپنے اعمال کے شر سے تیری پناہ مانگتا ہوں، میں اعتراف کرتا ہوں تیرے احسانات کا جو مجھ پر ہیں اور اعتراف کرتا ہوں اپنے گناہوں کا، پس مجھے بخش دے کیونکہ تیرے سوا کوئی گناہوں کو نہیں بخش سکتا۔", reference: "صحیح البخاری: 6306" },
+      { category: "صبح و شام کی مسنون دعائیں", serial_no: 4, virtues: "رسول اللہ صلی اللہ علیہ وآلہ وسلم نے فرمایا: جو شخص شام کے وقت تین مرتبہ یہ دعا پڑھے، اسے رات کو کوئی زہریلی چیز نقصان نہیں پہنچائے گی۔", dua: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", translation: "میں اللہ کے کامل کلمات کی پناہ مانگتا ہوں اس کی پیدا کی ہوئی چیزوں کے شر سے۔", reference: "صحیح مسلم: 2708" },
+      { category: "سونے اور بیدار ہونے کی دعائیں", serial_no: 5, virtues: "سونے سے پہلے کی دعا", dua: "بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا", translation: "اے اللہ! میں تیرے ہی نام کے ساتھ مرتا ہوں (سوتا ہوں) اور جیتا ہوں (جاگتا ہوں)۔", reference: "صحیح البخاری: 6314" },
+      { category: "سونے اور بیدار ہونے کی دعائیں", serial_no: 6, virtues: "صبح بیدار ہونے کی دعا", dua: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ", translation: "تمام تعریفیں اللہ ہی کے لیے ہیں جس نے ہمیں مارنے کے بعد زندہ کیا اور اسی کی طرف اٹھ کر جانا ہے۔", reference: "صحیح البخاری: 6312" },
+      { category: "کھانے پینے کی دعائیں", serial_no: 7, virtues: "کھانا کھانے سے پہلے کی دعا", dua: "بِسْمِ اللَّهِ وَعَلَى بَرَكَةِ اللَّهِ", translation: "اللہ کے نام کے ساتھ اور اللہ کی برکت پر (ہم نے کھانا شروع کیا)۔", reference: "مستدرک حاکم" },
+      { category: "کھانے پینے کی دعائیں", serial_no: 8, virtues: "کھانا کھانے بعد کی دعا", dua: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مُسْلِمِينَ", translation: "شکر ہے اس اللہ کا جس نے ہمیں کھلایا اور پلایا اور ہمیں مسلمان بنایا۔", reference: "سنن ابی داود: 3850" },
+      { category: "سفر کی دعائیں", serial_no: 9, virtues: "سفر شروع کرتے وقت کی دعا", dua: "سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ", translation: "پاک ہے وہ ذات جس نے ہمارے لیے اسے مسخر کیا حالانکہ ہم اسے قابو کرنے والے نہ تھے، اور بے شک ہم اپنے رب کی طرف لوٹنے والے ہیں۔", reference: "صحیح مسلم: 1342" },
+      { category: "سفر کی دعائیں", serial_no: 10, virtues: "سفر سے واپسی پر پڑھنے کی دعا", dua: "آيِبُونَ تَائِبُونَ عَابِدُونَ لِرَبِّنَا حَامِدُونَ", translation: "ہم واپس لوٹنے والے ہیں، توبہ کرنے والے ہیں، اپنے رب کی عبادت کرنے والے ہیں اور اسی کی تعریف کرنے والے ہیں۔", reference: "صحیح مسلم: 1342" }
+    ];
+  }
+  if (sql.includes("FROM tbl_roza")) {
+    return [
+      { category: "روزہ افطار کی دعا", serial_no: 1, virtues: "افطاری کے وقت کی دعا", dua: "ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ وَثَبَتَ الأَجْرُ إِنْ شَاءَ اللَّهُ", translation: "پیاس چلی گئی، رگیں تر ہو گئیں اور اللہ نے چاہا تو اجر ثابت ہو گیا۔", reference: "سنن ابی داود: 2357" },
+      { category: "سحری کی نیت", serial_no: 2, virtues: "روزہ رکھنے کی نیت", dua: "وَبِصَوْمِ غَدٍ نَّوَيْتُ مِنْ شَهْرِ رَمَضَانَ", translation: "اور میں نے رمضان کے کل کے روزے کی نیت کی۔", reference: "عام فقہی روایت" },
+      { category: "روزہ افطار کی دعا", serial_no: 3, virtues: "افطاری کی متبادل دعا", dua: "اَللّٰهُمَّ إِنِّی لَکَ صُمْتُ وَبِکَ آمَنْتُ وَعَلَی رِزْکِکَ أَفْطَرْتُ", translation: "اے اللہ! میں نے تیرے ہی لیے روزہ رکھا، تجھ پر ایمان لایا اور تیرے ہی دیے ہوئے رزق سے افطار کیا۔", reference: "سنن ابی داود: 2358" },
+      { category: "شبِ قدر کی دعا", serial_no: 4, virtues: "رمضان المبارک کے آخری عشرے کی دعا", dua: "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي", translation: "اے اللہ! بے شک تو معاف کرنے والا ہے اور معافی کو پسند کرتا ہے، پس مجھے معاف فرما۔", reference: "سنن ترمذی: 3513" }
+    ];
+  }
+  if (sql.includes("FROM tbl_namaz_e_janaza")) {
+    return [
+      { category: "نمازِ جنازہ", serial_no: 1, virtues: "میت کی مغفرت اور بخشش کے لیے دعا (عام میت)", dua: "اَللّٰهُمَّ اغْفِرْ لَهٗ وَارْحَمْهُ وَعَافِهٖ وَاعْفُ عَنْهُ", translation: "اے اللہ! اسے بخش دے اور اس پر رحم فرما، اسے عافیت دے اور اسے معاف فرما۔", reference: "صحیح مسلم: 963" },
+      { category: "نمازِ جنازہ", serial_no: 2, virtues: "بالغ مرد اور عورت کے لیے جامع دعا", dua: "اَللّٰهُمَّ اغْفِرْ لِحَيِّنَا وَمَيِّتِنَا وَشَاهِدِنَا وَغَائِبِنَا وَصَغِيْرِنَا وَكَبِيْرِنَا وَذَكَرِنَا وَأُنْثَانَا", translation: "اے اللہ! بخش دے ہمارے زندوں کو، ہمارے فوت شدگان کو، ہمارے حاضرین کو، ہمارے غائبین کو، ہمارے چھوٹوں کو، ہمارے بڑوں کو، ہمارے مردوں کو اور ہماری عورتوں کو۔", reference: "سنن ترمذی: 1024" },
+      { category: "نمازِ جنازہ", serial_no: 3, virtues: "نابالغ لڑکے کے لیے دعا", dua: "اَللّٰهُمَّ اجْعَلْهُ لَنَا فَرَطًا وَاجْعَلْهُ لَنَا أَجْرًا وَذُخْرًا وَاجْعَلْهُ لَنَا شَافِعًا وَمُشَفَّعًا", translation: "اے اللہ! اس بچے کو ہمارے لیے آگے بھیجا ہوا (ذخیرہ) بنا، اور ہمارے لیے اجر و ثواب کا باعث بنا، اور اسے ہمارے حق میں شفیع بنا جس کی شفاعت قبول ہو۔", reference: "البخاری معلقاً" },
+      { category: "نمازِ جنازہ", serial_no: 4, virtues: "نابالغ لڑکی کے لیے دعا", dua: "اَللّٰهُمَّ اجْعَلْهَا لَنَا فَرَطًا وَاجْعَلْهَا لَنَا أَجْرًا وَذُخْرًا وَاجْعَلْهَا لَنَا شَافِعَةً وَمُشَفَّعَةً", translation: "اے اللہ! اس بچی کو ہمارے لیے آگے بھیجی ہوئی (ذخیرہ) بنا، اور ہمارے لیے اجر و ثواب کا باعث بنا، اور اسے ہمارے حق میں شفیعہ بنا جس کی شفاعت قبول ہو۔", reference: "البخاری معلقاً" }
+    ];
+  }
+  if (sql.includes("FROM tbl_sunnah")) {
+    return [
+      { category: "کھانے پینے کی سنتیں", serial_no: 1, virtues: "کھانے سے پہلے دونوں ہاتھ گٹوں تک دھونا، دائیں ہاتھ سے کھانا، اور بسم اللہ پڑھنا سنتِ نبوی ہے۔", dua: "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ", translation: "شروع اللہ کے نام سے جو بڑا مہربان نہایت رحم والا ہے۔", reference: "صحیح البخاری: 5376" },
+      { category: "لباس پہننے کی سنتیں", serial_no: 2, virtues: "کپڑے پہنتے وقت دائیں طرف سے شروع کرنا سنت ہے۔ نیا کپڑا پہنتے وقت اللہ کا شکر ادا کرنا اور یہ دعا پڑھنا سنت ہے۔", dua: "اَلْحَمْدُ لِلّٰهِ الَّذِیْ كَسَانِیْ هٰذَا وَرَزَقَنِیْهِ مِنْ غَیْرِ حَوْلٍ مِّنِّیْ وَلَا قُوَّةٍ", translation: "تمام تعریفیں اللہ ہی کے لیے ہیں جس نے مجھے یہ لباس پہنایا اور میری کسی طاقت اور قوت کے بغیر مجھے یہ رزق عطا فرمایا۔", reference: "سنن ابی داود: 4023" },
+      { category: "وضو کی سنتیں", serial_no: 3, virtues: "وضو سے پہلے بسم اللہ پڑھنا، مسواک کرنا، اور وضو کے بعد کلمہ شہادت اور یہ دعا پڑھنا سنتِ موکدہ ہے۔", dua: "اَللّٰهُمَّ اجْعَلْنِي مِنَ التَّوَّابِينَ وَاجْعَلْنِي مِنَ الْمُتَطَهِّرِينَ", translation: "اے اللہ! مجھے توبہ کرنے والوں میں بنا دے اور مجھے پاک صاف رہنے والوں میں بنا دے۔", reference: "سنن ترمذی: 55" },
+      { category: "گھر میں داخل ہونے کی سنتیں", serial_no: 4, virtues: "گھر میں داخل ہوتے وقت سلام کرنا، مسواک کرنا، اور یہ دعا پڑھنا سنت ہے۔", dua: "بِسْمِ اللَّهِ وَلَجْنَا، وَبِسْمِ اللَّهِ خَرَجْنَا، وَعَلَى اللَّهِ رَبِّنَا تَوَكَّلْنَا", translation: "ہم اللہ کے نام کے ساتھ داخل ہوئے اور اللہ ہی کے نام کے ساتھ باہر نکلے، اور ہم نے اپنے رب اللہ ہی پر بھروسہ کیا۔", reference: "سنن ابی داود: 5096" },
+      { category: "سونے کی سنتیں", serial_no: 5, virtues: "سونے سے پہلے باوضو ہونا، بستر جھاڑنا، دائیں کروٹ پر لیٹنا، اور یہ دعا پڑھنا پیارے نبی کی سنت ہے۔", dua: "اَللّٰهُمَّ قِنِیْ عَذَابَکَ یَوْمَ تَبْعَثُ عِبَادَکَ", translation: "اے اللہ! مجھے اپنے عذاب سے بچا جس دن تو اپنے بندوں کو دوبارہ اٹھائے گا۔", reference: "سنن ترمذی: 3398" }
+    ];
+  }
+
+  // 9. Quran Topics database mock
+  if (sql.includes("FROM tbl_QuranTopics")) {
+    return [
+      { id: 1, surah_id: 1, surah_name: "سورۃالفاتحہ", start_ayah: 1, end_ayah: 7, topic_urdu: "فطرتِ انسانی کی ترجمان", topic_english: "Representative of human nature" },
+      { id: 2, surah_id: 2, surah_name: "سورۃ البقرہ", start_ayah: 1, end_ayah: 5, topic_urdu: "قرآن حکیم کن کے لیے ہدایت ہے؟", topic_english: "For whom is the Qur'an a guide?" }
+    ];
+  }
   
   return [];
 }
@@ -1505,8 +1703,121 @@ function speakText(text) {
   window.speechSynthesis.speak(utterance);
 }
 
+function getPageContextInfo(viewId) {
+  const views = {
+    'dashboard': {
+      title: 'Dashboard / Home',
+      description: {
+        en: 'The main dashboard displaying Assalamu Alaikum welcome card, Hijri Date, Daily Ayah/Hadith highlights, core features (Learn Quran, Word by Word, Talkbot), and audio recitation player for different Qaris.',
+        ur: 'مرکزی ڈیش بورڈ جہاں خوش آمدید کارڈ، ہجری تاریخ، روزانہ کی آیت/حدیث، اہم خصوصیات، اور مختلف قاریوں کی آواز میں آڈیو تلاوت کا پلیئر موجود ہے۔',
+        ar: 'لوحة القيادة الرئيسية التي تعرض بطاقة الترحيب، والتاريخ الهجري، والآية والحديث اليومي، والمميزات الأساسية، ومشغل تلاوة القرآن بأصوات قراء متعددين.'
+      }
+    },
+    'sabaq': {
+      title: 'Learn Quran (Grammar Lessons)',
+      description: {
+        en: 'Interactive Quranic grammar vocabulary lessons 1 to 22 (parts A & B). Contains word analysis tables showing root letters, grammatical types, Urdu and English meanings, and audio pronunciation.',
+        ur: 'قرآنی گرامر اور الفاظ کے اسباق 1 سے 22 (حصہ A اور B)۔ یہاں الفاظ کے مادے (حروف اصلی)، گرامر کی قسم، اردو اور انگریزی معانی، اور آڈیو تلفظ شامل ہیں۔',
+        ar: 'دروس قواعد ومفردات القرآن التفاعلية من ١ إلى ٢٢ (أ وب). تحتوي على جداول تحليل الكلمات التي تبين الحروف الأصلية، والنوع النحوي، والمعاني باللغتين الأردية والإنجليزية، والنطق الصوتي.'
+      }
+    },
+    'hadith': {
+      title: 'Hadith Library Search',
+      description: {
+        en: 'Offline database search of 9 core Hadith books including Sahih Bukhari and Sahih Muslim. Users can query by keyword search (e.g. wudu, prayer) or Hadith number (e.g. bukhari 10).',
+        ur: 'حدیث کی 9 بنیادی کتابوں (صحیح بخاری، صحیح مسلم وغیرہ) کا آف لائن ڈیٹا بیس۔ صارف الفاظ (جیسے وضو، نماز) یا حدیث نمبر (جیسے بخاری 10) کے ذریعے تلاش کر سکتے ہیں۔',
+        ar: 'البحث في قاعدة بيانات ٩ كتب حديث رئيسية (مثل صحيح البخاري وصحيح مسلم) دون اتصال بالإنترنت. يمكن للمستخدمين البحث بالكلمات المفتاحية أو رقم الحديث.'
+      }
+    },
+    'names': {
+      title: '99 Names of Allah (Asma-ul-Husna)',
+      description: {
+        en: 'Interactive grid displaying the 99 Beautiful Names of Allah. Tapping a card reveals its Arabic text, English transliteration, Urdu/English translations, and detailed spiritual meaning.',
+        ur: 'اللہ تعالیٰ کے 99 مبارک ناموں (اسمائے حسنیٰ) کا خوبصورت گرڈ۔ کسی بھی کارڈ پر کلک کرنے سے عربی متن، انگریزی تلفظ، اردو/انگریزی ترجمہ اور تفصیلی تشریح ظاہر ہوتی ہے۔',
+        ar: 'شبكة تفاعلية تعرض أسماء الله الحسنى الـ ٩٩. يكشف الضغط على أي بطاقة عن النص العربي، والكتابة الصوتية بالإنجليزية، والترجمات الأردية/الإنجليزية، والمعنى الروحي التفصيلي.'
+      }
+    },
+    'bookmarks': {
+      title: 'Bookmarks Library',
+      description: {
+        en: 'Saved list of favorite Hadiths bookmarked by the user for offline reading. These bookmarks are persisted via localStorage.',
+        ur: 'صارف کی طرف سے بک مارک کی گئی پسندیدہ احادیث کی فہرست جو آف لائن مطالعہ کے لیے محفوظ کی گئی ہیں۔ یہ بک مارکس لوکل سٹوریج میں محفوظ رہتے ہیں۔',
+        ar: 'قائمة الأحاديث المفضلة التي قام المستخدم بحفظها للقراءة دون اتصال بالإنترنت. يتم حفظ هذه العلامات المرجعية محلياً.'
+      }
+    },
+    'chatbot': {
+      title: 'Talkbot AI Chatbot',
+      description: {
+        en: 'Interactive AI Chatbot assistant with microphone voice input and text-to-speech voice playback. Can answer questions offline from Hadith database/FAQ, or online via OpenAI GPT model.',
+        ur: 'مائیکروفون ان پٹ اور آواز کی تلاوت کے ساتھ اے آئی چیٹ بوٹ اسسٹنٹ۔ یہ آف لائن حدیث ڈیٹا بیس/سوالات کے جوابات دے سکتا ہے، یا ترتیبات میں کی درج کرنے پر اوپن اے آئی کے ذریعے چیٹ کر سکتا ہے۔',
+        ar: 'مساعد الذكاء الاصطناعي التفاعلي مع إدخال صوتي بالميكروفون وتشغيل نطق النصوص. يمكنه الإجابة دون اتصال بالإنترنت من قاعدة بيانات الحديث، أو عبر الإنترنت باستخدام نموذج OpenAI GPT.'
+      }
+    },
+    'quran-read': {
+      title: 'Quran Reader (Mushaf)',
+      description: {
+        en: 'Complete Quran Mushaf reading section. Displaying page by page surahs, translation switches, audio player controls for verse recitations, and interactive translations.',
+        ur: 'مکمل قرآن مجید (مصحف) پڑھنے کا سیکشن۔ یہاں سورتیں، ترجمہ آن/آف، اور ہر آیت کی آڈیو تلاوت سننے کا پلیئر موجود ہے۔',
+        ar: 'قسم قراءة المصحف الشريف كاملاً. يعرض السور صفحة بصفحة، مع إمكانية تبديل الترجمة، ومفاتيح التحكم في مشغل الصوت لتلاوة الآيات.'
+      }
+    },
+    'fahm': {
+      title: 'Fahm-ul-Quran (Vocabulary Practice)',
+      description: {
+        en: 'Quranic vocabulary learning section. Includes interactive vocabulary flashcards, words tracking, and offline lesson details to learn the meaning of Quranic words.',
+        ur: 'فہم القرآن قرآنی الفاظ سیکھنے کا سیکشن۔ یہاں قرآنی الفاظ کے معانی سیکھنے کے لیے الفاظ کے کارڈز اور اسباق کی تفصیلات موجود ہیں۔',
+        ar: 'قسم فهم القرآن لتعلم المفردات. يتضمن بطاقات تعليمية تفاعلية للمفردات، وتتبع الكلمات، وتفاصيل الدروس دون اتصال بالإنترنت لتعلم معاني كلمات القرآن.'
+      }
+    },
+    'duas': {
+      title: 'Islamic Supplications (Duas)',
+      description: {
+        en: 'Supplications Center containing thematic categories of Quran and Sunnah Duas (like morning/evening, travel, protection) in Arabic with translations and references.',
+        ur: 'دعاؤں کا مرکز جہاں قرآن و سنت سے منتخب دعائیں (جیسے صبح و شام، سفر، حفاظت) عربی متن، ترجمہ اور حوالوں کے ساتھ موضوع وار تقسیم ہیں۔',
+        ar: 'مركز الأدعية يحتوي على تصنيفات موضوعية لأدعية القرآن والسنة الشريفة (مثل أدعية الصباح/المساء، السفر، الحماية) باللغة العربية مع الترجمة والمراجع.'
+      }
+    },
+    'topics': {
+      title: 'Quran Subject Index',
+      description: {
+        en: 'Comprehensive search index of the Quran, categorized by topics (like patience, charity, parents) showing all verses related to each subject with translations.',
+        ur: 'قرآن مجید کا موضوع وار اشاریہ جہاں مختلف موضوعات (جیسے صبر، صدقہ، والدین) پر قرآنی آیات ترجمہ کے ساتھ موجود ہیں۔',
+        ar: 'فهرس موضوعات القرآن الشامل، مصنف حسب الموضوعات (مثل الصبر، الصدقة، بر الوالدين) ويعرض جميع الآيات المتعلقة بكل موضوع مع الترجمات.'
+      }
+    },
+    'settings': {
+      title: 'Application Settings',
+      description: {
+        en: 'Configuration options where users can customize visual theme (dark, light, emerald), logo styles, Arabic/translation font sizes, language interface, and enter OpenAI API Key for chatbot.',
+        ur: 'ایپلی کیشن کی ترتیبات جہاں صارف تھیم (ڈارک، لائٹ، ایمرالڈ)، لوگو کا اسٹائل، عربی/ترجمہ کا فونٹ سائز، زبان، اور چیٹ بوٹ کے لیے اے پی آئی کی سیٹ کر سکتے ہیں۔',
+        ar: 'خيارات التكوين حيث يمكن للمستخدمين تخصيص المظهر المرئي (الداكن، الفاتح، الزمردي)، وأنماط الشعار، وأحجام الخطوط العربية/الترجمة، وواجهة اللغة، وإدخال مفتاح OpenAI API.'
+      }
+    }
+  };
+
+  const currentView = views[viewId] || views['dashboard'];
+  return currentView;
+}
+
 async function getOfflineChatResponse(text) {
   const query = text.toLowerCase().trim();
+
+  // Check if asking about the current page/view
+  const pageKeywords = ["page", "view", "here", "this tab", "about this", "how to use", "what is this", "صفحہ", "یہاں", "طریقہ", "مدد", "help"];
+  const isAskingAboutPage = pageKeywords.some(keyword => query.includes(keyword)) || query === "help" || query === "?";
+  
+  if (isAskingAboutPage) {
+    const pageInfo = getPageContextInfo(state.activeView || 'dashboard');
+    const pageLang = window.currentLang || 'en';
+    const pageDesc = pageInfo.description[pageLang] || pageInfo.description['en'];
+    
+    const responses = {
+      en: `You are currently viewing **${pageInfo.title}**.<br><br>${pageDesc}`,
+      ur: `آپ اس وقت **${pageInfo.title}** دیکھ رہے ہیں۔<br><br>${pageDesc}`,
+      ar: `أنت تستعرض حالياً **${pageInfo.title}**.<br><br>${pageDesc}`
+    };
+    return responses[pageLang] || responses['en'];
+  }
 
   // 1. Check if user is asking for a specific Hadith
   let bookName = "bukhari.db";
@@ -1599,7 +1910,18 @@ async function getOfflineChatResponse(text) {
 
 async function getLLMResponse(text) {
   const url = "https://api.openai.com/v1/chat/completions";
-  const systemPrompt = `You are a helpful Quran and Hadith learning assistant inside Quran360 AI. Answer in the language the user asks. Keep responses highly educational, polite, and under 3-4 sentences.`;
+  
+  const pageInfo = getPageContextInfo(state.activeView || 'dashboard');
+  const pageLang = window.currentLang || 'en';
+  const pageDesc = pageInfo.description[pageLang] || pageInfo.description['en'];
+  
+  const systemPrompt = `You are a helpful Quran and Hadith learning assistant inside Quran360 AI. Answer in the language the user asks. Keep responses highly educational, polite, and under 3-4 sentences.
+  
+Current Context:
+- The user is currently viewing the "${pageInfo.title}" page of the application.
+- Active view path: #${state.activeView || 'dashboard'}
+- Description of what the user sees: ${pageDesc}
+- Application Features: Users can navigate using the sidebar to Dashboard, Learn Quran (lessons 1-22), Hadith Library, 99 Names, Bookmarks, Talkbot AI, Quran Reader (Mushaf), Fahm-ul-Quran vocabulary, Duas Center, Quran Topics, and Settings.`;
   
   const response = await fetch(url, {
     method: "POST",
@@ -1627,3 +1949,1058 @@ async function getLLMResponse(text) {
   return json.choices[0].message.content.trim();
 }
 
+// Qari Audio Recitations Manager
+let activeQariAudio = null;
+let activeQariId = null;
+let activeQariAudioFinishedCallback = null;
+
+// Handle Android completion callback
+window.onAndroidAudioFinished = function() {
+  if (typeof activeQariAudioFinishedCallback === 'function') {
+    activeQariAudioFinishedCallback();
+  }
+};
+
+function toggleQariRecitation(qariId, audioUrl) {
+  const cards = document.querySelectorAll('.reciter-card');
+  
+  const resetButtons = () => {
+    cards.forEach(card => {
+      const btn = card.querySelector('.qari-play-btn');
+      if (btn) {
+        btn.classList.remove('playing');
+        btn.textContent = '▶ Play Sample';
+      }
+    });
+  };
+
+  const card = document.getElementById(`qari-${qariId}`);
+  const btn = card ? card.querySelector('.qari-play-btn') : null;
+
+  // 1. If clicked Qari is already playing, stop/pause it
+  if (activeQariId === qariId) {
+    if (isAndroid) {
+      try {
+        QuranAndroidBridge.stopAudio();
+      } catch (e) {
+        console.error("Bridge stop audio error:", e);
+      }
+    } else if (activeQariAudio) {
+      activeQariAudio.pause();
+    }
+    activeQariAudio = null;
+    activeQariId = null;
+    activeQariAudioFinishedCallback = null;
+    resetButtons();
+    return;
+  }
+
+  // 2. If another Qari is playing, stop it first
+  if (activeQariId) {
+    if (isAndroid) {
+      try {
+        QuranAndroidBridge.stopAudio();
+      } catch (e) {
+        console.error("Bridge stop audio error:", e);
+      }
+    } else if (activeQariAudio) {
+      activeQariAudio.pause();
+    }
+  }
+
+  resetButtons();
+
+  activeQariId = qariId;
+
+  if (btn) {
+    btn.classList.add('playing');
+    btn.textContent = '⏸ Pause';
+  }
+
+  // 3. Play audio
+  if (isAndroid) {
+    try {
+      activeQariAudio = true; // Use simple truthy value to indicate active playing state
+      activeQariAudioFinishedCallback = () => {
+        resetButtons();
+        activeQariAudio = null;
+        activeQariId = null;
+        activeQariAudioFinishedCallback = null;
+      };
+      QuranAndroidBridge.playAudio(audioUrl);
+    } catch (e) {
+      console.error("Bridge play audio error:", e);
+      resetButtons();
+      activeQariAudio = null;
+      activeQariId = null;
+      activeQariAudioFinishedCallback = null;
+    }
+  } else {
+    const audio = new Audio(audioUrl);
+    activeQariAudio = audio;
+
+    audio.play().catch(err => {
+      console.error("Audio playback error:", err);
+      resetButtons();
+      activeQariAudio = null;
+      activeQariId = null;
+    });
+
+    audio.onended = () => {
+      resetButtons();
+      activeQariAudio = null;
+      activeQariId = null;
+    };
+  }
+}
+
+// Seerat un Nabi Tab Switcher
+function switchSeeratTab(clickedBtn, tabName) {
+  const tabBtns = document.querySelectorAll('.seerat-tab-btn');
+  tabBtns.forEach(btn => {
+    btn.classList.remove('active');
+  });
+  if (clickedBtn) {
+    clickedBtn.classList.add('active');
+  }
+
+  const panels = document.querySelectorAll('.seerat-panel');
+  panels.forEach(panel => {
+    panel.classList.remove('active');
+  });
+
+  const activePanel = document.getElementById(`seerat-panel-${tabName}`);
+  if (activePanel) {
+    activePanel.classList.add('active');
+  }
+}
+
+
+// ==========================================================================
+/* QURAN READER (MUSHAF FLOW) MODULE */
+// ==========================================================================
+
+let readerState = {
+  selectedSurah: 1,
+  showTranslation: true,
+  fontSize: 28
+};
+
+function initQuranReader() {
+  const select = document.getElementById('quranReadSurahSelect');
+  if (!select) return;
+
+  select.innerHTML = '';
+  for (let i = 0; i < 114; i++) {
+    const sId = i + 1;
+    const option = document.createElement('option');
+    option.value = sId;
+    option.textContent = `${sId}. ${wbwSurahNames[i]} (${wbwSurahArabicNames[i]})`;
+    select.appendChild(option);
+  }
+
+  readerState.selectedSurah = 1;
+  readerState.showTranslation = true;
+  readerState.fontSize = 28;
+}
+
+function onQuranReadSurahChange() {
+  const select = document.getElementById('quranReadSurahSelect');
+  if (!select) return;
+  readerState.selectedSurah = parseInt(select.value);
+  loadQuranReaderVerses();
+}
+
+function toggleReaderTranslation() {
+  const toggle = document.getElementById('quranReadTranslationToggle');
+  if (!toggle) return;
+  readerState.showTranslation = toggle.checked;
+  loadQuranReaderVerses();
+}
+
+function adjustReaderFontSize(amount) {
+  readerState.fontSize = Math.max(18, Math.min(48, readerState.fontSize + amount));
+  loadQuranReaderVerses();
+}
+
+async function loadQuranReaderVerses() {
+  const container = document.getElementById('quranReaderContainer');
+  if (!container) return;
+
+  container.innerHTML = '<div class="loading-indicator">Loading Quranic text...</div>';
+
+  try {
+    const verses = await queryDatabase(
+      "quranDb.db",
+      "SELECT id, ayat_number, arabic, translation_urdu, translation_english FROM tbl_QuranComplete WHERE surat_id = ? ORDER BY ayat_number",
+      [readerState.selectedSurah]
+    );
+
+    container.innerHTML = '';
+    if (verses.length === 0) {
+      container.innerHTML = '<div class="empty-indicator">No verses found in database.</div>';
+      return;
+    }
+
+    verses.forEach(v => {
+      const vDiv = document.createElement('div');
+      vDiv.className = 'quran-reader-verse';
+
+      let transHTML = '';
+      if (readerState.showTranslation) {
+        transHTML = `
+          <div class="reader-trans-line urdu">${v.translation_urdu || ''}</div>
+          <div class="reader-trans-line">${v.translation_english || ''}</div>
+        `;
+      }
+
+      vDiv.innerHTML = `
+        <div class="reader-arabic-line" style="font-size: ${readerState.fontSize}px;">
+          ${v.arabic} <span style="font-size: 16px; color: var(--accent-teal); margin-left: 8px;">(${v.ayat_number})</span>
+        </div>
+        ${transHTML}
+      `;
+      container.appendChild(vDiv);
+    });
+  } catch (e) {
+    container.innerHTML = `<div class="error-indicator">Error rendering reader: ${e.message}</div>`;
+  }
+}
+
+
+// ==========================================================================
+/* FAHM-UL-QURAN VOCABULARY ENGINE */
+// ==========================================================================
+
+let fahmVocabCache = [];
+
+async function loadFahmVocabulary() {
+  const container = document.getElementById('fahmContainer');
+  if (!container) return;
+
+  if (fahmVocabCache.length > 0) {
+    renderFahmVocabulary(fahmVocabCache);
+    return;
+  }
+
+  container.innerHTML = '<div class="loading-indicator">Loading Vocabulary builder...</div>';
+
+  try {
+    fahmVocabCache = await queryDatabase("quranDb.db", "SELECT id, ayat, urdu, english FROM faham_quran ORDER BY id");
+    renderFahmVocabulary(fahmVocabCache);
+  } catch (e) {
+    container.innerHTML = `<div class="error-indicator">Error loading Vocabulary: ${e.message}</div>`;
+  }
+}
+
+function renderFahmVocabulary(list) {
+  const container = document.getElementById('fahmContainer');
+  if (!container) return;
+
+  container.innerHTML = '';
+  if (list.length === 0) {
+    container.innerHTML = '<div class="empty-indicator">No matching words found.</div>';
+    return;
+  }
+
+  list.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'fahm-word-card glass-card';
+    card.innerHTML = `
+      <div class="fahm-word-arabic">${item.ayat}</div>
+      <div class="fahm-word-meanings">
+        <div class="fahm-mean-row">
+          <strong>Urdu:</strong>
+          <span>${item.urdu || 'N/A'}</span>
+        </div>
+        <div class="fahm-mean-row">
+          <strong>English:</strong>
+          <span>${item.english || 'N/A'}</span>
+        </div>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function filterFahmVocabulary() {
+  const query = document.getElementById('fahmSearchInput').value.toLowerCase().trim();
+  if (!query) {
+    renderFahmVocabulary(fahmVocabCache);
+    return;
+  }
+
+  const filtered = fahmVocabCache.filter(item => {
+    return (item.ayat && item.ayat.toLowerCase().includes(query)) ||
+           (item.urdu && item.urdu.toLowerCase().includes(query)) ||
+           (item.english && item.english.toLowerCase().includes(query));
+  });
+
+  renderFahmVocabulary(filtered);
+}
+
+
+// ==========================================================================
+/* ISLAMIC SUPPLICATIONS & DUAS CENTER */
+// ==========================================================================
+
+let supplicationsState = {
+  currentTab: 'daily' // 'daily', 'roza', 'janaza', 'sunnah'
+};
+
+async function loadSupplications() {
+  const container = document.getElementById('duasContainer');
+  if (!container) return;
+
+  container.innerHTML = '<div class="loading-indicator">Loading Supplications...</div>';
+
+  try {
+    let sql = "";
+    let dbFile = "quranDb.db";
+
+    if (supplicationsState.currentTab === 'daily') {
+      sql = "SELECT category, serial_no, virtues, dua, translation, reference FROM tbl_dua_Urdu ORDER BY category, serial_no";
+    } else if (supplicationsState.currentTab === 'roza') {
+      sql = "SELECT category, serial_no, virtues, dua, translation, reference FROM tbl_roza ORDER BY serial_no";
+    } else if (supplicationsState.currentTab === 'janaza') {
+      sql = "SELECT category, serial_no, virtues, dua, translation, reference FROM tbl_namaz_e_janaza ORDER BY serial_no";
+    } else if (supplicationsState.currentTab === 'sunnah') {
+      sql = "SELECT category, serial_no, virtues, dua, translation, reference FROM tbl_sunnah ORDER BY serial_no";
+    }
+
+    const list = await queryDatabase(dbFile, sql);
+    renderDuas(list);
+  } catch (e) {
+    container.innerHTML = `<div class="error-indicator">Error loading Supplications: ${e.message}</div>`;
+  }
+}
+
+function switchDuaTab(tabName) {
+  supplicationsState.currentTab = tabName;
+
+  // Toggle tab buttons
+  const tabs = ['daily', 'roza', 'janaza', 'sunnah'];
+  tabs.forEach(t => {
+    const btn = document.getElementById(`dua-tab-${t}`);
+    if (btn) {
+      if (t === tabName) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    }
+  });
+
+  loadSupplications();
+}
+
+window.speakDua = function(arabic, translation, category) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    
+    // Create Arabic utterance
+    const arUtterance = new SpeechSynthesisUtterance(arabic);
+    arUtterance.lang = 'ar-SA';
+    arUtterance.rate = 0.75; // Slower pace for clear recitation
+    
+    // Create translation utterance
+    const transUtterance = new SpeechSynthesisUtterance(translation);
+    const isUrdu = /[\u0600-\u06FF]/.test(translation);
+    transUtterance.lang = isUrdu ? 'ur-PK' : 'en-US';
+    transUtterance.rate = 0.9;
+    
+    window.speechSynthesis.speak(arUtterance);
+    window.speechSynthesis.speak(transUtterance);
+  } else {
+    alert("Speech Synthesis is not supported in this browser.");
+  }
+};
+
+function renderDuas(list) {
+  const container = document.getElementById('duasContainer');
+  if (!container) return;
+
+  container.innerHTML = '';
+  if (list.length === 0) {
+    container.innerHTML = '<div class="empty-indicator">No supplications found.</div>';
+    return;
+  }
+
+  list.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'dua-card glass-card';
+
+    let virtuesHTML = '';
+    if (item.virtues) {
+      virtuesHTML = `<div class="dua-virtues"><strong>Virtue:</strong> ${item.virtues}</div>`;
+    }
+
+    // Escape quotes to prevent breaks in inline attributes
+    const escapedDua = (item.dua || '').replace(/['"`]/g, '\\$&');
+    const escapedTranslation = (item.translation || '').replace(/['"`]/g, '\\$&');
+    const escapedCategory = (item.category || '').replace(/['"`]/g, '\\$&');
+
+    card.innerHTML = `
+      <div class="dua-card-header">
+        <span class="dua-category-badge">${item.category || 'Supplication'}</span>
+        <button class="dua-audio-btn" onclick="speakDua('${escapedDua}', '${escapedTranslation}', '${escapedCategory}')" title="Play Audio Recitation">🔊 Listen</button>
+      </div>
+      <div class="dua-arabic">${item.dua}</div>
+      <div class="dua-translation-box">
+        <strong>ترجمہ:</strong>
+        <p>${item.translation}</p>
+      </div>
+      ${virtuesHTML}
+      <div class="dua-reference">${item.reference || ''}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+
+// ==========================================================================
+/* QURANIC SUBJECTS & TOPICS INDEX INDEXER */
+// ==========================================================================
+
+let quranTopicsCache = [];
+
+async function loadQuranTopics() {
+  const container = document.getElementById('topicsContainer');
+  if (!container) return;
+
+  if (quranTopicsCache.length > 0) {
+    renderQuranTopics(quranTopicsCache);
+    return;
+  }
+
+  container.innerHTML = '<div class="loading-indicator">Loading Subject index...</div>';
+
+  try {
+    quranTopicsCache = await queryDatabase(
+      "quranDb.db",
+      "SELECT id, surah_id, surah_name, start_ayah, end_ayah, topic_urdu, topic_english FROM tbl_QuranTopics ORDER BY id"
+    );
+    renderQuranTopics(quranTopicsCache);
+  } catch (e) {
+    container.innerHTML = `<div class="error-indicator">Error loading Subject index: ${e.message}</div>`;
+  }
+}
+
+function renderQuranTopics(list) {
+  const container = document.getElementById('topicsContainer');
+  if (!container) return;
+
+  container.innerHTML = '';
+  if (list.length === 0) {
+    container.innerHTML = '<div class="empty-indicator">No subjects found.</div>';
+    return;
+  }
+
+  list.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'topic-card glass-card';
+    card.onclick = () => showTopicVerses(item.surah_id, item.start_ayah, item.end_ayah, item.topic_urdu, item.topic_english);
+
+    card.innerHTML = `
+      <div class="topic-card-header">
+        <span class="topic-surah-badge">${item.surah_name} (Surah ${item.surah_id})</span>
+        <span class="topic-ayah-badge">Ayah ${item.start_ayah} - ${item.end_ayah}</span>
+      </div>
+      <div class="topic-title-ur">${item.topic_urdu}</div>
+      <div class="topic-title-en">${item.topic_english}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function filterQuranTopics() {
+  const query = document.getElementById('topicsSearchInput').value.toLowerCase().trim();
+  if (!query) {
+    renderQuranTopics(quranTopicsCache);
+    return;
+  }
+
+  const filtered = quranTopicsCache.filter(item => {
+    return (item.surah_name && item.surah_name.toLowerCase().includes(query)) ||
+           (item.topic_urdu && item.topic_urdu.toLowerCase().includes(query)) ||
+           (item.topic_english && item.topic_english.toLowerCase().includes(query));
+  });
+
+  renderQuranTopics(filtered);
+}
+
+async function showTopicVerses(surahId, startAyah, endAyah, topicUr, topicEn) {
+  const modal = document.getElementById('topicVersesModal');
+  const title = document.getElementById('topicModalTitle');
+  const body = document.getElementById('topicModalBody');
+  if (!modal || !body) return;
+
+  title.textContent = topicUr ? `${topicUr} (${topicEn})` : topicEn;
+  body.innerHTML = '<div class="loading-indicator">Loading verses...</div>';
+  modal.style.display = 'flex';
+
+  try {
+    const verses = await queryDatabase(
+      "quranDb.db",
+      "SELECT id, ayat_number, arabic, translation_urdu, translation_english FROM tbl_QuranComplete WHERE surat_id = ? AND ayat_number >= ? AND ayat_number <= ? ORDER BY ayat_number",
+      [surahId, startAyah, endAyah]
+    );
+
+    body.innerHTML = '';
+    if (verses.length === 0) {
+      body.innerHTML = '<div class="empty-indicator">No verses found in this range.</div>';
+      return;
+    }
+
+    verses.forEach(v => {
+      const item = document.createElement('div');
+      item.className = 'wbw-verse-card glass-card';
+      item.style.padding = '16px';
+      item.innerHTML = `
+        <div class="wbw-verse-header" style="margin-bottom: 8px;">
+          <span class="wbw-verse-badge" style="background-color: var(--accent-gold);">Ayah ${v.ayat_number}</span>
+          <button class="wbw-verse-audio-btn" id="topic-audio-btn-${v.id}" onclick="toggleVerseAudio(${v.id})">▶</button>
+        </div>
+        <div class="reader-arabic-line" style="font-size: 24px; margin-bottom: 8px;">${v.arabic}</div>
+        <div class="wbw-full-translations" style="margin-top: 8px;">
+          <div class="wbw-trans-line"><strong>Urdu:</strong> <p>${v.translation_urdu}</p></div>
+          <div class="wbw-trans-line"><strong>English:</strong> <p>${v.translation_english}</p></div>
+        </div>
+      `;
+      body.appendChild(item);
+    });
+  } catch (e) {
+    body.innerHTML = `<div class="error-indicator">Error loading verses: ${e.message}</div>`;
+  }
+}
+
+function closeTopicModal() {
+  const modal = document.getElementById('topicVersesModal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+  stopActiveVerseAudio();
+}
+
+
+// ==========================================================================
+/* WORD-BY-WORD QURAN ENGINE & DATABASE VIEWER */
+// ==========================================================================
+
+const wbwSurahNames = [
+  "Al-Fatihah", "Al-Baqarah", "Al-Imran", "An-Nisa'", "Al-Ma'idah", "Al-An'am", "Al-A'raf", "Al-Anfal", "At-Tawbah", "Yunus",
+  "Hud", "Yusuf", "Ar-Ra'd", "Ibrahim", "Al-Hijr", "An-Nahl", "Al-Isra'", "Al-Kahf", "Maryam", "Ta-Ha",
+  "Al-Anbiya'", "Al-Hajj", "Al-Mu'minun", "An-Nur", "Al-Furqan", "Ash-Shu'ara'", "An-Naml", "Al-Qasas", "Al-Ankabut", "Ar-Rum",
+  "Luqman", "As-Sajdah", "Al-Ahzab", "Saba'", "Fatir", "Ya-Sin", "As-Saffat", "Sad", "Az-Zumar", "Ghafir",
+  "Fussilat", "Ash-Shura", "Az-Zukhruf", "Ad-Dukhan", "Al-Jathiyah", "Al-Ahqaf", "Muhammad", "Al-Fath", "Al-Hujurat", "Qaf",
+  "Adh-Dhariyat", "At-Tur", "An-Najm", "Al-Qamar", "Ar-Rahman", "Al-Waqi'ah", "Al-Hadid", "Al-Mujadilah", "Al-Hashr", "Al-Mumtahanah",
+  "As-Saff", "Al-Jumu'ah", "Al-Munafiqun", "At-Taghabun", "At-Talaq", "At-Tahrim", "Al-Mulk", "Al-Qalam", "Al-Haqqah", "Al-Ma'arij",
+  "Nuh", "Al-Jinn", "Al-Muzzammil", "Al-Muddaththir", "Al-Qiyamah", "Al-Insan", "Al-Mursalat", "An-Naba'", "An-Nazi'at", "'Abasa",
+  "At-Takwir", "Al-Infitar", "Al-Mutaffifin", "Al-Inshiqaq", "Al-Buruj", "At-Tariq", "Al-A'la", "Al-Ghashiyah", "Al-Fajr", "Al-Balad",
+  "Ash-Shams", "Al-Layl", "Ad-Duha", "Ash-Sharh", "At-Tin", "Al-'Alaq", "Al-Qadr", "Al-Bayyinah", "Az-Zalzalah", "Al-'Adiyat",
+  "Al-Qari'ah", "At-Takathur", "Al-'Asr", "Al-Humazah", "Al-Fil", "Quraysh", "Al-Ma'un", "Al-Kawthar", "Al-Kafirun", "An-Nasr",
+  "Al-Masad", "Al-Ikhlas", "Al-Falaq", "An-Nas"
+];
+
+const wbwSurahArabicNames = [
+  "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس",
+  "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه",
+  "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم",
+  "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر",
+  "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق",
+  "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة",
+  "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملک", "القلم", "الحاقة", "المعارج",
+  "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس",
+  "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد",
+  "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات",
+  "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الکوثر", "الكافرون", "النصر",
+  "المسد", "الإخلاص", "الفلق", "الناس"
+];
+
+let wbwState = {
+  selectedSurah: 1,
+  selectedAyah: "all",
+  loadedVerses: [],
+  pageIndex: 0,
+  pageSize: 10,
+  activeVerseAudio: null,
+  activeVerseAudioId: null
+};
+
+function initWbwQuran() {
+  const surahSelect = document.getElementById('wbwSurahSelect');
+  if (!surahSelect) return;
+
+  surahSelect.innerHTML = '';
+  for (let i = 0; i < 114; i++) {
+    const sId = i + 1;
+    const option = document.createElement('option');
+    option.value = sId;
+    option.textContent = `${sId}. ${wbwSurahNames[i]} (${wbwSurahArabicNames[i]})`;
+    surahSelect.appendChild(option);
+  }
+
+  wbwState.selectedSurah = 1;
+  wbwState.selectedAyah = "all";
+  updateWbwAyahDropdown();
+}
+
+async function updateWbwAyahDropdown() {
+  const ayahSelect = document.getElementById('wbwAyahSelect');
+  if (!ayahSelect) return;
+
+  ayahSelect.innerHTML = '<option value="all">All Verses</option>';
+  
+  try {
+    const res = await queryDatabase(
+      "quranDb.db",
+      "SELECT COUNT(*) as total FROM tbl_QuranComplete WHERE surat_id = ?",
+      [wbwState.selectedSurah]
+    );
+    if (res && res.length > 0) {
+      const totalAyahs = res[0].total;
+      for (let i = 1; i <= totalAyahs; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `Ayah ${i}`;
+        ayahSelect.appendChild(option);
+      }
+    }
+  } catch (e) {
+    console.error("Error populating Ayah count:", e);
+  }
+}
+
+async function onWbwSurahChange() {
+  const surahSelect = document.getElementById('wbwSurahSelect');
+  if (!surahSelect) return;
+  
+  wbwState.selectedSurah = parseInt(surahSelect.value);
+  wbwState.selectedAyah = "all";
+  wbwState.pageIndex = 0;
+  
+  await updateWbwAyahDropdown();
+  await loadWbwVerses();
+}
+
+async function onWbwAyahChange() {
+  const ayahSelect = document.getElementById('wbwAyahSelect');
+  if (!ayahSelect) return;
+  
+  wbwState.selectedAyah = ayahSelect.value;
+  wbwState.pageIndex = 0;
+  
+  await loadWbwVerses();
+}
+
+async function loadWbwVerses() {
+  stopActiveVerseAudio();
+
+  const container = document.getElementById('wbwVersesContainer');
+  const loadMoreBtn = document.getElementById('wbwLoadMoreBtn');
+  if (!container) return;
+
+  if (wbwState.pageIndex === 0) {
+    container.innerHTML = '<div class="loading-indicator">Loading Quranic data...</div>';
+  }
+
+  try {
+    let versesSql = "";
+    let wbwsSql = "";
+    let params = [];
+
+    if (wbwState.selectedAyah === "all") {
+      versesSql = "SELECT id, ayat_number, arabic, translation_urdu, translation_english, id - (SELECT COUNT(*) FROM tbl_QuranComplete z WHERE z.ayat_number=0 AND z.id <= t.id) AS global_num FROM tbl_QuranComplete t WHERE surat_id = ? AND ayat_number > 0 ORDER BY ayat_number";
+      wbwsSql = "SELECT ayat_number, translation FROM tbl_word_by_word_new WHERE surat_id = ?";
+      params = [wbwState.selectedSurah];
+    } else {
+      versesSql = "SELECT id, ayat_number, arabic, translation_urdu, translation_english, id - (SELECT COUNT(*) FROM tbl_QuranComplete z WHERE z.ayat_number=0 AND z.id <= t.id) AS global_num FROM tbl_QuranComplete t WHERE surat_id = ? AND ayat_number = ?";
+      wbwsSql = "SELECT ayat_number, translation FROM tbl_word_by_word_new WHERE surat_id = ? AND ayat_number = ?";
+      params = [wbwState.selectedSurah, parseInt(wbwState.selectedAyah)];
+    }
+
+    const verses = await queryDatabase("quranDb.db", versesSql, params);
+    const wbws = await queryDatabase("quranDb.db", wbwsSql, params);
+
+    const wbwMap = {};
+    wbws.forEach(item => {
+      wbwMap[item.ayat_number] = item.translation;
+    });
+
+    const merged = verses.map(v => {
+      return {
+        ...v,
+        wbwText: wbwMap[v.ayat_number] || ""
+      };
+    });
+
+    wbwState.loadedVerses = merged;
+
+    if (wbwState.selectedAyah === "all") {
+      renderWbwVersesPaged();
+    } else {
+      renderWbwVersesList(merged);
+      if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+    }
+  } catch (e) {
+    container.innerHTML = `<div class="error-indicator">Error loading database resources: ${e.message}</div>`;
+  }
+}
+
+function renderWbwVersesPaged() {
+  const container = document.getElementById('wbwVersesContainer');
+  const loadMoreBtn = document.getElementById('wbwLoadMoreBtn');
+  if (!container) return;
+
+  const start = wbwState.pageIndex * wbwState.pageSize;
+  const end = start + wbwState.pageSize;
+  const pageSlice = wbwState.loadedVerses.slice(start, end);
+
+  if (wbwState.pageIndex === 0) {
+    container.innerHTML = '';
+  }
+
+  const loading = container.querySelector('.loading-indicator');
+  if (loading) loading.remove();
+
+  renderWbwVersesList(pageSlice, true);
+
+  if (end < wbwState.loadedVerses.length) {
+    if (loadMoreBtn) loadMoreBtn.style.display = 'block';
+  } else {
+    if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+  }
+}
+
+function loadMoreWbwVerses() {
+  wbwState.pageIndex++;
+  renderWbwVersesPaged();
+}
+
+function renderWbwVersesList(versesSlice, append = false) {
+  const container = document.getElementById('wbwVersesContainer');
+  if (!container) return;
+
+  if (!append) {
+    container.innerHTML = '';
+  }
+
+  if (versesSlice.length === 0) {
+    container.innerHTML = '<div class="empty-indicator">No verses found in database.</div>';
+    return;
+  }
+
+  versesSlice.forEach(v => {
+    const card = document.createElement('div');
+    card.className = 'wbw-verse-card glass-card';
+
+    let wbwHTML = '';
+    if (v.wbwText) {
+      const cleanWbw = v.wbwText.split('||')[0];
+      const segments = cleanWbw.split('@');
+      segments.forEach(seg => {
+        const parts = seg.split('&');
+        const arabicWord = parts[0]?.trim() || '';
+        const transWord = parts[1]?.trim() || '';
+        if (arabicWord || transWord) {
+          wbwHTML += `
+            <div class="wbw-word-tile">
+              <span class="wbw-arabic">${arabicWord}</span>
+              <span class="wbw-translation">${transWord}</span>
+            </div>
+          `;
+        }
+      });
+    } else {
+      wbwHTML = `<div class="wbw-word-tile-placeholder">${v.arabic}</div>`;
+    }
+
+    card.innerHTML = `
+      <div class="wbw-verse-header">
+        <span class="wbw-verse-badge">Surah ${wbwState.selectedSurah} : Ayah ${v.ayat_number}</span>
+        <button class="wbw-verse-audio-btn" id="wbw-audio-btn-${v.global_num}" onclick="toggleVerseAudio(${v.global_num})">▶</button>
+      </div>
+      <div class="wbw-words-flex">
+        ${wbwHTML}
+      </div>
+      <div class="wbw-full-translations">
+        <div class="wbw-trans-line">
+          <strong>اردو:</strong>
+          <p>${v.translation_urdu || 'Urdu translation not available.'}</p>
+        </div>
+        <div class="wbw-trans-line">
+          <strong>English:</strong>
+          <p>${v.translation_english || 'English translation not available.'}</p>
+        </div>
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+}
+
+function toggleVerseAudio(verseId) {
+  if (wbwState.activeVerseAudioId === verseId) {
+    stopActiveVerseAudio();
+    return;
+  }
+
+  stopActiveVerseAudio();
+
+  const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${verseId}.mp3`;
+  const playBtn = document.getElementById(`wbw-audio-btn-${verseId}`) ||
+                  document.getElementById(`topic-audio-btn-${verseId}`);
+
+
+  if (isAndroid) {
+    try {
+      wbwState.activeVerseAudio = true;
+      wbwState.activeVerseAudioId = verseId;
+      if (playBtn) {
+        playBtn.classList.add('playing');
+        playBtn.textContent = '⏸';
+      }
+
+      activeQariAudioFinishedCallback = () => {
+        if (playBtn) {
+          playBtn.classList.remove('playing');
+          playBtn.textContent = '▶';
+        }
+        wbwState.activeVerseAudio = null;
+        wbwState.activeVerseAudioId = null;
+        activeQariAudioFinishedCallback = null;
+      };
+
+      QuranAndroidBridge.playAudio(audioUrl);
+    } catch (e) {
+      console.error("Bridge verse play audio error:", e);
+      stopActiveVerseAudio();
+    }
+  } else {
+    const audio = new Audio(audioUrl);
+    wbwState.activeVerseAudio = audio;
+    wbwState.activeVerseAudioId = verseId;
+
+    if (playBtn) {
+      playBtn.classList.add('playing');
+      playBtn.textContent = '⏸';
+    }
+
+    audio.play().catch(err => {
+      console.error("Verse audio playback error:", err);
+      stopActiveVerseAudio();
+    });
+
+    audio.onended = () => {
+      if (playBtn) {
+        playBtn.classList.remove('playing');
+        playBtn.textContent = '▶';
+      }
+      wbwState.activeVerseAudio = null;
+      wbwState.activeVerseAudioId = null;
+    };
+  }
+}
+
+function stopActiveVerseAudio() {
+  if (wbwState.activeVerseAudioId) {
+    const playBtn = document.getElementById(`wbw-audio-btn-${wbwState.activeVerseAudioId}`) ||
+                    document.getElementById(`topic-audio-btn-${wbwState.activeVerseAudioId}`);
+    if (playBtn) {
+      playBtn.classList.remove('playing');
+      playBtn.textContent = '▶';
+    }
+  }
+
+
+  if (isAndroid) {
+    try {
+      QuranAndroidBridge.stopAudio();
+    } catch (e) {
+      console.error("Bridge stop audio error:", e);
+    }
+  } else if (wbwState.activeVerseAudio) {
+    wbwState.activeVerseAudio.pause();
+  }
+
+  wbwState.activeVerseAudio = null;
+  wbwState.activeVerseAudioId = null;
+  activeQariAudioFinishedCallback = null;
+}
+
+
+
+
+// ============================================================
+// DAWAT AUR TABLIGH — Multilingual System (28 Languages)
+// ============================================================
+
+let dawatActiveLang = 'ur';
+let dawatActiveType = 'sathiyon';
+
+// ── Card UI labels per language ──────────────────────────────
+const dawatCardLabels = {
+  ur: { c1t: 'پرانے ساتھیوں کو ہدایت', c1s: 'Purane Sathiyon ko Hidayat', c1d: 'پرانے دوستوں اور ساتھیوں کو دین کی طرف واپس لانے کا طریقہ، حکمت اور محبت سے دعوت دینے کے اصول۔', b1: '📖 پڑھیں — Hidayat ka Tariqa', c2t: 'دعوت کا کام', c2s: 'Dawat ka Kaam', c2d: 'دعوت کا کام نہ کرنے کے نقصانات اور فوائد — قرآن و حدیث کی روشنی میں۔', bn: '⚠️ نقصان', bf: '✨ فوائد' },
+  en: { c1t: 'Guiding Old Companions', c1s: 'Giving Da\'wah to Friends', c1d: 'The method of bringing old friends back to Deen with wisdom, love and Islamic principles.', b1: '📖 Read — Method of Guidance', c2t: 'Dawat Work', c2s: 'Dawat ka Kaam — Benefits & Harms', c2d: 'The harms of abandoning dawat and the benefits of engaging in this noble work, from Quran & Hadith.', bn: '⚠️ Harms of Leaving', bf: '✨ Benefits of Doing' },
+  ar: { c1t: 'هداية الرفاق القدامى', c1s: 'الدعوة إلى الله', c1d: 'طريقة إعادة الأصدقاء القدامى إلى الدين بالحكمة والمحبة.', b1: '📖 اقرأ — طريقة الهداية', c2t: 'عمل الدعوة', c2s: 'الدعوة — الفوائد والأضرار', c2d: 'أضرار ترك الدعوة وفوائد العمل بها من القرآن والسنة.', bn: '⚠️ أضرار الترك', bf: '✨ فوائد العمل' },
+  hi: { c1t: 'पुराने साथियों को हिदायत', c1s: 'पुराने दोस्तों को दावत', c1d: 'पुराने दोस्तों को दीन की तरफ वापस लाने का तरीका, हिकमत और मोहब्बत से।', b1: '📖 पढ़ें — हिदायत का तरीका', c2t: 'दावत का काम', c2s: 'Dawat ka Kaam — फायदे और नुकसान', c2d: 'दावत न करने के नुकसान और करने के फायदे — क़ुरआन व हदीस की रोशनी में।', bn: '⚠️ न करने का नुकसान', bf: '✨ करने के फायदे' },
+  bn: { c1t: 'পুরনো সাথীদের হেদায়াত', c1s: 'দাওয়াত দেওয়ার পদ্ধতি', c1d: 'পুরনো বন্ধুদের দ্বীনের দিকে ফিরিয়ে আনার পদ্ধতি, হিকমত ও ভালোবাসা দিয়ে।', b1: '📖 পড়ুন — হেদায়াতের পদ্ধতি', c2t: 'দাওয়াতের কাজ', c2s: 'দাওয়াত — উপকার ও ক্ষতি', c2d: 'দাওয়াত না করার ক্ষতি এবং করার উপকার — কুরআন ও হাদিসের আলোকে।', bn: '⚠️ না করার ক্ষতি', bf: '✨ করার উপকার' },
+  pa: { c1t: 'ਪੁਰਾਣੇ ਸਾਥੀਆਂ ਨੂੰ ਹਿਦਾਇਤ', c1s: 'ਦਾਵਤ ਦੇਣ ਦਾ ਤਰੀਕਾ', c1d: 'ਪੁਰਾਣੇ ਦੋਸਤਾਂ ਨੂੰ ਦੀਨ ਵੱਲ ਵਾਪਸ ਲਿਆਉਣ ਦਾ ਤਰੀਕਾ।', b1: '📖 ਪੜ੍ਹੋ — ਹਿਦਾਇਤ ਦਾ ਤਰੀਕਾ', c2t: 'ਦਾਵਤ ਦਾ ਕੰਮ', c2s: 'ਦਾਵਤ — ਫਾਇਦੇ ਅਤੇ ਨੁਕਸਾਨ', c2d: 'ਦਾਵਤ ਨਾ ਕਰਨ ਦੇ ਨੁਕਸਾਨ ਅਤੇ ਕਰਨ ਦੇ ਫਾਇਦੇ।', bn: '⚠️ ਨਾ ਕਰਨ ਦਾ ਨੁਕਸਾਨ', bf: '✨ ਕਰਨ ਦੇ ਫਾਇਦੇ' },
+  id: { c1t: 'Membimbing Teman Lama', c1s: 'Cara Berdakwah kepada Teman', c1d: 'Cara membawa teman lama kembali ke jalan Islam dengan hikmah dan kasih sayang.', b1: '📖 Baca — Cara Membimbing', c2t: 'Pekerjaan Dakwah', c2s: 'Dakwah — Manfaat & Bahaya', c2d: 'Bahaya meninggalkan dakwah dan manfaat menjalankannya — dari Al-Quran dan Hadits.', bn: '⚠️ Bahaya Meninggalkan', bf: '✨ Manfaat Berdakwah' },
+  ms: { c1t: 'Hidayah kepada Sahabat Lama', c1s: 'Cara Berdakwah', c1d: 'Cara membawa sahabat lama kembali kepada Islam dengan penuh hikmah dan kasih sayang.', b1: '📖 Baca — Cara Hidayah', c2t: 'Kerja Dakwah', c2s: 'Dakwah — Faedah & Mudarat', c2d: 'Mudarat meninggalkan dakwah dan faedah melakukannya dari Al-Quran dan Hadith.', bn: '⚠️ Mudarat Tinggalkan', bf: '✨ Faedah Berdakwah' },
+  tr: { c1t: 'Eski Dostları Hidayete Erdirmek', c1s: 'Davet Yöntemi', c1d: 'Eski arkadaşları dine kazandırmanın yöntemi, hikmet ve sevgiyle davet etme ilkeleri.', b1: '📖 Oku — Hidayet Yöntemi', c2t: 'Davet Çalışması', c2s: 'Davet — Faydalar & Zararlar', c2d: 'Davet çalışmasını terk etmenin zararları ve yapmanın faydaları — Kuran ve Hadisten.', bn: '⚠️ Terk Etmenin Zararı', bf: '✨ Yapmanın Faydası' },
+  fa: { c1t: 'هدایت دوستان قدیم', c1s: 'روش دعوت به دین', c1d: 'روش بازگرداندن دوستان قدیم به دین با حکمت و محبت.', b1: '📖 بخوان — روش هدایت', c2t: 'کار دعوت', c2s: 'دعوت — فواید و زیان‌ها', c2d: 'زیان‌های ترک دعوت و فواید انجام آن از قرآن و حدیث.', bn: '⚠️ زیان ترک دعوت', bf: '✨ فواید دعوت' },
+  fr: { c1t: "Guider les Anciens Compagnons", c1s: "Méthode de Da'wah", c1d: "La méthode pour ramener les anciens amis vers la religion avec sagesse et amour.", b1: "📖 Lire — Méthode de Guidage", c2t: "Travail de Da'wah", c2s: "Da'wah — Avantages & Inconvénients", c2d: "Les inconvénients d'abandonner le da'wah et les avantages de le pratiquer.", bn: "⚠️ Inconvénients", bf: "✨ Avantages" },
+  es: { c1t: 'Guiar a los Compañeros Antiguos', c1s: 'Método de Da\'wah', c1d: 'El método para traer de vuelta a los amigos al Islam con sabiduría y amor.', b1: '📖 Leer — Método de Guía', c2t: 'Trabajo de Da\'wah', c2s: 'Da\'wah — Beneficios & Perjuicios', c2d: 'Los perjuicios de abandonar la da\'wah y los beneficios de practicarla.', bn: '⚠️ Perjuicios', bf: '✨ Beneficios' },
+  de: { c1t: 'Alte Gefährten leiten', c1s: 'Da\'wah-Methode', c1d: 'Die Methode, alte Freunde mit Weisheit und Liebe zum Islam zurückzubringen.', b1: '📖 Lesen — Führungsmethode', c2t: 'Da\'wah-Arbeit', c2s: 'Da\'wah — Nutzen & Schaden', c2d: 'Der Schaden des Unterlassens von Da\'wah und der Nutzen ihrer Ausführung.', bn: '⚠️ Schaden', bf: '✨ Nutzen' },
+  ru: { c1t: 'Направление старых товарищей', c1s: 'Метод Дауа', c1d: 'Метод возвращения старых друзей к исламу с мудростью и любовью.', b1: '📖 Читать — Метод руководства', c2t: 'Работа Дауа', c2s: 'Дауа — Польза и вред', c2d: 'Вред от оставления дауа и польза от его выполнения из Корана и хадисов.', bn: '⚠️ Вред от оставления', bf: '✨ Польза' },
+  zh: { c1t: '引导旧日同伴', c1s: '达瓦方法', c1d: '用智慧和爱心将旧朋友带回伊斯兰的方法。', b1: '📖 阅读 — 引导方法', c2t: '达瓦工作', c2s: '达瓦 — 益处与危害', c2d: '放弃达瓦的危害和践行达瓦的益处 — 来自古兰经与圣训。', bn: '⚠️ 放弃的危害', bf: '✨ 践行的益处' },
+  ja: { c1t: '旧友への導き', c1s: 'ダワの方法', c1d: '知恵と愛をもって旧友をイスラムへ戻す方法。', b1: '📖 読む — 導きの方法', c2t: 'ダワの仕事', c2s: 'ダワ — 益と害', c2d: 'ダワを怠ることの害とダワを行う益 — クルアーンとハディースから。', bn: '⚠️ 怠ることの害', bf: '✨ 行うことの益' },
+  sw: { c1t: 'Kuwaongoza Marafiki wa Zamani', c1s: 'Njia ya Dawah', c1d: 'Njia ya kuwarudisha marafiki wa zamani kwa dini kwa hekima na upendo.', b1: '📖 Soma — Njia ya Uongozi', c2t: 'Kazi ya Dawah', c2s: 'Dawah — Faida na Hasara', c2d: 'Hasara za kuacha dawah na faida za kuifanya kutoka Quran na Hadith.', bn: '⚠️ Hasara', bf: '✨ Faida' },
+  ha: { c1t: 'Jagorantar Tsoffin Abokai', c1s: 'Hanyar Da\'awa', c1d: 'Hanyar mayar da tsoffin aboki zuwa addini da hikima da ƙauna.', b1: '📖 Karanta — Hanyar Jagoranci', c2t: 'Aikin Da\'awa', c2s: "Da'awa — Amfani da Cutarwa", c2d: "Cutarwar barin da'awa da amfanin yin ta daga Alƙur'ani da Hadisi.", bn: '⚠️ Cutarwa', bf: '✨ Amfani' },
+  so: { c1t: 'Hanunaynta Saaxiibada Hore', c1s: 'Hab-ka Dacwada', c1d: 'Hab-ka dib-u-celinta saaxiibada hore ee diinta iyadoo la adeegsanayo xigmadda iyo jacaylka.', b1: '📖 Akhri — Hab-ka Hanunaynta', c2t: 'Shaqada Dacwada', c2s: 'Dacwada — Faa\'iidada & Dhibaatada', c2d: 'Dhibaatada ka tagista dacwada iyo faa\'iidada ka qabashada — Quraan iyo Xadiis.', bn: '⚠️ Dhibaatada', bf: '✨ Faa\'iidada' },
+  ta: { c1t: 'பழைய தோழர்களுக்கு வழிகாட்டுதல்', c1s: 'தவ்வா முறை', c1d: 'ஞானம் மற்றும் அன்பு கொண்டு பழைய நண்பர்களை இஸ்லாமிற்கு திரும்ப அழைக்கும் முறை.', b1: '📖 படிக்கவும் — வழிகாட்டல் முறை', c2t: 'தவ்வா பணி', c2s: 'தவ்வா — நன்மைகள் & தீமைகள்', c2d: 'தவ்வா விடுவதால் வரும் தீமைகள் மற்றும் செய்வதால் வரும் நன்மைகள்.', bn: '⚠️ தீமைகள்', bf: '✨ நன்மைகள்' },
+  te: { c1t: 'పాత సహచరులకు మార్గదర్శనం', c1s: 'దావా పద్ధతి', c1d: 'జ్ఞానం మరియు ప్రేమతో పాత మిత్రులను ఇస్లాంకు తిరిగి తీసుకురావడానికి పద్ధతి.', b1: '📖 చదవండి — మార్గదర్శన పద్ధతి', c2t: 'దావా పని', c2s: 'దావా — ప్రయోజనాలు & హానులు', c2d: 'దావా వదిలివేయడం వల్ల హానులు మరియు చేయడం వల్ల ప్రయోజనాలు.', bn: '⚠️ హానులు', bf: '✨ ప్రయోజనాలు' },
+  pt: { c1t: 'Guiar Antigos Companheiros', c1s: 'Método de Da\'wah', c1d: 'O método de trazer antigos amigos de volta ao Islã com sabedoria e amor.', b1: '📖 Ler — Método de Orientação', c2t: 'Trabalho de Da\'wah', c2s: 'Da\'wah — Benefícios & Malefícios', c2d: 'Os malefícios de abandonar a da\'wah e os benefícios de praticá-la.', bn: '⚠️ Malefícios', bf: '✨ Benefícios' },
+  it: { c1t: 'Guidare i Vecchi Compagni', c1s: "Metodo di Da'wah", c1d: "Il metodo per riportare i vecchi amici all'Islam con saggezza e amore.", b1: '📖 Leggi — Metodo di Guida', c2t: "Lavoro di Da'wah", c2s: "Da'wah — Vantaggi & Svantaggi", c2d: "Gli svantaggi di abbandonare la da'wah e i vantaggi di praticarla.", bn: '⚠️ Svantaggi', bf: '✨ Vantaggi' },
+  nl: { c1t: 'Oude Metgezellen Leiden', c1s: "Da'wah Methode", c1d: "De methode om oude vrienden met wijsheid en liefde terug naar de islam te brengen.", b1: '📖 Lees — Leidingmethode', c2t: "Da'wah Werk", c2s: "Da'wah — Voordelen & Nadelen", c2d: "De nadelen van het nalaten van da'wah en de voordelen van het uitvoeren ervan.", bn: '⚠️ Nadelen', bf: '✨ Voordelen' },
+  ps: { c1t: 'د زاړه ملګرو لارښوونه', c1s: 'د دعوت طریقه', c1d: 'د زاړه ملګرو بیرته دین ته راوستلو طریقه، له حکمت او مینې سره.', b1: '📖 ولولئ — د لارښوونې طریقه', c2t: 'د دعوت کار', c2s: 'دعوت — ګټې او زیانونه', c2d: 'د دعوت پریښودو زیانونه او کولو ګټې — له قرآن او حدیث.', bn: '⚠️ زیانونه', bf: '✨ ګټې' },
+  ug: { c1t: 'كونا دوستلارنى يوللاش', c1s: 'دەۋەت ئۇسۇلى', c1d: 'كونا دوستلارنى ھيكمەت ۋە مۇھەببەت بىلەن دىنگە قايتۇرۇش ئۇسۇلى.', b1: '📖 ئوقۇڭ — يوللاش ئۇسۇلى', c2t: 'دەۋەت ئىشى', c2s: 'دەۋەت — پايدا ۋە زىيان', c2d: 'دەۋەتنى تاشلاپ قويۇشنىڭ زىيىنى ۋە قىلىشنىڭ پايدىسى.', bn: '⚠️ زىيان', bf: '✨ پايدا' },
+  az: { c1t: 'Köhnə Dostları Doğru Yola Gətirmək', c1s: 'Dəvət Metodu', c1d: 'Köhnə dostları hikmət və sevgi ilə İslama qaytarmaq üsulu.', b1: '📖 Oxu — Rəhbərlik Metodu', c2t: 'Dəvət İşi', c2s: 'Dəvət — Faydalar & Zərərlər', c2d: 'Dəvəti tərk etməyin zərərləri və etməyin faydaları — Quran və Hədisdən.', bn: '⚠️ Zərərlər', bf: '✨ Faydalar' },
+  uz: { c1t: 'Eski Do\'stlarni Hidoyat Qilish', c1s: 'Da\'vat Usuli', c1d: 'Eski do\'stlarni hikmat va muhabbat bilan dinga qaytarish usuli.', b1: '📖 O\'qi — Hidoyat Usuli', c2t: 'Da\'vat Ishi', c2s: 'Da\'vat — Foyda va Zararlar', c2d: 'Da\'vatni tark etishning zararlari va qilishning foydalari — Qur\'on va Hadisdan.', bn: '⚠️ Zararlar', bf: '✨ Foydalar' }
+};
+
+// ── Modal content per language ────────────────────────────────
+function buildModalBody(lang, type) {
+  const P = (num, text) => `<div class="dawat-point"><span class="dawat-point-num">${num}</span><span class="dawat-point-text">${text}</span></div>`;
+  const A = (text, ref) => `<div class="dawat-ayah">${text}<div class="dawat-ref">${ref}</div></div>`;
+
+  const content = {
+    ur: {
+      sathiyon: A('وَمَنْ أَحْسَنُ قَوْلًا مِّمَّن دَعَا إِلَى اللَّهِ وَعَمِلَ صَالِحًا', '— سورۃ فصلت: 33') + P('🌟','<strong>محبت اور حکمت سے دعوت دیں</strong> — پرانے ساتھیوں کے ساتھ پرانی یادیں تازہ کریں، پھر آہستہ آہستہ دین کی بات کریں۔') + P('💬','<strong>اپنی زندگی کی مثال دیں</strong> — زبان سے پہلے اپنے عمل سے دعوت دیں۔ جب ساتھی آپ کی تبدیلی دیکھیں تو خود پوچھیں گے۔') + P('🤲','<strong>ان کے لیے دعا کریں</strong> — ہدایت صرف اللہ دے سکتا ہے۔ رات کو تہجد میں ان کے لیے دعا کریں۔') + P('📖','<strong>قرآن کی آیات شیئر کریں</strong> — کسی مناسب موقع پر قرآن کی کوئی آیت سنائیں جو دل کو چھو جائے۔') + P('🎯','<strong>صبر سے کام لیں</strong> — نبی کریم ﷺ نے ۲۳ سال تک صبر اور حکمت سے دعوت دی۔') + P('🕌','<strong>تبلیغی جماعت یا بیان میں لے جائیں</strong> — کسی عالم کا بیان دل میں انقلاب لے آتا ہے۔'),
+      nuksan: A('لَتَأْمُرُنَّ بِالْمَعْرُوفِ وَلَتَنْهَوُنَّ عَنِ الْمُنكَرِ أَوْ لَيُوشِكَنَّ اللَّهُ أَن يَبْعَثَ عَلَيْكُمْ عِقَابًا', '— ترمذی | نبی کریم ﷺ') + P('❌','<strong>فریضہ کی ادائیگی نہ ہوگی</strong> — امر بالمعروف ہر مسلمان پر فرض ہے۔') + P('🔥','<strong>اللہ کا عذاب پوری قوم پر آتا ہے</strong> — برائی دیکھ کر نہ روکنے والے بھی عذاب میں شامل ہوتے ہیں (بخاری)۔') + P('💔','<strong>اپنے پیاروں کو جہنم کی طرف چھوڑنا</strong> — قیامت میں ذمہ دار ٹھہرایا جائے گا۔') + P('📉','<strong>امت کی تباہی</strong> — دعوت چھوڑنے والی امت دینی زوال کا شکار ہو جاتی ہے۔') + P('😔','<strong>اپنا ایمان کمزور پڑتا ہے</strong> — دعوت سے کنارہ کشی کرنے والے کا خود ایمان کمزور ہو جاتا ہے۔') + P('⏳','<strong>قیامت میں جواب دہی</strong> — اللہ پوچھے گا: تم نے لوگوں کو کیوں نہیں بتایا؟'),
+      fayde: A('وَمَنْ أَحْسَنُ قَوْلًا مِّمَّن دَعَا إِلَى اللَّهِ وَعَمِلَ صَالِحًا وَقَالَ إِنَّنِي مِنَ الْمُسْلِمِينَ', '— سورۃ فصلت: 33') + P('🏆','<strong>ہدایت کا ذریعہ بننا</strong> — ایک شخص کی ہدایت دنیا کی تمام نعمتوں سے بہتر ہے (بخاری)۔') + P('💰','<strong>صدقہ جاریہ</strong> — جب آپ کی دعوت سے کوئی نیک عمل کرے تو قیامت تک ثواب ملتا رہے گا (مسلم)۔') + P('🌟','<strong>انبیاء کا کام سرانجام دینا</strong> — یہ انبیاء علیہم السلام کا عظیم ترین فریضہ ہے۔') + P('❤️','<strong>خود کا ایمان مضبوط ہوتا ہے</strong> — دعوت ایمان کو تازہ رکھتی ہے۔') + P('🤲','<strong>اللہ کی مدد اور برکت</strong> — دعوت دینے والے کے گھر میں برکت آتی ہے۔') + P('🕊️','<strong>سماجی اصلاح</strong> — دعوت سے معاشرہ بہتر ہوتا ہے اور امن آتا ہے۔')
+    },
+    en: {
+      sathiyon: A('And who is better in speech than one who invites to Allah and does righteousness?', '— Surah Fussilat 41:33') + P('🌟','<strong>Invite with Love & Wisdom</strong> — Reconnect over old memories, then gently introduce the religion with kindness.') + P('💬','<strong>Lead by Example</strong> — Let your changed life speak first. When they see your transformation, they will ask how.') + P('🤲','<strong>Pray for Them</strong> — Guidance belongs to Allah alone. Make du\'a for them in Tahajjud every night.') + P('📖','<strong>Share Quranic Verses</strong> — Share a verse or hadith that touches the heart at the right moment.') + P('🎯','<strong>Be Patient</strong> — The Prophet ﷺ gave da\'wah for 23 years with patience. Guidance is not instant.') + P('🕌','<strong>Take Them to a Bayan</strong> — Attending a scholar\'s talk or Tablighi Jamaat can transform a heart.'),
+      nuksan: A('You must enjoin good and forbid evil, or Allah will send upon you a punishment from Him.', '— Tirmidhi | Prophet ﷺ') + P('❌','<strong>A Duty Left Unfulfilled</strong> — Enjoining good and forbidding evil is obligatory on every Muslim.') + P('🔥','<strong>Punishment Falls on the Whole Nation</strong> — When a people see evil and do nothing, the punishment includes everyone (Bukhari).') + P('💔','<strong>Abandoning Loved Ones to Hellfire</strong> — If we didn\'t warn our friends, we will be questioned on Judgment Day.') + P('📉','<strong>Downfall of the Ummah</strong> — A nation that abandons da\'wah loses its identity and faces spiritual decline.') + P('😔','<strong>Your Own Faith Weakens</strong> — Turning away from da\'wah weakens your own iman over time.') + P('⏳','<strong>Accountability on Judgment Day</strong> — Allah will ask: "Why did you not warn them?" No excuse will be accepted.'),
+      fayde: A('And who is better in speech than one who invites to Allah and does righteousness and says, "Indeed, I am of the Muslims."', '— Surah Fussilat 41:33') + P('🏆','<strong>Becoming a Source of Guidance</strong> — The Prophet ﷺ said: "If Allah guides one person through you, it is better than the whole world." (Bukhari)') + P('💰','<strong>Ongoing Charity (Sadaqa Jariyah)</strong> — When someone you guided does good deeds, you earn reward until the Day of Judgment (Muslim).') + P('🌟','<strong>Continuing the Work of the Prophets</strong> — Da\'wah is the noble task of all Prophets. Following it is the greatest honor.') + P('❤️','<strong>Strengthening Your Own Faith</strong> — Da\'wah keeps your iman fresh and protects you from sins.') + P('🤲','<strong>Allah\'s Help & Blessings</strong> — "If you support Allah, He will support you." Blessings flow into the home of a da\'ee.') + P('🕊️','<strong>Social Reform & Peace</strong> — Da\'wah improves society, reduces evil, and brings peace to the world.')
+    },
+    ar: {
+      sathiyon: A('وَمَنْ أَحْسَنُ قَوْلًا مِّمَّن دَعَا إِلَى اللَّهِ وَعَمِلَ صَالِحًا', '— سورة فصلت: 33') + P('🌟','<strong>ادعُ بالحكمة والمحبة</strong> — تذكّر الأيام القديمة مع رفاقك ثم أدخل موضوع الدين بلطف ومحبة.') + P('💬','<strong>كن قدوةً حسنة</strong> — قبل أن تتكلم، اجعل حياتك المتغيرة تتحدث عنك.') + P('🤲','<strong>ادعُ لهم</strong> — الهداية بيد الله وحده، ادعُ لهم في صلاة التهجد كل ليلة.') + P('📖','<strong>شارك الآيات القرآنية</strong> — شارك آيةً أو حديثاً يلمس القلب في اللحظة المناسبة.') + P('🎯','<strong>تحلَّ بالصبر</strong> — دعا النبي ﷺ ثلاثة وعشرين عاماً بصبر وحكمة. الهداية لا تأتي فجأة.') + P('🕌','<strong>اصطحبهم إلى محاضرة أو جماعة</strong> — حضور مجلس العلم يمكن أن يغيّر القلوب.'),
+      nuksan: A('لَتَأْمُرُنَّ بِالْمَعْرُوفِ وَلَتَنْهَوُنَّ عَنِ الْمُنكَرِ أَوْ لَيُوشِكَنَّ اللَّهُ أَن يَبْعَثَ عَلَيْكُمْ عِقَابًا مِّنْهُ', '— رواه الترمذي | قول النبي ﷺ') + P('❌','<strong>إهمال الواجب</strong> — الأمر بالمعروف والنهي عن المنكر فريضة على كل مسلم.') + P('🔥','<strong>العقوبة تعم الجميع</strong> — إذا رأت أمة المنكر ولم تنكره، عمّها العذاب (البخاري).') + P('💔','<strong>تركُ أحبائك لجهنم</strong> — إذا لم تنصح أقاربك وأصدقاءك، ستسأل عنهم يوم القيامة.') + P('📉','<strong>انهيار الأمة</strong> — الأمة التي تترك الدعوة تفقد هويتها وتتردى في الانحدار الديني.') + P('😔','<strong>ضعف الإيمان الشخصي</strong> — الإعراض عن الدعوة يضعف إيمان الداعية نفسه تدريجياً.') + P('⏳','<strong>المحاسبة يوم القيامة</strong> — سيسألك الله: لماذا لم تبلّغ؟ ولن ينفع عذر.'),
+      fayde: A('وَمَنْ أَحْسَنُ قَوْلًا مِّمَّن دَعَا إِلَى اللَّهِ وَعَمِلَ صَالِحًا وَقَالَ إِنَّنِي مِنَ الْمُسْلِمِينَ', '— سورة فصلت: 33') + P('🏆','<strong>أن تكون سبباً للهداية</strong> — قال النبي ﷺ: "لأن يهدي الله بك رجلاً واحداً خير لك من الدنيا وما فيها" (البخاري).') + P('💰','<strong>صدقة جارية</strong> — إذا عمل من هديته عملاً صالحاً، وصل إليك أجره إلى يوم القيامة (مسلم).') + P('🌟','<strong>السير على خطى الأنبياء</strong> — الدعوة هي عمل الأنبياء الكرام، وهي أعلى منزلة.') + P('❤️','<strong>تقوية إيمانك</strong> — الدعوة تجدد الإيمان وتبعد النفس عن المعاصي.') + P('🤲','<strong>توفيق الله وبركته</strong> — "إن تنصروا الله ينصركم" — البيت الذي يُدعى فيه مبارك.') + P('🕊️','<strong>إصلاح المجتمع</strong> — الدعوة تحسّن المجتمع وتقلل الشرور وتجلب السلام.')
+    },
+    hi: {
+      sathiyon: A('وَمَنْ أَحْسَنُ قَوْلًا مِّمَّن دَعَا إِلَى اللَّهِ', '— सूरह फ़ुस्सिलत: 33') + P('🌟','<strong>मोहब्बत और हिकमत से दावत दें</strong> — पुराने दोस्तों के साथ पुरानी यादें ताजा करें, फिर धीरे-धीरे दीन की बात करें।') + P('💬','<strong>अपनी जिंदगी की मिसाल दें</strong> — जुबान से पहले अपने अमल से दावत दें।') + P('🤲','<strong>उनके लिए दुआ करें</strong> — हिदायत सिर्फ अल्लाह दे सकता है, तहज्जुद में दुआ करें।') + P('📖','<strong>कुरआन की आयतें शेयर करें</strong> — कोई दिल को छूने वाली आयत या हदीस सुनाएं।') + P('🎯','<strong>सब्र से काम लें</strong> — नबी ﷺ ने 23 साल सब्र के साथ दावत दी।') + P('🕌','<strong>किसी बयान या जमात में ले जाएं</strong> — किसी आलिम का बयान दिल में इंकलाब लाता है।'),
+      nuksan: A('تم जरूर नेकी का हुक्म दो और बुराई से रोको वरना अल्लाह तुम पर अजाब भेजेगा', '— तिर्मिज़ी | नबी ﷺ का फरमान') + P('❌','<strong>फर्ज़ अदा न होगा</strong> — अम्र बिल मारूफ हर मुसलमान पर फर्ज़ है।') + P('🔥','<strong>अल्लाह का अजाब पूरी क़ौम पर आता है</strong> — जब क़ौम बुराई देखे और न रोके (बुखारी)।') + P('💔','<strong>अपने प्यारों को जहन्नम की तरफ छोड़ना</strong> — क़यामत में जवाबदेह होंगे।') + P('📉','<strong>उम्मत की तबाही</strong> — दावत छोड़ने वाली उम्मत दीनी ज़वाल का शिकार होती है।') + P('😔','<strong>अपना ईमान कमजोर पड़ता है</strong> — दावत छोड़ने से खुद का ईमान भी कमजोर होता है।') + P('⏳','<strong>क़यामत में जवाबदेही</strong> — अल्लाह पूछेगा: तुमने क्यों नहीं बताया?'),
+      fayde: A('وَمَنْ أَحْسَنُ قَوْلًا مِّمَّن دَعَا إِلَى اللَّهِ', '— सूरह फ़ुस्सिलत: 33') + P('🏆','<strong>हिदायत का ज़रिया बनना</strong> — एक शख्स की हिदायत दुनिया की तमाम नेमतों से बेहतर है (बुखारी)।') + P('💰','<strong>सदक़ा-ए-जारिया</strong> — जिसे आपने हिदायत दी वो नेक अमल करे तो क़यामत तक ठवाब मिलता रहेगा (मुस्लिम)।') + P('🌟','<strong>अंबिया का काम अंजाम देना</strong> — दावत अंबिया का फरीज़ा है, यही सबसे बड़ा शरफ है।') + P('❤️','<strong>खुद का ईमान मज़बूत होता है</strong> — दावत से ईमान ताज़ा रहता है।') + P('🤲','<strong>अल्लाह की मदद और बरकत</strong> — दावत देने वाले के घर में बरकत आती है।') + P('🕊️','<strong>समाजी इस्लाह</strong> — दावत से समाज बेहतर होता है और अमन आता है।')
+    }
+  };
+
+  // For languages not yet fully translated, fall back to English
+  const langContent = content[lang] || content['en'];
+  return langContent[type] || content['en'][type];
+}
+
+// ── Card text update ──────────────────────────────────────────
+function setDawatLang(lang) {
+  dawatActiveLang = lang;
+
+  // Update active button in lang bar
+  document.querySelectorAll('.dlang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+
+  // Also sync modal lang bar
+  document.querySelectorAll('.dmlang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+
+  const L = dawatCardLabels[lang] || dawatCardLabels['en'];
+  const isRTL = ['ur','ar','fa','ps','ug'].includes(lang);
+
+  // Update card 1
+  document.getElementById('dawat-card1-title').textContent = L.c1t;
+  document.getElementById('dawat-card1-sub').textContent = L.c1s;
+  document.getElementById('dawat-card1-desc').textContent = L.c1d;
+  document.getElementById('dawat-btn1-label').textContent = L.b1;
+
+  // Update card 2
+  document.getElementById('dawat-card2-title').textContent = L.c2t;
+  document.getElementById('dawat-card2-sub').textContent = L.c2s;
+  document.getElementById('dawat-card2-desc').textContent = L.c2d;
+  document.getElementById('dawat-btn-nuksan-label').textContent = L.bn;
+  document.getElementById('dawat-btn-fayde-label').textContent = L.bf;
+
+  // RTL direction for cards
+  ['dawat-card-sathiyon','dawat-card-fayde-nuksan'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.direction = isRTL ? 'rtl' : 'ltr';
+  });
+}
+
+// ── Modal lang switch ─────────────────────────────────────────
+function setDawatModalLang(lang) {
+  dawatActiveLang = lang;
+
+  document.querySelectorAll('.dmlang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+  document.querySelectorAll('.dlang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+
+  // Rebuild modal body in new language
+  const body = buildModalBody(lang, dawatActiveType);
+  document.getElementById('dawat-modal-body').innerHTML = body;
+
+  const isRTL = ['ur','ar','fa','ps','ug'].includes(lang);
+  const modal = document.getElementById('dawat-modal');
+  modal.style.direction = isRTL ? 'rtl' : 'ltr';
+  modal.style.textAlign = isRTL ? 'right' : 'left';
+}
+
+// ── Open modal ────────────────────────────────────────────────
+function openDawatModal(type) {
+  dawatActiveType = type;
+
+  const icons = { sathiyon: '🤝', nuksan: '⚠️', fayde: '✨' };
+  const L = dawatCardLabels[dawatActiveLang] || dawatCardLabels['ur'];
+  const titles = {
+    sathiyon: L.c1t,
+    nuksan: L.bn.replace(/^[^a-zA-Z\u0600-\u06FF\u0900-\u097F]+/, '').trim() || 'Harms of Leaving Dawat',
+    fayde: L.bf.replace(/^[^a-zA-Z\u0600-\u06FF\u0900-\u097F]+/, '').trim() || 'Benefits of Dawat'
+  };
+
+  document.getElementById('dawat-modal-icon').textContent = icons[type];
+  document.getElementById('dawat-modal-title').textContent = titles[type];
+  document.getElementById('dawat-modal-body').innerHTML = buildModalBody(dawatActiveLang, type);
+
+  // Sync modal lang buttons
+  document.querySelectorAll('.dmlang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === dawatActiveLang);
+  });
+
+  const isRTL = ['ur','ar','fa','ps','ug'].includes(dawatActiveLang);
+  const modal = document.getElementById('dawat-modal');
+  modal.style.direction = isRTL ? 'rtl' : 'ltr';
+  modal.style.textAlign = isRTL ? 'right' : 'left';
+
+  document.getElementById('dawat-modal-overlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDawatModal(event, force = false) {
+  if (force || (event && event.target === document.getElementById('dawat-modal-overlay'))) {
+    document.getElementById('dawat-modal-overlay').classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+}
+
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeDawatModal(null, true);
+  }
+});
