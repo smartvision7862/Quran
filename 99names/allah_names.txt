@@ -1,0 +1,696 @@
+{
+	"AllNames": [{
+			"urdu": "اَلرَّحْمٰنُ",
+			"english": "AR-AHMAN",
+			"urduMeaning": " بے حد رحم کرنے والا ",
+			"englishMeaning": "The Beneficent",
+			"englishExplanation": "He who wills goodness and mercy for all His creatures"
+		},
+		{
+			"urdu": "اَلرَّحِیْمُ",
+			"english": "AR-RAHIM",
+			"urduMeaning": "انتہائی مہربانی والا",
+			"englishMeaning": "The Merciful",
+			"englishExplanation": "He who acts with extreme kindness"
+		},
+		{
+			"urdu": "اَلْمَلِکُ",
+			"english": "AL-MALIK",
+			"urduMeaning": "بادشاہ حقیقی",
+			"englishMeaning": "The Eternal Lord",
+			"englishExplanation": "The Sovereign Lord The One with the complete Dominion the One Whose Dominion is clear from imperfection"
+		},
+		{
+			"urdu": "اَلْقُدُّوْسُ",
+			"english": "AL-QUDDUS",
+			"urduMeaning": "نہایت پاک",
+			"englishMeaning": "The Most Sacred",
+			"englishExplanation": "The One who is pure from any imperfection and clear from children and adversaries"
+		},
+		{
+			"urdu": "اَلسَّلَامُ",
+			"english": "AS-SALAM",
+			"urduMeaning": "ہر عیب سے سالم",
+			"englishMeaning": "The Embodiment of Peace",
+			"englishExplanation": "The One who is free from every imperfection."
+		},
+		{
+			"urdu": "اَلْمُؤْمِنُ",
+			"english": "AL-MU'MIN",
+			"urduMeaning": "امن دینے والا",
+			"englishMeaning": "The Infuser of Faith",
+			"englishExplanation": "The One who witnessed for Himself that no one is God but Him. And He witnessed for His believers that they are truthful in their belief that no one is God but Him"
+		},
+		{
+			"urdu": "اَلْمُھَیْمِنُ",
+			"english": "AL-MUHAYMIN",
+			"urduMeaning": "ہر چیز کاکمال قدرت کے ساتھ محافظ",
+			"englishMeaning": "The Preserver of Safety",
+			"englishExplanation": "The One who witnesses the saying and deeds of His creatures"
+		},
+		{
+			"urdu": "اَلْعَزِیْزُ",
+			"english": "AL-A'ZIZ",
+			"urduMeaning": "بڑی عزت وقوت کا مالک",
+			"englishMeaning": "The Mighty One",
+			"englishExplanation": "The Strong The Defeater who is not defeated"
+		},
+		{
+			"urdu": "اَلْجَبَّارُ",
+			"english": "AL-JABBAR",
+			"urduMeaning": " بڑا زبردست",
+			"englishMeaning": "The Omnipotent One",
+			"englishExplanation": "The One that nothing happens in His Dominion except that which He willed"
+		},
+		{
+			"urdu": "اَلْمُتَکَبِّرُ",
+			"english": "AL-MUTAKABBIR",
+			"urduMeaning": "بہت بزرگ تر",
+			"englishMeaning": "The Dominant One",
+			"englishExplanation": "The One who is clear from the attributes of the creatures and from resembling them."
+		},
+		{
+			"urdu": "اَلْخَالِقُ",
+			"english": "AL-KHALIQ",
+			"urduMeaning": "پیدا کرنے والا",
+			"englishMeaning": "The Creator",
+			"englishExplanation": "The One who brings everything from non-existence to existence"
+		},
+		{
+			"urdu": "اَلْبَارِیُٔ",
+			"english": "AL-BARI",
+			"urduMeaning": "ایسا خالق جس کی خلقت میں کوئی نقص نہ ہو",
+			"englishMeaning": "The Evolver",
+			"englishExplanation": "The Maker The Creator who has the Power to turn the entities."
+		},
+		{
+			"urdu": "اَلْمُصَوِّرُ",
+			"english": "AL-MUSAWWIR",
+			"urduMeaning": " ایسی ذات جو مخلوق کی صورتیں بناتا ہو",
+			"englishMeaning": "The Flawless Shaper",
+			"englishExplanation": "The One who forms His creatures in different pictures."
+		},
+		{
+			"urdu": "اَلْغَفَّارُ",
+			"english": "AL-GHAFFAR",
+			"urduMeaning": "بہت زیادہ ڈھانکنے والا",
+			"englishMeaning": "The Great Forgiver",
+			"englishExplanation": "The Forgiver The One who forgives the sins of His slaves time and time again."
+		},
+		{
+			"urdu": "اَلْقَھَّارُ",
+			"english": "AL-QAHHAR",
+			"urduMeaning": "بڑا غالب اور صاحب قدر",
+			"englishMeaning": "The All-Prevailing One",
+			"englishExplanation": "The Dominant The One who has the perfect Power and is not unable over anything."
+		},
+		{
+			"urdu": "اَلْوَھَابُ",
+			"english": "AL-WAHAB",
+			"urduMeaning": " ہبہ کرنے والا،بخشش کرنے والا",
+			"englishMeaning": "The Supreme Bestower",
+			"englishExplanation": "The One who is Generous in giving plenty without any return. He is everything that benefits whether Halal or Haram."
+		},
+		{
+			"urdu": "اَلرَّزَّاقُ",
+			"english": "AR-RAZZAQ",
+			"urduMeaning": "روزی دینے والا",
+			"englishMeaning": "The Total Provider",
+			"englishExplanation": "The Sustainer The Provider."
+		},
+		{
+			"urdu": "اَلْفَتَّاحُ",
+			"english": "AL-FATAH",
+			"urduMeaning": " کھولنے والا",
+			"englishMeaning": "The Supreme Solver",
+			"englishExplanation": "The Opener The Reliever The Judge The One who opens for His slaves the closed worldly and religious matters."
+		},
+		{
+			"urdu": "اَلْعَلِیْمُ",
+			"english": "AL-A'LIM",
+			"urduMeaning": "جاننے والا",
+			"englishMeaning": "The All-Knowing One",
+			"englishExplanation": "The Knowledgeable; The One nothing is absent from His knowledge"
+		},
+		{
+			"urdu": "اَلْقَابِضُ",
+			"english": "AL-QABID",
+			"urduMeaning": " بند کرنے والا",
+			"englishMeaning": "The Restricting One",
+			"englishExplanation": "The Constrictor The Withholder The One who constricts the sustenance by His wisdom and expands and widens it with His Generosity and Mercy."
+		},
+		{
+			"urdu": "اَلْبَاسِطُ",
+			"english": "AL-BASIT",
+			"urduMeaning": "کھولنے والا،فراخ کرنے والا",
+			"englishMeaning": "The Extender",
+			"englishExplanation": "The Englarger The One who constricts the sustenance by His wisdom and expands and widens it with His Generosity and Mercy."
+		},
+		{
+			"urdu": "اَلْخَافِضُ",
+			"english": "AL-KHAFID",
+			"urduMeaning": " نیچے کرنے والا",
+			"englishMeaning": "The Reducer",
+			"englishExplanation": "The Abaser The One who lowers whoever He willed by His Destruction and raises whoever He willed by His Endowment."
+		},
+		{
+			"urdu": "اَلرَّافِعُ",
+			"english": "AL-RAFI'",
+			"urduMeaning": " اونچا کرنے والا",
+			"englishMeaning": "The Elevating One",
+			"englishExplanation": "The Exalter The Elevator The One who lowers whoever He willed by His Destruction and raises whoever He willed by His Endowment."
+		},
+		{
+			"urdu": "اَلْمُعِزُّ",
+			"english": "AL-MU'IZZ",
+			"urduMeaning": "عزت دینے والا",
+			"englishMeaning": "The Honourer-Bestower",
+			"englishExplanation": "He gives esteem to whoever He willed hence there is no one to degrade Him; And He degrades whoever He willed hence there is no one to give Him esteem."
+		},
+		{
+			"urdu": "اَلْمُذِلُّ",
+			"english": "AL-MUZILL",
+			"urduMeaning": " ذلیل کرنے والا",
+			"englishMeaning": "The Abaser",
+			"englishExplanation": "The Dishonourer The Humiliator He gives esteem to whoever He willed hence there is no one to degrade Him; And He degrades whoever He willed hence there is no one to give Him esteem."
+		},
+		{
+			"urdu": "اَلسَّمِیْعُ",
+			"english": "AS-SAMI",
+			"urduMeaning": "سننے والا",
+			"englishMeaning": "The All-Hearer",
+			"englishExplanation": "The Hearer The One who Hears all things that are heard by His Eternal Hearing without an ear instrument or organ."
+		},
+		{
+			"urdu": "اَلْبَصِیْرُ",
+			"english": "AL-BASIR",
+			"urduMeaning": " دیکھنے والا",
+			"englishMeaning": "The All-Seeing",
+			"englishExplanation": "The All-Noticing The One who Sees all things that are seen by His Eternal Seeing without a pupil or any other instrument."
+		},
+		{
+			"urdu": "اَلْحَکَمُ",
+			"english": "AL-HAKAM",
+			"urduMeaning": " حکم(فیصلہ) کرنے والا",
+			"englishMeaning": "The Impartial Judge",
+			"englishExplanation": "The Judge He is the Ruler and His judgment is His Word."
+		},
+		{
+			"urdu": "اَلْعَدْلُ",
+			"english": "AL-ADL",
+			"urduMeaning": " انصاف کرنے والا",
+			"englishMeaning": "The Embodiment of Justice",
+			"englishExplanation": "The Just The One who is entitled to do what He does."
+		},
+		{
+			"urdu": "اَللَّطِیْفُ",
+			"english": "AL-LATIF",
+			"urduMeaning": " مہربان،باریک بین، پوشیدہ امور سے واقف",
+			"englishMeaning": "The Knower of Subtleties",
+			"englishExplanation": "The Subtle One The Gracious The One who is kind to His slaves and endows upon them."
+		},
+		{
+			"urdu": "اَلْخَبِیْرُ ",
+			"english": "AL-KHABIR",
+			"urduMeaning": "ہر چیز سے باخبر",
+			"englishMeaning": "The All-Aware One",
+			"englishExplanation": "The One who knows the truth of things."
+		},
+		{
+			"urdu": "اَلْحَلِیْمُ",
+			"english": "AL-HALIM",
+			"urduMeaning": " بردبار",
+			"englishMeaning": "The Clement One",
+			"englishExplanation": "The Forebearing The One who delays the punishment for those who deserve it and then He might forgive them."
+		},
+		{
+			"urdu": "اَلعَظِیْمُ",
+			"english": "AL-A'ZIM",
+			"urduMeaning": " بہت بڑا",
+			"englishMeaning": "The Magnificent One",
+			"englishExplanation": "The Great One The Mighty The One deserving the attributes of Exaltment Glory Extolement and Purity from all imperfection."
+		},
+		{
+			"urdu": "اَلْغَفُوْرُ",
+			"english": "AL-GHAFUR",
+			"urduMeaning": " بہت بخشنے والا",
+			"englishMeaning": "The Great Forgiver",
+			"englishExplanation": "The All-Forgiving The Forgiving The One who forgives a lot."
+		},
+		{
+			"urdu": "اَلشَّکُوْرُ",
+			"english": "ASH-SHAKUR",
+			"urduMeaning": " بہت بڑا قدر دان",
+			"englishMeaning": "The Acknowledging One",
+			"englishExplanation": "The Grateful The Appreciative The One who gives a lot of reward for a little obedience."
+		},
+		{
+			"urdu": "اَلْعَلِیُّ",
+			"english": "AL-A'LI",
+			"urduMeaning": "بہت بلند مرتبے والا",
+			"englishMeaning": "The Sublime One",
+			"englishExplanation": "The Most High The One who is clear from the attributes of the creatures."
+		},
+		{
+			"urdu": "اَلْکَبِیْرُ",
+			"english": "AL-KABIR",
+			"urduMeaning": "بہت بڑا",
+			"englishMeaning": "The Great One",
+			"englishExplanation": "The Most Great The Great The One who is greater than everything in status."
+		},
+		{
+			"urdu": "اَلْحَفِیْظُ",
+			"english": "AL-HAFIZ",
+			"urduMeaning": "بہت نگہداشت کرنے والا",
+			"englishMeaning": "The Guarding One",
+			"englishExplanation": "The Preserver The Protector The One who protects whatever and whoever He willed to protect."
+		},
+		{
+			"urdu": "اَلْمُقِیْتُ",
+			"english": "AL-MUQIT",
+			"urduMeaning": "رزق دینے والا",
+			"englishMeaning": "The Sustaining One",
+			"englishExplanation": "The Maintainer The Guardian The Feeder The One who has the Power."
+		},
+		{
+			"urdu": "اَلْحَسِیْبُ",
+			"english": "AL-HASIB",
+			"urduMeaning": "حساب کرنے والا",
+			"englishMeaning": "The Reckoning One",
+			"englishExplanation": "The Reckoner The One who gives the satisfaction."
+		},
+		{
+			"urdu": "اَلْجَلِیْلُ",
+			"english": "AL-JALIL",
+			"urduMeaning": "بہت قدر والا",
+			"englishMeaning": "The Majestic One",
+			"englishExplanation": "The Sublime One The Beneficent The One who is attributed with greatness of Power and Glory of status."
+		},
+		{
+			"urdu": "اَلْکَرِیْمُ",
+			"english": "AL-KARIM",
+			"urduMeaning": "بلا حساب دینے والا",
+			"englishMeaning": "The Bountiful One",
+			"englishExplanation": "The Generous One The Gracious The One who is attributed with greatness of Power and Glory of status."
+		},
+		{
+			"urdu": "اَلرَّقِیْبُ",
+			"english": "AR-RAQIB",
+			"urduMeaning": " بہت زیادہ حفاظت کرنے والا",
+			"englishMeaning": "The Watchful One",
+			"englishExplanation": "The Watcher The One that nothing is absent from Him. Hence it’s meaning is related to the attribute of Knowledge."
+		},
+		{
+			"urdu": "اَلْمُجِیْبُ",
+			"english": "AL-MUJIB",
+			"urduMeaning": " قبول کرنے والا، جواب دینے والا",
+			"englishMeaning": "The Responding One",
+			"englishExplanation": "The Responsive The Hearkener The One who answers the one in need if he asks Him and rescues the yearner if he calls upon Him."
+		},
+		{
+			"urdu": "اَلْوَاسِعُ",
+			"english": "AL-WAASI'U",
+			"urduMeaning": "بہت زیادہ فراخ",
+			"englishMeaning": "The All-Pervading One",
+			"englishExplanation": "The Vast The All-Embracing The Knowledgeable."
+		},
+		{
+			"urdu": "اَلْحَکِیْمُ",
+			"english": "AL-HAKIM",
+			"urduMeaning": "حکمت والا،استحکام والا",
+			"englishMeaning": "The Wise One",
+			"englishExplanation": "The Wise The Judge of Judges The One who is correct in His doings."
+		},
+		{
+			"urdu": "اَلْوَدُوْدُ",
+			"english": "AL-WADUD",
+			"urduMeaning": " محبت والا",
+			"englishMeaning": "The Loving One",
+			"englishExplanation": "The One who loves His believing slaves and His believing slaves love Him. His love to His slaves is His Will to be merciful to them and praise them"
+		},
+		{
+			"urdu": "اَلْمَجِیْدُ",
+			"english": "AL-MAJEED",
+			"urduMeaning": " انتہا درجہ باعظمت",
+			"englishMeaning": "The Glorious One",
+			"englishExplanation": "The Most Glorious One The One who is with perfect Power High Status Compassion Generosity and Kindness."
+		},
+		{
+			"urdu": "اَلْبَاعِثُ",
+			"english": "AL-BAITH",
+			"urduMeaning": " بھیجنے والا",
+			"englishMeaning": "The Infuser of New Life",
+			"englishExplanation": "The Resurrector The Raiser (from death) The One who resurrects His slaves after death for reward and/or punishment."
+		},
+		{
+			"urdu": "اَلشَّھِیْدُ",
+			"english": "ASH-SHAHEED",
+			"urduMeaning": "شاہد",
+			"englishMeaning": "The All Observing Witness",
+			"englishExplanation": "The Witness The One who nothing is absent from Him."
+		},
+		{
+			"urdu": "اَلْحَقُّ",
+			"english": "AL-HAQQ",
+			"urduMeaning": " بذات خود ثابت",
+			"englishMeaning": "The Embodiment of Truth",
+			"englishExplanation": "The Truth The True The One who truly exists."
+		},
+		{
+			"urdu": "اَلْوَکِیْلُ",
+			"english": "AL-WAKEEL",
+			"urduMeaning": " کارساز",
+			"englishMeaning": "The Universal Trustee",
+			"englishExplanation": "The Trustee The One who gives the satisfaction and is relied upon."
+		},
+		{
+			"urdu": "اَلْقَوِیُّ",
+			"english": "AL-QAWI",
+			"urduMeaning": " بڑی قوت والا",
+			"englishMeaning": "The Strong One",
+			"englishExplanation": "The Most Strong The Strong The One with the complete Power"
+		},
+		{
+			"urdu": "اَلْمَتِیْنُ",
+			"english": "AL-MATIN",
+			"urduMeaning": "شدت قوت کا مالک ",
+			"englishMeaning": "The Firm One",
+			"englishExplanation": "The One with extreme Power which is un-interrupted and He does not get tired."
+		},
+		{
+			"urdu": "اَلْوَلِیُّ",
+			"english": "AL-WALI",
+			"urduMeaning": "دوست،محب،مددگار",
+			"englishMeaning": "The Protecting Associate",
+			"englishExplanation": "The Protecting Friend The Supporter."
+		},
+		{
+			"urdu": "اَلْحَمِیْدُ",
+			"english": "AL-HAMID",
+			"urduMeaning": "ہر حمد کا مستحق",
+			"englishMeaning": "The Sole-Laudable One",
+			"englishExplanation": "The Praiseworthy The praised One who deserves to be praised."
+		},
+		{
+			"urdu": "اَلْمُحْصِیْ",
+			"english": "AL-MUHSI",
+			"urduMeaning": "ہر چیز کو اپنے علم میں گھیرنے والا",
+			"englishMeaning": "The All-Enumerating One",
+			"englishExplanation": "The Counter The Reckoner The One who the count of things are known to him."
+		},
+		{
+			"urdu": "اَلْمُبْدِیُٔ",
+			"english": "AL-MUBDI",
+			"urduMeaning": "پہلی بار پیدا کرنے والا",
+			"englishMeaning": "The Originator",
+			"englishExplanation": "The One who started the human being. That is He created him."
+		},
+		{
+			"urdu": "اَلْمُعِیْدُ",
+			"english": "AL-MU'ID",
+			"urduMeaning": "فناکے بعد اٹھانے والا",
+			"englishMeaning": "The Restorer",
+			"englishExplanation": "The Reproducer The One who brings back the creatures after death"
+		},
+		{
+			"urdu": "اَلْمُحْیِیُ",
+			"english": "AL-MUHYI",
+			"urduMeaning": "ہر چیزکو زندہ کرنے والا",
+			"englishMeaning": "The Maintainer of life",
+			"englishExplanation": "The Restorer The Giver of Life The One who took out a living human from semen that does not have a soul. He gives life by giving the souls back to the worn out bodies on the resurrection day and He makes the hearts alive by the light of knowledge."
+		},
+		{
+			"urdu": "اَلْمُمِیْتُ",
+			"english": "AL-MUMIT",
+			"urduMeaning": "ہر زندہ کو مارنے والا",
+			"englishMeaning": "The Inflictor of Death",
+			"englishExplanation": "The Creator of Death The Destroyer The One who renders the living dead."
+		},
+		{
+			"urdu": "اَلْحَیُّ",
+			"english": "AL-HAYY",
+			"urduMeaning": "کامل حیات والا",
+			"englishMeaning": "The Eternally Living One",
+			"englishExplanation": "The Alive The One attributed with a life that is unlike our life and is not that of a combination of soul flesh or blood."
+		},
+		{
+			"urdu": "اَلْقَیُّوْمُ",
+			"english": "AL-QAYYUM",
+			"urduMeaning": " وہ ذات جو خود قائم ہو اور قائم رکھنے والی ہو",
+			"englishMeaning": "The Self-Subsisting One",
+			"englishExplanation": "The One who remains and does not end."
+		},
+		{
+			"urdu": "اَلْوَاجِدُ",
+			"english": "AL-WAJID",
+			"urduMeaning": "سب کچھ اپنے پاس رکھنے والا",
+			"englishMeaning": "The Pointing One",
+			"englishExplanation": "The Perceiver The Finder The Rich who is never poor. Al-Wajd is Richness."
+		},
+		{
+			"urdu": "اَلْمَاجِدُ",
+			"english": "AL-MAJID",
+			"urduMeaning": " انتہا درجہ کی عظمت اور شرف والا",
+			"englishMeaning": "The All-Noble One",
+			"englishExplanation": "The Glorious He who is Most Glorious."
+		},
+		{
+			"urdu": "اَلْوَاحِدُ",
+			"english": "AL-WAHID",
+			"urduMeaning": "وحدت، یگانگی والا",
+			"englishMeaning": "The Only One",
+			"englishExplanation": "The Unique The One The One without a partner"
+		},
+		{
+			"urdu": "اَلْاَحَدُ",
+			"english": "AL-AHAD",
+			"urduMeaning": "اکیلا",
+			"englishMeaning": "The Sole One",
+			"englishExplanation": "The One"
+		},
+		{
+			"urdu": "اَلصَّمَدُ",
+			"english": "AS-SAMAD",
+			"urduMeaning": " بے پرواہ",
+			"englishMeaning": "The Supreme Provider",
+			"englishExplanation": "The Eternal The Independent The Master who is relied upon in matters and reverted to in ones needs."
+		},
+		{
+			"urdu": "اَلْقَادِرُ",
+			"english": "AL-QADIR",
+			"urduMeaning": "قدرت والا،کامل قدرت والا",
+			"englishMeaning": "The Omnipotent One",
+			"englishExplanation": "The Able The Capable The One attributed with Power."
+		},
+		{
+			"urdu": "اَلْمَقْتَدِرُ",
+			"english": "AL-MUQTADIR",
+			"urduMeaning": " زیادہ قدرت والا",
+			"englishMeaning": "The All Authoritative One",
+			"englishExplanation": "The Powerful The Dominant The One with the perfect Power that nothing is withheld from Him."
+		},
+		{
+			"urdu": "اَلْمُقَدِّمُ",
+			"english": "AL-MUQADDIM",
+			"urduMeaning": "آگے کرنے والا،قریب کرنے والا",
+			"englishMeaning": "The Expediting One",
+			"englishExplanation": "The Expediter The Promoter The One who puts things in their right places. He makes ahead what He wills and delays what He wills."
+		},
+		{
+			"urdu": "اَلْمُؤَخِّرُ",
+			"english": "AL-MUAKHKHIR",
+			"urduMeaning": " پیچھے کرنے والا،دور کرنے والا",
+			"englishMeaning": "The Procrastinator",
+			"englishExplanation": "The Delayer the Retarder The One who puts things in their right places. He makes ahead what He wills and delays what He wills."
+		},
+		{
+			"urdu": "اَلْاَوَّلُ",
+			"english": "AL-AWWAL",
+			"urduMeaning": " سب سے پہلے",
+			"englishMeaning": "The Very First",
+			"englishExplanation": "The First The One whose Existence is without a beginning."
+		},
+		{
+			"urdu": "اَلْاٰخِرُ",
+			"english": "AL-AKHIR",
+			"urduMeaning": "سب سے پچھلا",
+			"englishMeaning": "The Infinite Last One",
+			"englishExplanation": "The Last The One whose Existence is without an end."
+		},
+		{
+			"urdu": "اَلظَّاھِرُ",
+			"english": "AZ-ZAHIR",
+			"urduMeaning": " ظاہر",
+			"englishMeaning": "The Perceptible",
+			"englishExplanation": "The Manifest The One that nothing is above Him and nothing is underneath Him hence He exists without a place. He The Exalted His Existence is obvious by proofs and He is clear from the delusions of attributes of bodies."
+		},
+		{
+			"urdu": "اَلْبَاطِنُ",
+			"english": "AL-BATIN",
+			"urduMeaning": " پوشیدہ",
+			"englishMeaning": "The Imperceptible",
+			"englishExplanation": "The Hidden The One that nothing is above Him and nothing is underneath Him hence He exists without a place. He The Exalted His Existence is obvious by proofs and He is clear from the delusions of attributes of bodies."
+		},
+		{
+			"urdu": "اَلْوَالِیْ",
+			"english": "AL-WALI",
+			"urduMeaning": " کارساز و مالک",
+			"englishMeaning": "The Holder of Supreme Authority",
+			"englishExplanation": "The Governor The One who owns things and manages them."
+		},
+		{
+			"urdu": "اَلْمُتَعَالْ",
+			"english": "AL-MUTA'ALI",
+			"urduMeaning": " بہت عالی مرتبت،مخلوق کی صفات سے منزہ اورپاک",
+			"englishMeaning": "The Extremely Exalted One",
+			"englishExplanation": "The Most Exalted The High Exalted The One who is clear from the attributes of the creation."
+		},
+		{
+			"urdu": "اَلْبَرُّ",
+			"english": "AL-BARR",
+			"urduMeaning": " اپنے لطف سے بندوں کے ساتھ نیکی کرنے والا",
+			"englishMeaning": "The Fountain-Head of Truth",
+			"englishExplanation": "The Source of All Goodness The Righteous The One who is kind to His creatures who covered them with His sustenance and specified whoever He willed among them by His support protection and special mercy."
+		},
+		{
+			"urdu": "اَلتَّوَّابُ",
+			"english": "AT-TAWWAB",
+			"urduMeaning": "باربار توبہ قبول کرنے والا",
+			"englishMeaning": "The Ever-Acceptor of Repentance",
+			"englishExplanation": "The Relenting The One who grants repentance to whoever He willed among His creatures and accepts his repentance."
+		},
+		{
+			"urdu": "اَلْمُنَتَقِمُ",
+			"english": "AL-MUNTAQIM",
+			"urduMeaning": "نافرمانوں کوسزا دینے والا",
+			"englishMeaning": "The Retaliator",
+			"englishExplanation": "The Avenger The One who victoriously prevails over His enemies and punishes them for their sins. It may mean the One who destroys them."
+		},
+		{
+			"urdu": "اَلْعَفُوُّ",
+			"english": "AL-A'FUW",
+			"urduMeaning": " درگزر کرنے والا",
+			"englishMeaning": "The Supreme Pardoner",
+			"englishExplanation": "The Forgiver The One with wide forgiveness."
+		},
+		{
+			"urdu": "اَلرَّو ُٔفُ",
+			"english": "AR-RA'UF",
+			"urduMeaning": "مہربان،بہت شفقت والا",
+			"englishMeaning": "The Benign One",
+			"englishExplanation": "The Compassionate The One with extreme Mercy. The Mercy of Allah is His will to endow upon whoever He willed among His creatures."
+		},
+		{
+			"urdu": "مَالِکُ الْمُلْکِ",
+			"english": "MALIK-UL-MULK",
+			"urduMeaning": "سارے جہاں کا بادشاہ",
+			"englishMeaning": "The Eternal Possessor of Sovereignty",
+			"englishExplanation": "The One who controls the Dominion and gives dominion to whoever He willed."
+		},
+		{
+			"urdu": "ذُوالْجَلَالِ وَالْاِکْرَامِ",
+			"english": "DHUL-JALALI-WAL-IKRANM",
+			"urduMeaning": "بزرگی اور بخشش والا",
+			"englishMeaning": "The Possessor of Majesty and Honour",
+			"englishExplanation": "The Lord of Majesty and Bounty The One who deserves to be Exalted and not denied."
+		},
+		{
+			"urdu": "اَلْمُقْسِطُ",
+			"english": "AL-MUQSIT",
+			"urduMeaning": "عدل کرنے والا",
+			"englishMeaning": "The Just One",
+			"englishExplanation": "The Equitable The One who is Just in His judgment."
+		},
+		{
+			"urdu": "اَلْجَامِعُ",
+			"english": "AL-JAMII'",
+			"urduMeaning": "تمام مخلوقات کوجمع کرنے والا",
+			"englishMeaning": "The Assembler of Scattered Creations",
+			"englishExplanation": "The Gatherer The One who gathers the creatures on a day that there is no doubt about that is the Day of Judgment."
+		},
+		{
+			"urdu": "اَلْغَنِیُّ",
+			"english": "AL-GHANI",
+			"urduMeaning": "ہر چیز سے بے پرواہ",
+			"englishMeaning": "The Self-Sufficient One",
+			"englishExplanation": "The One who does not need the creation."
+		},
+		{
+			"urdu": "اَلْمُغْنِیْ",
+			"english": "AL-MUGHNI",
+			"urduMeaning": "غنی بنانے والا",
+			"englishMeaning": "The Bestower of Sufficiency",
+			"englishExplanation": "The Enricher The One who satisfies the necessities of the creatures."
+		},
+		{
+			"urdu": "اَلْمَانِعُ",
+			"english": "AL-MANI'",
+			"urduMeaning": "دوستوں کو تکلیف سے روکنے والا",
+			"englishMeaning": "The Preventer",
+			"englishExplanation": "The Withholder."
+		},
+		{
+			"urdu": "اَلضَّارُّ",
+			"english": "AD-DARR",
+			"urduMeaning": "ضرر اور شر کا خالق و دینے والا",
+			"englishMeaning": "The Distressor",
+			"englishExplanation": "The One who makes harm reach to whoever He willed and benefit to whoever He willed."
+		},
+		{
+			"urdu": "اَلنَّافِعُ",
+			"english": "AN-NAFI'",
+			"urduMeaning": "نفع اور خیر کا خالق و دینے والا",
+			"englishMeaning": "The Bestower of Benefits",
+			"englishExplanation": "The Propitious The One who makes harm reach to whoever He willed and benefit to whoever He willed."
+		},
+		{
+			"urdu": "اَلنُّوْرُ",
+			"english": "AN-NUR",
+			"urduMeaning": "روشن کرنے والا",
+			"englishMeaning": "The Prime Light",
+			"englishExplanation": "The Light The One who guides."
+		},
+		{
+			"urdu": "اَلْھَادِیْ",
+			"english": "AL-HADI",
+			"urduMeaning": "ہدایت دینے والا",
+			"englishMeaning": "The Provider of Guidance",
+			"englishExplanation": "The Guide The One whom with His Guidance His believers were guided and with His Guidance the living beings have been guided to what is beneficial for them and protected from what is harmful to them."
+		},
+		{
+			"urdu": "اَلْبَدِیْعُ",
+			"english": "AL-BADII'",
+			"urduMeaning": "عالم کو پیدا کرنے والا",
+			"englishMeaning": "The Unique One",
+			"englishExplanation": "The Incomparable The One who created the creation and formed it without any preceding example."
+		},
+		{
+			"urdu": "اَلْبَاقِیْ",
+			"english": "AL-BAQI",
+			"urduMeaning": "ہمیشہ رہنے والا",
+			"englishMeaning": "The Ever Surviving One",
+			"englishExplanation": "The Everlasting The One that the state of non-existence is impossible for Him."
+		},
+		{
+			"urdu": "اَلْوَارِثُ",
+			"english": "AL-WARITH",
+			"urduMeaning": "موجودات کے فنا ہونے کے بعد باقی رہنے والا",
+			"englishMeaning": "The Eternal Inheritor",
+			"englishExplanation": "The Heir The One whose Existence remains."
+		},
+		{
+			"urdu": "اَ لرَّشِیْدُ",
+			"english": "AR-RASHEED",
+			"urduMeaning": " رشد وہدایت کا مالک",
+			"englishMeaning": "The Guide to Path of Rectitude",
+			"englishExplanation": "The Guide to the Right Path The One who guides."
+		},
+		{
+			"urdu": "اَلصَّبُوْرُ",
+			"english": "AS-SABUR",
+			"urduMeaning": "بڑا صبر کرنے والا",
+			"englishMeaning": "The Extensively Enduring One",
+			"englishExplanation": "The Patient The One who does not quickly punish the sinners."
+		}
+	]
+}
