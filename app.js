@@ -15,7 +15,9 @@ const state = {
   hadithPage: 0,
   hadithLimit: 10,
   hadithTotal: 0,
-  bookmarks: []
+  bookmarks: [],
+  voiceEnabled: true,
+  chatbotKey: ''
 };
 
 // Hadith Books list mapping
@@ -115,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadLessonsGrid();
   loadHadithBooks();
   loadAllahNames();
+  initChatbot();
   
   // Listen for hash changes
   window.addEventListener('hashchange', handleRouting);
@@ -163,16 +166,28 @@ function handleRouting() {
     }
   });
 
-  // Update Topbar Title
+  // Update Topbar Title with i18n
   const titles = {
     '#dashboard': 'Dashboard',
     '#sabaq': 'Learn Quran',
     '#hadith': 'Hadith Library',
     '#names': '99 Names of Allah',
     '#bookmarks': 'My Bookmarks',
+    '#chatbot': 'Talkbot AI',
     '#settings': 'Settings'
   };
-  document.getElementById('pageTitle').textContent = titles[hash] || 'Islam360';
+  const titleKey = {
+    '#dashboard': 'nav.dashboard',
+    '#sabaq': 'nav.sabaq',
+    '#hadith': 'nav.hadith',
+    '#names': 'nav.names',
+    '#bookmarks': 'nav.bookmarks',
+    '#chatbot': 'nav.chatbot',
+    '#settings': 'nav.settings'
+  }[hash] || 'nav.dashboard';
+
+  const translatedTitle = (window.i18n && window.i18n[titleKey] && window.i18n[titleKey][window.currentLang || 'en']) || titles[hash] || 'Quran360 AI';
+  document.getElementById('pageTitle').textContent = translatedTitle;
   state.activeView = hash.substring(1);
 }
 
@@ -211,6 +226,8 @@ function loadSettings() {
   const savedArabicSize = parseInt(localStorage.getItem('arabicFontSize'), 10);
   const savedTranslationSize = parseInt(localStorage.getItem('translationFontSize'), 10);
   const savedHadithLang = parseInt(localStorage.getItem('hadithLang'), 10);
+  const savedApiKey = localStorage.getItem('chatbot_api_key');
+  const savedVoice = localStorage.getItem('voice_enabled');
 
   if (savedTheme) {
     document.body.className = savedTheme + '-theme';
@@ -239,6 +256,21 @@ function loadSettings() {
     const langSelect = document.getElementById('defaultHadithLang');
     if (langSelect) langSelect.value = savedHadithLang;
   }
+
+  if (savedApiKey) {
+    state.chatbotKey = savedApiKey;
+    const apiKeyInput = document.getElementById('apiKey');
+    if (apiKeyInput) apiKeyInput.value = savedApiKey;
+  }
+
+  if (savedVoice !== null) {
+    state.voiceEnabled = (savedVoice === 'true');
+    const speakToggleBtn = document.getElementById('speakToggleBtn');
+    if (speakToggleBtn) {
+      speakToggleBtn.classList.toggle('active', state.voiceEnabled);
+      speakToggleBtn.textContent = state.voiceEnabled ? "🔊" : "🔇";
+    }
+  }
 }
 
 function saveSettings() {
@@ -246,6 +278,8 @@ function saveSettings() {
   localStorage.setItem('arabicFontSize', state.arabicFontSize.toString());
   localStorage.setItem('translationFontSize', state.translationFontSize.toString());
   localStorage.setItem('hadithLang', state.hadithLang.toString());
+  localStorage.setItem('chatbot_api_key', state.chatbotKey || '');
+  localStorage.setItem('voice_enabled', state.voiceEnabled.toString());
 }
 
 function saveBookmark(item) {
@@ -308,6 +342,7 @@ function setupSettingsListeners() {
   const transRange = document.getElementById('translationFontSize');
   const langSelect = document.getElementById('defaultHadithLang');
   const clearBookmarksBtn = document.getElementById('clearAllBookmarksBtn');
+  const apiKeyInput = document.getElementById('apiKey');
   
   arabicRange.addEventListener('input', (e) => {
     state.arabicFontSize = parseInt(e.target.value);
@@ -334,6 +369,13 @@ function setupSettingsListeners() {
       loadHadiths(state.selectedKitab);
     }
   });
+
+  if (apiKeyInput) {
+    apiKeyInput.addEventListener('input', (e) => {
+      state.chatbotKey = e.target.value;
+      saveSettings();
+    });
+  }
   
   clearBookmarksBtn.addEventListener('click', () => {
     if (confirm("Are you sure you want to delete all bookmarks?")) {
@@ -1057,21 +1099,40 @@ async function loadAllahNames() {
       card.innerHTML = `
         <div class="name-card-inner">
           <div class="name-front">
-            <span class="name-front-num" style="font-size: 11px; color: var(--text-muted)">${idx + 1}</span>
+            <span class="name-front-num" style="font-size: 11px; color: var(--text-muted); position: absolute; top: 12px; left: 12px;">${idx + 1}</span>
+            <span class="play-icon" style="position: absolute; top: 12px; right: 12px; font-size: 12px; opacity: 0.6;">🔊</span>
             <div class="arabic">${n.urdu}</div>
             <div class="translit">${n.english}</div>
           </div>
           <div class="name-back">
+            <span class="play-icon" style="position: absolute; top: 12px; right: 12px; font-size: 12px; opacity: 0.6;">🔊</span>
             <div class="meaning">${n.englishMeaning}</div>
             <div class="meaning-ur" dir="rtl">${n.urduMeaning}</div>
           </div>
         </div>
       `;
+      card.addEventListener('click', () => {
+        playNameAudio(n.urdu);
+      });
       container.appendChild(card);
     });
   } catch (err) {
     container.innerHTML = '<p class="empty-state">Failed to load names: ' + err.message + '</p>';
   }
+}
+
+function playNameAudio(arabicText) {
+  if (!arabicText) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(arabicText.trim());
+  utterance.lang = 'ar-SA';
+  utterance.rate = 0.75;
+  if (window.speechSynthesis.getVoices) {
+    const voices = window.speechSynthesis.getVoices();
+    const arVoice = voices.find(v => v.lang.startsWith('ar'));
+    if (arVoice) utterance.voice = arVoice;
+  }
+  window.speechSynthesis.speak(utterance);
 }
 
 // Helper: Escape HTML
@@ -1130,3 +1191,439 @@ function getMockData(dbFile, sql, args) {
   
   return [];
 }
+
+// --------------------------------------------------------------------------
+// TALKBOT AI CHATBOT LOGIC & OFFLINE INTELLIGENCE ENGINE
+// --------------------------------------------------------------------------
+
+const quranFAQ = [
+  {
+    keywords: ["lesson", "sabaq", "learn", "study", "grammar", "translation", "سبق", "گرامر", "ترجمہ", "سیکھیں"],
+    reply: {
+      en: "You can start learning Quran vocabulary and grammar by navigating to the **Learn Quran** section. We currently have Lessons 1 to 22 (A & B) with interactive word tables, explanations, and audio pronunciations.",
+      ur: "آپ **قرآن سیکھیں** سیکشن میں جا کر قرآنی الفاظ اور گرامر سیکھنا شروع کر سکتے ہیں۔ ہمارے پاس فی الحال اسباق 1 سے 22 (A اور B) ہیں جن میں الفاظ کے چارٹس، تشریحات اور آڈیو تلفظ شامل ہیں۔",
+      ar: "يمكنك البدء في تعلم مفردات وقواعد القرآن بالانتقال إلى قسم **تعلم القرآن**. لدينا حاليًا الدروس من ١ إلى ٢٢ (أ وب) مع جداول الكلمات التفاعلية والشروح والنطق الصوتي.",
+      tr: "Kur'an kelime dağarcığını ve dilbilgisini öğrenmeye **Kuran Öğren** bölümüne giderek başlayabilirsiniz. Şu anda etkileşimli kelime tabloları, açıklamalar ve sesli telaffuzlar içeren 1 ila 22 (A ve B) Derslerimiz bulunmaktadır.",
+      id: "Anda dapat mulai mempelajari kosa kata dan tata bahasa Al-Quran dengan membuka bagian **Belajar Al-Quran**. Saat ini kami memiliki Pelajaran 1 hingga 22 (A & B) dengan tabel kata interaktif, penjelasan, dan pengucapan audio.",
+      fr: "Vous pouvez commencer à apprendre le vocabulaire et la grammaire du Coran en accédant à la section **Apprendre le Coran**. Nous avons actuellement les leçons 1 à 22 (A & B) avec des tableaux de mots interactifs, des explications et des prononciations audio."
+    }
+  },
+  {
+    keywords: ["hadith", "bukhari", "muslim", "hadiths", "prophet", "حديث", "احادیث", "بخاری", "مسلم"],
+    reply: {
+      en: "Explore our offline **Hadith Library** which includes 9 core Hadith compilations (Sahih al-Bukhari, Sahih Muslim, Sunan Abi Dawud, etc.). You can search by keywords or hadith numbers in Urdu or English.",
+      ur: "ہماری آف لائن **حدیث لائبریری** کو دریافت کریں جس میں حدیث کی 9 بنیادی کتابیں (صحیح البخاری، صحیح مسلم، سنن ابی داؤد، وغیرہ) شامل ہیں۔ آپ اردو یا انگریزی میں الفاظ یا حدیث نمبر کے ذریعے تلاش کر سکتے ہیں۔",
+      ar: "استكشف **مكتبة الحديث** غير المتصلة بالإنترنت والتي تضم ٩ تجميعات حديث رئيسية (صحيح البخاري، صحيح مسلم، سنن أبي داود، إلخ). يمكنك البحث بالكلمات المفتاحية أو أرقام الحديث باللغتين الأردية أو الإنجليزية.",
+      tr: "9 temel Hadis derlemesini (Sahih-i Buhari, Sahih-i Müslim, Sünen-i Ebi Davud vb.) içeren çevrimdışı **Hadis Kütüphanemizi** keşfedin. Urduca veya İngilizce anahtar kelimelere veya hadis numaralarına göre arama yapabilirsiniz.",
+      id: "Jelajahi **Perpustakaan Hadits** luring kami yang mencakup 9 kompilasi Hadits inti (Shahih Bukhari, Shahih Muslim, Sunan Abu Dawud, dll.). Anda dapat mencari berdasarkan kata kunci atau nomor hadits dalam bahasa Urdu atau Inggris.",
+      fr: "Explorez notre **Bibliothèque de Hadiths** hors ligne qui comprend 9 compilations de Hadiths principales (Sahih al-Bukhari, Sahih Muslim, Sunan Abi Dawud, etc.). Vous pouvez rechercher par mots-clés ou numéros de hadiths en ourdou ou en anglais."
+    }
+  },
+  {
+    keywords: ["99 names", "allah names", "asma", "names", "اللہ", "نام", "اسم", "حسنی"],
+    reply: {
+      en: "The **99 Names of Allah** section displays all the beautiful names of Allah. Tap any name card to view its translation, transliteration, and spiritual explanation.",
+      ur: "**99 اسمائے حسنیٰ** کا سیکشن اللہ کے تمام خوبصورت ناموں کو ظاہر کرتا ہے۔ کسی بھی نام کے کارڈ پر ٹیپ کر کے اس کا ترجمہ، تلفظ اور روحانی وضاحت دیکھیں۔",
+      ar: "يعرض قسم **أسماء الله الحسنى ٩٩** جميع أسماء الله الجميلة. اضغط على أي بطاقة اسم لعرض ترجمتها وكتابتها الصوتية وشرحها الروحي.",
+      tr: "**Allah'ın 99 İsmi** bölümü, Allah'ın tüm güzel isimlerini görüntüler. Çevirisini, harf çevirisini ve manevi açıklamasını görmek için herhangi bir isim kartına dokunun.",
+      id: "Bagian **99 Nama Allah** menampilkan semua nama Allah yang indah. Ketuk kartu nama apa saja untuk melihat terjemahan, transliterasi, dan penjelasan spiritualnya.",
+      fr: "La section **99 Noms d'Allah** affiche tous les beaux noms d'Allah. Appuyez sur n'importe quel nom pour afficher sa traduction, sa translittération et son explication spirituelle."
+    }
+  },
+  {
+    keywords: ["bookmark", "save", "favorite", "بک مارک", "محفوظ"],
+    reply: {
+      en: "You can bookmark any Hadith by tapping the 'Bookmark' button. All saved Hadiths will be instantly accessible under the **Bookmarks** tab for easy offline reading.",
+      ur: "آپ کسی بھی حدیث کو 'بک مارک' بٹن پر ٹیپ کر کے محفوظ کر سکتے ہیں۔ تمام محفوظ شدہ احادیث کو آف لائن مطالعہ کے لیے **بک مارکس** ٹیب کے تحت دیکھا جا سکتا ہے۔",
+      ar: "يمكنك حفظ أي حديث بالضغط على زر 'إضافة إشارة مرجعية'. ستكون جميع الأحاديث المحفوظة قابلة للوصول الفوري تحت علامة تبويب **الإشارات المرجعية** لقراءة سهلة دون اتصال بالإنترنت.",
+      tr: "Herhangi bir Hadisi 'Yer İmi' butonuna dokunarak yer imlerine ekleyebilirsiniz. Kaydedilen tüm Hadislere, çevrimdışı kolay okuma için **Yer İmleri** sekmesinden anında erişilebilir.",
+      id: "Anda dapat menandai Hadits apa pun dengan mengetuk tombol 'Penanda'. Semua Hadits yang disimpan akan langsung dapat diakses di bawah tab **Penanda Buku** untuk kemudahan membaca secara luring.",
+      fr: "Vous pouvez ajouter un Hadith à vos signets en appuyant sur le bouton 'Signet'. Tous les Hadiths enregistrés seront instantanément accessibles sous l'onglet **Signets** pour une lecture hors ligne facile."
+    }
+  },
+  {
+    keywords: ["hello", "salam", "assalamu", "hey", "hi", "سلام"],
+    reply: {
+      en: "Walaikum Assalam! I am your Quran360 AI Assistant. How can I help you today on your journey of learning the Quran and Hadith?",
+      ur: "وعلیکم السلام! میں آپ کا قرآن 360 اے آئی اسسٹنٹ ہوں۔ قرآن اور حدیث سیکھنے کے سفر میں آج میں آپ کی کیا مدد کر سکتا ہوں؟",
+      ar: "وعليكم السلام! أنا مساعد الذكاء الاصطناعي لـ Quran360. كيف يمكنني مساعدتك اليوم في رحلتك لتعلم القرآن والحديث الشريف؟",
+      tr: "Ve Aleykümselam! Ben Kuran360 Yapay Zeka Asistanınızım. Bugün Kuran ve Hadis öğrenme yolculuğunuzda size nasıl yardımcı olabilirim?",
+      id: "Walaikum Assalam! Saya Asisten AI Quran360 Anda. Bagaimana saya bisa membantu Anda hari ini dalam perjalanan belajar Al-Quran dan Hadits?",
+      fr: "Walaikum Assalam ! Je suis votre assistant IA Quran360. Comment puis-je vous aider aujourd'hui dans votre parcours d'apprentissage du Coran et des Hadiths ?"
+    }
+  }
+];
+
+function initChatbot() {
+  const userInput = document.getElementById("userInput");
+  const sendBtn = document.getElementById("sendBtn");
+  const micBtn = document.getElementById("micBtn");
+  const speakToggleBtn = document.getElementById("speakToggleBtn");
+
+  if (!userInput) return;
+
+  userInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  if (sendBtn) sendBtn.addEventListener("click", sendMessage);
+
+  if (speakToggleBtn) {
+    speakToggleBtn.addEventListener("click", () => {
+      state.voiceEnabled = !state.voiceEnabled;
+      localStorage.setItem("voice_enabled", state.voiceEnabled.toString());
+      speakToggleBtn.classList.toggle("active", state.voiceEnabled);
+      speakToggleBtn.textContent = state.voiceEnabled ? "🔊" : "🔇";
+      if (!state.voiceEnabled) {
+        window.speechSynthesis.cancel();
+        const waveformOverlay = document.getElementById("waveformOverlay");
+        const glowRing = document.getElementById("glowRing");
+        const statusText = document.getElementById("statusText");
+        if (waveformOverlay) waveformOverlay.classList.remove("active");
+        if (glowRing) glowRing.className = "glow-ring idle";
+        if (statusText && window.i18n) statusText.textContent = window.i18n["chat.ready"][window.currentLang || 'en'];
+      }
+    });
+  }
+
+  // Voice recording Recognition (Mic input)
+  if (micBtn) {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      
+      const langCodes = {
+        en: 'en-US',
+        ur: 'ur-PK',
+        ar: 'ar-SA',
+        hi: 'hi-IN',
+        bn: 'bn-IN',
+        pa: 'pa-IN',
+        ta: 'ta-IN',
+        te: 'te-IN',
+        mr: 'mr-IN',
+        gu: 'gu-IN',
+        ml: 'ml-IN',
+        kn: 'kn-IN',
+        tr: 'tr-TR',
+        id: 'id-ID',
+        fr: 'fr-FR',
+        es: 'es-ES',
+        de: 'de-DE',
+        ru: 'ru-RU',
+        fa: 'fa-IR',
+        zh: 'zh-CN',
+        ja: 'ja-JP',
+        pt: 'pt-PT',
+        it: 'it-IT'
+      };
+
+      recognition.onstart = () => {
+        const glowRing = document.getElementById("glowRing");
+        const statusText = document.getElementById("statusText");
+        if (glowRing) glowRing.className = "glow-ring listening";
+        if (statusText && window.i18n) statusText.textContent = window.i18n["chat.listening"][window.currentLang || 'en'];
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        userInput.value = transcript;
+        sendMessage();
+      };
+
+      recognition.onend = () => {
+        const glowRing = document.getElementById("glowRing");
+        const statusText = document.getElementById("statusText");
+        if (glowRing) glowRing.className = "glow-ring idle";
+        if (statusText && window.i18n) statusText.textContent = window.i18n["chat.ready"][window.currentLang || 'en'];
+      };
+
+      recognition.onerror = () => {
+        const glowRing = document.getElementById("glowRing");
+        const statusText = document.getElementById("statusText");
+        if (glowRing) glowRing.className = "glow-ring idle";
+        if (statusText && window.i18n) statusText.textContent = window.i18n["chat.ready"][window.currentLang || 'en'];
+      };
+
+      micBtn.addEventListener("click", () => {
+        recognition.lang = langCodes[window.currentLang || 'en'] || 'en-US';
+        recognition.start();
+      });
+    } else {
+      micBtn.style.display = "none";
+    }
+  }
+}
+
+async function sendMessage() {
+  const userInput = document.getElementById("userInput");
+  if (!userInput) return;
+
+  const text = userInput.value.trim();
+  if (!text) return;
+
+  userInput.value = "";
+  appendChatMessage(text, "user-msg");
+
+  const statusText = document.getElementById("statusText");
+  const glowRing = document.getElementById("glowRing");
+  if (statusText && window.i18n) statusText.textContent = window.i18n["chat.thinking"][window.currentLang || 'en'];
+  if (glowRing) glowRing.className = "glow-ring thinking";
+
+  const loaderId = appendChatLoader();
+
+  try {
+    let reply = "";
+    if (state.chatbotKey && state.chatbotKey.trim() !== "") {
+      reply = await getLLMResponse(text);
+    } else {
+      reply = await getOfflineChatResponse(text);
+    }
+
+    // Dynamic translate the reply into selected language
+    const targetLang = window.currentLang || 'en';
+    if (targetLang !== 'en' && window.translateText) {
+      reply = await window.translateText(reply, targetLang);
+    }
+
+    removeChatLoader(loaderId);
+    appendChatMessage(reply, "bot-msg");
+    speakText(reply);
+
+  } catch (err) {
+    removeChatLoader(loaderId);
+    appendChatMessage("Error: " + err.message, "system-msg");
+  } finally {
+    if (statusText && window.i18n) statusText.textContent = window.i18n["chat.ready"][window.currentLang || 'en'];
+    if (glowRing) glowRing.className = "glow-ring idle";
+  }
+}
+
+function appendChatMessage(text, className) {
+  const container = document.getElementById("chatMessages");
+  if (!container) return;
+
+  const msgDiv = document.createElement("div");
+  msgDiv.className = `message ${className}`;
+  
+  const contentDiv = document.createElement("div");
+  contentDiv.className = "msg-content";
+  contentDiv.innerHTML = text.replace(/\n/g, "<br>");
+  
+  msgDiv.appendChild(contentDiv);
+  container.appendChild(msgDiv);
+  container.scrollTop = container.scrollHeight;
+}
+
+function appendChatLoader() {
+  const container = document.getElementById("chatMessages");
+  if (!container) return null;
+
+  const loaderId = "loader-" + Date.now();
+  const msgDiv = document.createElement("div");
+  msgDiv.className = "message bot-msg typing-loader-msg";
+  msgDiv.id = loaderId;
+  
+  const contentDiv = document.createElement("div");
+  contentDiv.className = "msg-content typing-indicator";
+  contentDiv.innerHTML = `<span></span><span></span><span></span>`;
+  
+  msgDiv.appendChild(contentDiv);
+  container.appendChild(msgDiv);
+  container.scrollTop = container.scrollHeight;
+  
+  return loaderId;
+}
+
+function removeChatLoader(id) {
+  if (!id) return;
+  const loader = document.getElementById(id);
+  if (loader) loader.remove();
+}
+
+function speakText(text) {
+  if (!state.voiceEnabled) return;
+  
+  const cleanText = text.replace(/<[^>]*>/g, '').replace(/\*\*+/g, '');
+  window.speechSynthesis.cancel();
+  
+  const utterance = new SpeechSynthesisUtterance(cleanText);
+  const langCodes = {
+    en: 'en-US',
+    ur: 'ur-PK',
+    ar: 'ar-SA',
+    hi: 'hi-IN',
+    bn: 'bn-IN',
+    pa: 'pa-IN',
+    ta: 'ta-IN',
+    te: 'te-IN',
+    mr: 'mr-IN',
+    gu: 'gu-IN',
+    ml: 'ml-IN',
+    kn: 'kn-IN',
+    tr: 'tr-TR',
+    id: 'id-ID',
+    fr: 'fr-FR',
+    es: 'es-ES',
+    de: 'de-DE',
+    ru: 'ru-RU',
+    fa: 'fa-IR',
+    zh: 'zh-CN',
+    ja: 'ja-JP',
+    pt: 'pt-PT',
+    it: 'it-IT'
+  };
+  utterance.lang = langCodes[window.currentLang || 'en'] || 'en-US';
+  
+  const waveformOverlay = document.getElementById("waveformOverlay");
+  const glowRing = document.getElementById("glowRing");
+  const statusText = document.getElementById("statusText");
+
+  utterance.onstart = () => {
+    if (waveformOverlay) waveformOverlay.classList.add("active");
+    if (glowRing) glowRing.className = "glow-ring speaking";
+    if (statusText && window.i18n) statusText.textContent = window.i18n["chat.speaking"][window.currentLang || 'en'];
+  };
+
+  utterance.onend = () => {
+    if (waveformOverlay) waveformOverlay.classList.remove("active");
+    if (glowRing) glowRing.className = "glow-ring idle";
+    if (statusText && window.i18n) statusText.textContent = window.i18n["chat.ready"][window.currentLang || 'en'];
+  };
+
+  utterance.onerror = () => {
+    if (waveformOverlay) waveformOverlay.classList.remove("active");
+    if (glowRing) glowRing.className = "glow-ring idle";
+    if (statusText && window.i18n) statusText.textContent = window.i18n["chat.ready"][window.currentLang || 'en'];
+  };
+
+  window.speechSynthesis.speak(utterance);
+}
+
+async function getOfflineChatResponse(text) {
+  const query = text.toLowerCase().trim();
+
+  // 1. Check if user is asking for a specific Hadith
+  let bookName = "bukhari.db";
+  let bookTitle = "Sahih al-Bukhari";
+  let hadithNum = null;
+
+  const bukhariMatch = query.match(/(bukhari|بخاری)\s*#?\s*(\d+)/i);
+  const muslimMatch = query.match(/(muslim|مسلم)\s*#?\s*(\d+)/i);
+  const generalHadithMatch = query.match(/(hadith|حديث|حدیث)\s*#?\s*(\d+)/i);
+  const numOnlyMatch = query.match(/^#?(\d+)$/);
+
+  if (bukhariMatch) {
+    hadithNum = parseInt(bukhariMatch[2], 10);
+  } else if (muslimMatch) {
+    bookName = "muslim.db";
+    bookTitle = "Sahih Muslim";
+    hadithNum = parseInt(muslimMatch[2], 10);
+  } else if (generalHadithMatch) {
+    hadithNum = parseInt(generalHadithMatch[2], 10);
+  } else if (numOnlyMatch) {
+    hadithNum = parseInt(numOnlyMatch[1], 10);
+  }
+
+  if (hadithNum !== null) {
+    const isUrdu = state.hadithLang === 1;
+    const res = await queryDatabase(
+      bookName,
+      `SELECT h.hadees_number, h.arabic, hl.ravi, hl.hadees AS translation
+       FROM hadees h
+       JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id
+       WHERE h.hadees_number = ? AND hl.language_id = ?
+       LIMIT 1`,
+      [hadithNum, state.hadithLang]
+    );
+
+    if (res && res.length > 0) {
+      const h = res[0];
+      const transText = isUrdu ? decryptUrdu(h.translation) : h.translation;
+      return `**${bookTitle} - Hadith ${h.hadees_number}**<br><br>*${h.ravi || ''}*<br><br>${h.arabic}<br><br>${transText}`;
+    } else {
+      return `I couldn't find Hadith number ${hadithNum} in ${bookTitle} in the offline database.`;
+    }
+  }
+
+  // 2. Check if user is searching for a keyword in Hadiths
+  const searchKeywords = ["wudu", "purification", "prayer", "fasting", "zakat", "charity", "intention", "وضو", "نماز", "روزہ", "زکوۃ", "نیت", "طہارت"];
+  const containsKeyword = searchKeywords.some(keyword => query.includes(keyword));
+
+  if (containsKeyword || query.length > 3) {
+    const isUrdu = state.hadithLang === 1;
+    const dbQueryStr = isUrdu ? scrambleUrdu(text) : `%${text}%`;
+    const wildcard = isUrdu ? `%${dbQueryStr}%` : `%${text}%`;
+
+    const res = await queryDatabase(
+      "bukhari.db",
+      `SELECT h.hadees_number, h.arabic, hl.ravi, hl.hadees AS translation
+       FROM hadees h
+       JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id
+       WHERE (hl.hadees LIKE ? OR hl.ravi LIKE ? OR h.arabic LIKE ?) AND hl.language_id = ?
+       LIMIT 1`,
+      [wildcard, wildcard, wildcard, state.hadithLang]
+    );
+
+    if (res && res.length > 0) {
+      const h = res[0];
+      const transText = isUrdu ? decryptUrdu(h.translation) : h.translation;
+      return `I found a matching Hadith for you:<br><br>**Sahih al-Bukhari - Hadith ${h.hadees_number}**<br><br>*${h.ravi || ''}*<br><br>${h.arabic}<br><br>${transText}`;
+    }
+  }
+
+  // 3. Fallback to Local FAQ Keywords
+  for (const item of quranFAQ) {
+    if (item.keywords.some(keyword => query.includes(keyword))) {
+      return item.reply[window.currentLang || 'en'] || item.reply["en"];
+    }
+  }
+
+  // Default Fallback Help Text
+  const fallbacks = {
+    en: "I'm here to help you study the Quran and Hadith. Try asking me to **'search Hadith 1'**, ask about **'Quran lessons'**, **'99 names'**, or enter an OpenAI API Key in the settings tab to chat about anything!",
+    ur: "میں قرآن اور حدیث سیکھنے میں آپ کی مدد کے لیے حاضر ہوں۔ مجھے **'حدیث 1 تلاش کریں'**، **'قرآن کے اسباق'** یا **'99 ناموں'** کے بارے میں پوچھیں، یا ترتیبات میں اوپن اے آئی کی اے پی آئی کی داخل کر کے چیٹ کریں۔",
+    ar: "أنا هنا لمساعدتك في دراسة القرآن والحديث الشريف. جرب أن تطلب مني **'البحث عن الحديث ١'**، أو السؤال عن **'دروس القرآن'**، أو **'أسماء الله الحسنى'**، أو أدخل مفتاح OpenAI API في الإعدادات للدردشة التفاعلية!",
+    tr: "Kur'an ve Hadis çalışmanıza yardımcı olmak için buradayım. Bana **'Hadis 1 ara'** demeyi deneyin, **'Kuran dersleri'**, **'99 isim'** hakkında soru sorun veya herhangi bir konuda sohbet etmek için ayarlara bir OpenAI API Anahtarı girin!",
+    id: "Saya di sini untuk membantu Anda mempelajari Al-Quran dan Hadits. Coba tanyakan kepada saya untuk **'mencari Hadits 1'**, tanyakan tentang **'pelajaran Al-Quran'**, **'99 nama'**, atau masukkan Kunci API OpenAI di tab pengaturan untuk mengobrol!",
+    fr: "Je suis là pour vous aider à étudier le Coran et les Hadiths. Essayez de me demander de **'rechercher le Hadith 1'**, posez des questions sur les **'leçons du Coran'**, les **'99 noms d'Allah'**, ou entrez une clé API OpenAI dans les paramètres pour discuter !"
+  };
+
+  return fallbacks[window.currentLang || 'en'] || fallbacks["en"];
+}
+
+async function getLLMResponse(text) {
+  const url = "https://api.openai.com/v1/chat/completions";
+  const systemPrompt = `You are a helpful Quran and Hadith learning assistant inside Quran360 AI. Answer in the language the user asks. Keep responses highly educational, polite, and under 3-4 sentences.`;
+  
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${state.chatbotKey}`
+    },
+    body: JSON.stringify({
+      model: "gpt-3.5-turbo",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: text }
+      ],
+      max_tokens: 250,
+      temperature: 0.7
+    })
+  });
+
+  if (!response.ok) {
+    const errorJson = await response.json().catch(() => ({}));
+    throw new Error(errorJson.error?.message || `API error [${response.status}]`);
+  }
+
+  const json = await response.json();
+  return json.choices[0].message.content.trim();
+}
+

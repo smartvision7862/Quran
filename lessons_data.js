@@ -744,6 +744,112 @@
   ]
 },
   "lessonA/20A": {"tables":[{"columns":[{"arabic":"_a_ الٓمّٓ  _\/a_٪﴿1٪﴾ۚ","detail":"","audioName":"sabaq_20A_001.mp3","count":"","translation":"الف لام میم"},{"arabic":"_a_ ذٰلِكَ_\/a_","detail":"","audioName":"sabaq_20A_002.mp3","count":"","translation":"یہ"},{"arabic":"_a_ الْكِتٰبُ_\/a_","detail":"","audioName":"sabaq_20A_003.mp3","count":"","translation":"كتاب"},{"arabic":"_a_ لَارَيْبَ ٭صلى٪جۛ_\/a_","detail":"","audioName":"sabaq_20A_004.mp3","count":"","translation":"نہیں شك"},{"arabic":"_a_ فِيْهِ٪جۛ_\/a_","detail":"","audioName":"sabaq_20A_005.mp3","count":"","translation":"اس میں"},{"arabic":"_a_ هُدًى_\/a_","detail":"","audioName":"sabaq_20A_006.mp3","count":"","translation":"ہدایت"},{"arabic":"_a_ لِّلْمُتَّقِيْنَ _\/a_٪﴿2٪﴾ۙ","detail":"","audioName":"sabaq_20A_007.mp3","count":"","translation":"لیے\t متقیوں كے"}],"headerText":"سورة البقرة: 1-5"},{"columns":[{"arabic":"_a_ الَّذِيْنَ_\/a_","detail":"","audioName":"sabaq_20A_008.mp3","count":"","translation":"جو لوگ"},{"arabic":"_a_ يُؤْمِنُوْنَ_\/a_","detail":"","audioName":"sabaq_20A_009.mp3","count":"","translation":"ایمان لاتے ہیں"},{"arabic":"_a_ بِالْغَيْبِ_\/a_","detail":"","audioName":"sabaq_20A_010.mp3","count":"","translation":"پر \tغیب"},{"arabic":"_a_ وَيُقِيْمُوْنَ_\/a_","detail":"","audioName":"sabaq_20A_011.mp3","count":"","translation":"اور\t قائم كرتے ہیں"},{"arabic":"_a_ الصَّلٰوةَ_\/a_","detail":"","audioName":"sabaq_20A_012.mp3","count":"","translation":"نماز"},{"arabic":"_a_ وَمِمَّا_\/a_","detail":"","audioName":"sabaq_20A_013.mp3","count":"","translation":"اور  سے جو"},{"arabic":"_a_ رَزَقْنٰهُمْ_\/a_","detail":"","audioName":"sabaq_20A_014.mp3","count":"","translation":"ہم نے رزق دیا\tانہیں"},{"arabic":"_a_ يُنْفِقُوْنَ _\/a_٪﴿3٪﴾ۙ","detail":"","audioName":"sabaq_20A_015.mp3","count":"","translation":"وہ خرچ كرتے ہیں"}]},{"columns":[{"arabic":"_a_ وَالَّذِيْنَ_\/a_","detail":"","audioName":"sabaq_20A_016.mp3","count":"","translation":"اور جو لوگ"},{"arabic":"_a_ يُؤْمِنُوْنَ_\/a_","detail":"","audioName":"sabaq_20A_017.mp3","count":"","translation":"ایمان  ركھتے ہیں"},{"arabic":"_a_ بِمَآ_\/a_","detail":"","audioName":"sabaq_20A_018.mp3","count":"","translation":"اس پر جو"},{"arabic":"_a_ اُنْزِلَ_\/a_","detail":"","audioName":"sabaq_20A_019.mp3","count":"","translation":"نازل كیا گیا"},{"arabic":"_a_ اِلَيْكَ_\/a_","detail":"","audioName":"sabaq_20A_020.mp3","count":"","translation":"آپ كی طرف"},{"arabic":"_a_ وَمَآ_\/a_","detail":"","audioName":"sabaq_20A_021.mp3","count":"","translation":"اور جو"},{"arabic":"_a_ اُنْزِلَ_\/a_","detail":"","audioName":"sabaq_20A_022.mp3","count":"","translation":"نازل كیا گیا"},{"arabic":"_a_ مِنْ قَبْلِكَ٪ج_\/a_","detail":"","audioName":"sabaq_20A_023.mp3","count":"","translation":"آپ سے پہلے"},{"arabic":"_a_وَبِالْاٰخِرَةِ_\/a_","detail":"","audioName":"sabaq_20A_024.mp3","count":"","translation":"اور آخرت پر"},{"arabic":"_a_هُمْ_\/a_","detail":"","audioName":"sabaq_20A_025.mp3","count":"","translation":"وہ"},{"arabic":"_a_يُوْقِنُوْنَ_\/a_ ٪﴿4٪﴾ؕ","detail":"","audioName":"sabaq_20A_026.mp3","count":"","translation":"یقین ركھتے ہیں"}]},{"columns":[{"arabic":"_a_اُولٰٓئِكَ_\/a_","detail":"","audioName":"sabaq_20A_027.mp3","count":"","translation":"وہی لوگ"},{"arabic":"_a_عَلٰى_\/a_","detail":"","audioName":"sabaq_20A_028.mp3","count":"","translation":"پر"},{"arabic":"_a_هُدًى_\/a_","detail":"","audioName":"sabaq_20A_029.mp3","count":"","translation":"ہدایت"},{"arabic":"_a_مِّنْ_\/a_","detail":"","audioName":"sabaq_20A_030.mp3","count":"","translation":"سے"},{"arabic":"_a_رَّبِّهِمْ٪ق_\/a_","detail":"","audioName":"sabaq_20A_031.mp3","count":"","translation":"اپنے رب"},{"arabic":"_a_وَاُولٰٓئِكَ_\/a_","detail":"","audioName":"sabaq_20A_032.mp3","count":"","translation":"اور وہی لوگ"},{"arabic":"_a_هُمُ_\/a_","detail":"","audioName":"sabaq_20A_033.mp3","count":"","translation":"وہ سب "},{"arabic":"_a_الْمُفْلِحُوْنَ _\/a_٪﴿5٪﴾","detail":"","audioName":"sabaq_20A_034.mp3","count":"","translation":"كامیاب (هيں)"}]},{"columns":[{"arabic":"_a_اللّٰهُ_\/a_","detail":"","audioName":"sabaq_20A_035.mp3","count":"","translation":"اللّٰه"},{"arabic":"_a_لَاۤ_\/a_","detail":"","audioName":"sabaq_20A_036.mp3","count":"","translation":"نہیں"},{"arabic":"_a_اِلهَ_\/a_","detail":"","audioName":"sabaq_20A_037.mp3","count":"","translation":"كوئي معبود (حقيق"},{"arabic":"_a_اِلَّا_\/a_","detail":"","audioName":"sabaq_20A_038.mp3","count":"","translation":"سوائے"},{"arabic":"_a_َّهُوَ٪ج_\/a_","detail":"","audioName":"sabaq_20A_039.mp3","count":"","translation":"وہ"},{"arabic":"_a_َّاَلْحَىُّ _\/a_","detail":"","audioName":"sabaq_20A_040.mp3","count":"","translation":"زندہ"},{"arabic":"_a_َّالْقَيُّوْمُ٪ج۟_\/a_","detail":"","audioName":"sabaq_20A_041.mp3","count":"","translation":"تھامنے والا"}],"headerText":"آية الكرسي :  255"},{"columns":[{"arabic":"_a_َّلَا تَاْخُذُهٗ_\/a_","detail":"","audioName":"sabaq_20A_042.mp3","count":"","translation":"نہ اُسے آتی ہے"},{"arabic":"_a_سِنَةٌ_\/a_","detail":"","audioName":"sabaq_20A_043.mp3","count":"","translation":"اونگھ"},{"arabic":"_a_وَّلَا_\/a_","detail":"","audioName":"sabaq_20A_044.mp3","count":"","translation":"اور نہ"},{"arabic":"_a_نَوْمٌ_\/a_","detail":"","audioName":"sabaq_20A_045.mp3","count":"","translation":"نیند"}]},{"columns":[{"arabic":"_a_لَهٗ_\/a_","detail":"","audioName":"sabaq_20A_046.mp3","count":"","translation":"اسی كا ہے"},{"arabic":"_a_مَا_\/a_","detail":"","audioName":"sabaq_20A_047.mp3","count":"","translation":"جو"},{"arabic":"_a_فِى السَّمٰوٰتِ_\/a_","detail":"","audioName":"sabaq_20A_048.mp3","count":"","translation":"آسمانوں میں"},{"arabic":"_a_وَمَا_\/a_","detail":"","audioName":"sabaq_20A_049.mp3","count":"","translation":"اور جو"},{"arabic":"_a_فِى الْاَرْضِ_\/a_","detail":"","audioName":"sabaq_20A_050.mp3","count":"","translation":"زمین میں (ہے)"}]},{"columns":[{"arabic":"_a_مَنْ_\/a_","detail":"","audioName":"sabaq_20A_051.mp3","count":"","translation":"كون (ہے)"},{"arabic":"_a_ذَا الَّذِىْ_\/a_","detail":"","audioName":"sabaq_20A_052.mp3","count":"","translation":"وہ جو"},{"arabic":"_a_يَشْفَعُ_\/a_","detail":"","audioName":"sabaq_20A_053.mp3","count":"","translation":"سفارش كرے"},{"arabic":"_a_عِنْدَهٗۤ_\/a_","detail":"","audioName":"sabaq_20A_054.mp3","count":"","translation":"اس كے پاس"},{"arabic":"_a_اِلَّا_\/a_","detail":"","audioName":"sabaq_20A_055.mp3","count":"","translation":"مگر"},{"arabic":"_a_بِاِذْنِهٖ_\/a_","detail":"","audioName":"sabaq_20A_056.mp3","count":"","translation":"مگر"}]},{"columns":[{"arabic":"_a_يَعْلَمُ_\/a_","detail":"","audioName":"sabaq_20A_057.mp3","count":"","translation":"وہ جانتا ہے"},{"arabic":"_a_مَا_\/a_","detail":"","audioName":"sabaq_20A_058.mp3","count":"","translation":"جو"},{"arabic":"_a_بَيْنَ اَيْدِيْهِمْ_\/a_","detail":"","audioName":"sabaq_20A_059.mp3","count":"","translation":"ان  سب كے سامنے  (ہے)"},{"arabic":"_a_وَمَا_\/a_","detail":"","audioName":"sabaq_20A_060.mp3","count":"","translation":"اور جو"},{"arabic":"_a_خَلْفَهُمْ٪ج_\/a_","detail":"","audioName":"sabaq_20A_061.mp3","count":"","translation":"ان سب  كےپیچھے (ہے)"}]},{"columns":[{"arabic":"_a_وَلَا يُحِيْطُوْنَ_\/a_","detail":"","audioName":"sabaq_20A_062.mp3","count":"","translation":"اور نہیں وہ احاطہ كرتے"},{"arabic":"_a_بِشَىْءٍ_\/a_","detail":"","audioName":"sabaq_20A_063.mp3","count":"","translation":"كسی چیز كا"},{"arabic":"_a_مِّنْ عِلْمِهٖۤ_\/a_","detail":"","audioName":"sabaq_20A_064.mp3","count":"","translation":"اس كے علم (میں) سے"},{"arabic":"_a_اِلَّا_\/a_","detail":"","audioName":"sabaq_20A_065.mp3","count":"","translation":"مگر"},{"arabic":"_a_بِمَا شَآءَ٪ج_\/a_","detail":"","audioName":"sabaq_20A_066.mp3","count":"","translation":"جتنا وہ چاہے"}]},{"columns":[{"arabic":"_a_وَسِعَ_\/a_","detail":"","audioName":"sabaq_20A_067.mp3","count":"","translation":"سما لیا"},{"arabic":"_a_كُرْسِيُّهُ_\/a_","detail":"","audioName":"sabaq_20A_068.mp3","count":"","translation":"اس كی كرسی (نے)"},{"arabic":"_a_السَّمٰوٰتِ_\/a_","detail":"","audioName":"sabaq_20A_069.mp3","count":"","translation":"آسمانوں (كو)"},{"arabic":"_a_وَالْاَرْضَ٪ج_\/a_","detail":"","audioName":"sabaq_20A_070.mp3","count":"","translation":"اور زمین (كو)"}]},{"columns":[{"arabic":"_a_وَلَا يَئُوْدُهٗ_\/a_","detail":"","audioName":"sabaq_20A_071.mp3","count":"","translation":"اور نہیں تھكاتا اس كو"},{"arabic":"_a_حِفْظُهُمَا٪ج_\/a_","detail":"","audioName":"sabaq_20A_072.mp3","count":"","translation":"حفاظت ان دونوں كی"},{"arabic":"_a_وَهُوَ_\/a_","detail":"","audioName":"sabaq_20A_073.mp3","count":"","translation":"اور وہ"},{"arabic":"_a_الْعَلِىُّ_\/a_","detail":"","audioName":"sabaq_20A_074.mp3","count":"","translation":"بلند مرتبہ"},{"arabic":"_a_الْعَظِيْمُ _\/a_﴿۲۵۵﴾","detail":"","audioName":"sabaq_20A_075.mp3","count":"","translation":"عظمت والا (ہے)"}]}],"lessonID":"020A"},
+  "lessonA/21A": {
+  "tables": [
+    {
+      "columns": [
+        {
+          "arabic": "ـهُ",
+          "detail": "اس کا / اس کو (واحد مذکر غائب)",
+          "count": "948",
+          "audioName": "sabaq_21A_001.mp3",
+          "translation": "اس کا / اس کو"
+        },
+        {
+          "arabic": "ـهُمْ",
+          "detail": "ان کا / ان کو (جمع مذکر غائب)",
+          "count": "1002",
+          "audioName": "sabaq_21A_002.mp3",
+          "translation": "ان کا / ان کو"
+        },
+        {
+          "arabic": "ـكَ",
+          "detail": "آپ کا / آپ کو (واحد مذکر مخاطب)",
+          "count": "610",
+          "audioName": "sabaq_21A_003.mp3",
+          "translation": "آپ کا / آپ کو"
+        },
+        {
+          "arabic": "ـكُمْ",
+          "detail": "آپ سب کا / آپ سب کو (جمع مذکر مخاطب)",
+          "count": "812",
+          "audioName": "sabaq_21A_004.mp3",
+          "translation": "آپ سب کا / آپ سب کو"
+        },
+        {
+          "arabic": "ـيْ",
+          "detail": "میرا / مجھ کو (واحد متکلم)",
+          "count": "450",
+          "audioName": "sabaq_21A_005.mp3",
+          "translation": "میرا / مجھ کو"
+        },
+        {
+          "arabic": "ـنَا",
+          "detail": "ہمارا / ہم کو (جمع متکلم)",
+          "count": "670",
+          "audioName": "sabaq_21A_006.mp3",
+          "translation": "ہمارا / ہم کو"
+        }
+      ],
+      "headerText": "اس سبق میں ہم متصل ضمیریں (Attached Pronouns) سیکھیں گے جو اسم، فعل یا حرف کے ساتھ جڑ کر آتی ہیں، جیسے: کِتَابُهُ (اس کی کتاب)، رَبُّهُ (اس کا رب)۔",
+      "footerText": "مشق: رَبُّهُ (اس کا رب)، رَبُّهُمْ (ان کا رب)، رَبُّكَ (آپ کا رب)، رَبُّكُمْ (آپ سب کا رب)، رَبِّيْ (میرا رب)، رَبُّنَا (ہمارا رب)۔"
+    }
+  ],
+  "lessonID": "021A"
+},
+  "lessonA/22A": {
+  "tables": [
+    {
+      "columns": [
+        {
+          "arabic": "لَهُ",
+          "detail": "لِ + هُ (اس کے لیے)",
+          "count": "248",
+          "audioName": "sabaq_22A_001.mp3",
+          "translation": "اس کے لیے"
+        },
+        {
+          "arabic": "لَهُمْ",
+          "detail": "لِ + هُمْ (ان سب کے لیے)",
+          "count": "310",
+          "audioName": "sabaq_22A_002.mp3",
+          "translation": "ان سب کے لیے"
+        },
+        {
+          "arabic": "لَكَ",
+          "detail": "لِ + كَ (آپ کے لیے)",
+          "count": "150",
+          "audioName": "sabaq_22A_003.mp3",
+          "translation": "آپ کے لیے"
+        },
+        {
+          "arabic": "لَكُمْ",
+          "detail": "لِ + كُمْ (آپ سب کے لیے)",
+          "count": "212",
+          "audioName": "sabaq_22A_004.mp3",
+          "translation": "آپ سب کے لیے"
+        },
+        {
+          "arabic": "لِيْ / لَيَّ",
+          "detail": "لِ + يْ (میرے لیے)",
+          "count": "98",
+          "audioName": "sabaq_22A_005.mp3",
+          "translation": "میرے لیے"
+        },
+        {
+          "arabic": "لَنَا",
+          "detail": "لِ + نَا (ہمارے لیے)",
+          "count": "115",
+          "audioName": "sabaq_22A_006.mp3",
+          "translation": "ہمارے لیے"
+        }
+      ],
+      "headerText": "اس سبق میں ہم حروفِ جار (Prepositions) کے ساتھ متصل ضمیریں سیکھیں گے۔ حرف 'لِ' (لیے) جب ضمیروں کے ساتھ ملتا ہے تو زبر (لَ) میں تبدیل ہو جاتا ہے (سوائے 'لِيْ' کے)۔",
+      "footerText": "مشق: لَهُ دِيْنُهُ (اس کے لیے اس کا دین ہے)، لَكُمْ دِيْنُكُمْ (تمہارے لیے تمہارا دین ہے)۔"
+    }
+  ],
+  "lessonID": "022A"
+},
   "lessonA/2A": {
   "tables": [
     {
@@ -1043,6 +1149,149 @@
   ]
 },
   "lessonB/20B": {"tables":[{"header":{"text":"آپ نے فعل ماضی کے ساتھ صیغے سیکھے اور فعل مضارع کے سات صیغے سیکھے اور أمر کے دو۔ ان سب میں سے ایک ایک لفظ کو لیا جاسکتا ہے، یعنی _a_فَعَلَ، _\/a__a_یَفْعَلُ،_\/a_ _a_اِفْعَلْ۔_\/a_ ان تینوں کے ساتھ تین اسم کو یعنی _a_فَاعِل، _\/a__a_مَفْعُول _\/a_اور _a_فِعل _\/a_کو ملایا جائے تو ایک مختصر اور بہترین فارمولا بن جاتا ہے جس کو صرف صغیر کہتے ہیں۔ اگر کسی بھی فعل کا صرف صضیر معلوم ہو تو آپ ان شاء اﷲ باقی سارے صیغے بناسکتے ہیں۔","audioPath":"sabaq_20B_001.mp3"},"rows":[{"arabic":"_a_فَعَلَ_\/a_","secondaryText":"اس نے كيا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_002.mp3"},{"arabic":"_a_فِعْل_\/a_","secondaryText":"كرنا، كام كا نام","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_007.mp3"},{"arabic":"_a_يَفْعَلُ_\/a_","secondaryText":"وه كرتا هے\/كرےگا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_003.mp3"},{"arabic":"_a_اِفْعَلْ_\/a_","secondaryText":"كر!","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_004.mp3"},{"arabic":"_a_فَاعِل_\/a_","secondaryText":"كرنے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_005.mp3"},{"arabic":"_a_مَفْعُوْل_\/a_","secondaryText":"جس پر اثر پڑا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_006.mp3"}]},{"header":{"text":"بَاب فَتَحَ یَفْتَحُ اِفْتَحْ","audioPath":""},"rows":[{"arabic":"_a_فَتَحَ_\/a_","secondaryText":"اس نے كھولا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_008.mp3"},{"arabic":"_a_يَفْتَحُ_\/a_","secondaryText":"وه كھولتا هے\/كھولے گا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_009.mp3"},{"arabic":"_a_اِفْتَحْ_\/a_","secondaryText":"كھول!","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_010.mp3"},{"arabic":"_a_فَاتِح_\/a_","secondaryText":"كھولنے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_011.mp3"},{"arabic":"_a_مَفْتُوْح_\/a_","secondaryText":"جس كو كھولا گيا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_012.mp3"},{"arabic":"_a_فَتْح_\/a_","secondaryText":"كھولنا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_013.mp3"},{"arabic":"_a_جَعَلَ_\/a_","secondaryText":"اس نے بنایا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_014.mp3"},{"arabic":"_a_یَجْعَلْ_\/a_","secondaryText":"وہ بناتا ہے\/بنائے گا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_015.mp3"},{"arabic":"_a_اِجْعَلْ_\/a_","secondaryText":"بنا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_016.mp3"},{"arabic":"_a_جَاعِل_\/a_","secondaryText":"بنانے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_017.mp3"},{"arabic":"_a_مَجْعُول_\/a_","secondaryText":"جس کو بنایا گیا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_018.mp3"},{"arabic":"_a_جَعْل_\/a_","secondaryText":"بنانا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_019.mp3"}]},{"header":{"text":"بَاب نَصَرَ یَنْصُرُ اُنْصُرْ","audioPath":""},"rows":[{"arabic":"_a_نَصَرَ_\/a_","secondaryText":"اس نے مدد کی","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_020.mp3"},{"arabic":"_a_یَنْصُرُ_\/a_","secondaryText":"وہ مدد کرتا ہے\/کرے گا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_021.mp3"},{"arabic":"_a_اُنْصُرْ_\/a_","secondaryText":"تو مدد کر","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_022.mp3"},{"arabic":"_a_نَاصِر_\/a_","secondaryText":"مدد کرنے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_023.mp3"},{"arabic":"_a_مَنْصُور_\/a_","secondaryText":"جس کی مدد کی گئی","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_024.mp3"},{"arabic":"_a_نَصْر_\/a_","secondaryText":"مدد کرنا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_025.mp3"},{"arabic":"_a_خَلَقَ_\/a_","secondaryText":"اس نے پیدا کیا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_026.mp3"},{"arabic":"_a_یَخْلُقُ_\/a_","secondaryText":"وہ پیدا کرتا ہے\/کرے گا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_027.mp3"},{"arabic":"_a_أُخْلُقْ_\/a_","secondaryText":"پیدا کر","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_028.mp3"},{"arabic":"_a_خَالِق_\/a_","secondaryText":"پیدا کرنے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_029.mp3"},{"arabic":"_a_مَخْلُوق_\/a_","secondaryText":"جس کو پیدا کیا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_030.mp3"},{"arabic":"_a_خَلْق_\/a_","secondaryText":"پیدا کرنا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_031.mp3"},{"arabic":"_a_عَبَدَ_\/a_","secondaryText":"اس نے عبادت کی","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_032.mp3"},{"arabic":"_a_یَعْبُدُ_\/a_","secondaryText":"وہ عبادت کرتا ہے\/کرے گا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_033.mp3"},{"arabic":"_a_اُعْبُدْ_\/a_","secondaryText":"عبادت کر","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_034.mp3"},{"arabic":"_a_عَابِد_\/a_","secondaryText":"عبادت کرنے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_035.mp3"},{"arabic":"_a_مَعْبُود_\/a_","secondaryText":"جس کی عبادت کی گئی","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_036.mp3"},{"arabic":"_a_عِبَادَۃ_\/a_","secondaryText":"عبادت کرنا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_037.mp3"},{"arabic":"_a_ذَکَرَ_\/a_","secondaryText":"اس نے یاد کیا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_038.mp3"},{"arabic":"_a_یَذْکُرُ_\/a_","secondaryText":"وہ یاد کرتا ہے\/کرے گا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_039.mp3"},{"arabic":"_a_اُذْکُرْ_\/a_","secondaryText":"یاد کر","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_040.mp3"},{"arabic":"_a_ذَاکِر_\/a_","secondaryText":"یاد کرنے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_041.mp3"},{"arabic":"_a_مَذْکُور_\/a_","secondaryText":"جس کو یاد کیا گیا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_042.mp3"},{"arabic":"_a_ذِکْر_\/a_","secondaryText":"یاد کرنا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_043.mp3"}]},{"header":{"text":"بَاب ضَرَبَ یَضْرِبُ اِضْرِبْ","audioPath":""},"rows":[{"arabic":"_a_ضَرَبَ_\/a_","secondaryText":"اس نے مارا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_044.mp3"},{"arabic":"_a_یَضْرِبَ_\/a_","secondaryText":"وہ مارتا ہے\/مارے گا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_045.mp3"},{"arabic":"_a_اِضْرِب_\/a_","secondaryText":"مار","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_046.mp3"},{"arabic":"_a_ضَارِب_\/a_","secondaryText":"مارنے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_047.mp3"},{"arabic":"_a_مَضْرُوب_\/a_","secondaryText":"جس کو مارا گیا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_048.mp3"},{"arabic":"_a_ضَرْب_\/a_","secondaryText":"مارنا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_049.mp3"}]},{"header":{"text":"بَاب سَمِعَ یَسْمَعُ اِسْمَعْ","audioPath":""},"rows":[{"arabic":"_a_سَمِعَ_\/a_","secondaryText":"اس نے سنا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_050.mp3"},{"arabic":"_a_یَسْمَعُ_\/a_","secondaryText":"وہ سنتا ہے\/سنے گا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_051.mp3"},{"arabic":"_a_اِسْمَعْ_\/a_","secondaryText":"سن","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_052.mp3"},{"arabic":"_a_سَامِع_\/a_","secondaryText":"سننے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_053.mp3"},{"arabic":"_a_مَسْمُوع_\/a_","secondaryText":"جس کو سنا گیا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_054.mp3"},{"arabic":"_a_سَمْع_\/a_","secondaryText":"سننا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_055.mp3"},{"arabic":"_a_عَلِمَ_\/a_","secondaryText":"اس نے جانا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_056.mp3"},{"arabic":"_a_یَعْلَمُ_\/a_","secondaryText":"وہ جانتا ہے\/جانے گا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_057.mp3"},{"arabic":"_a_اِعْلَمْ_\/a_","secondaryText":"جان","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_058.mp3"},{"arabic":"_a_عَالِمْ_\/a_","secondaryText":"جاننے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_059.mp3"},{"arabic":"_a_مَعْلُوم_\/a_","secondaryText":"جس کو جانا گیا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_060.mp3"},{"arabic":"_a_عِلْمَ_\/a_","secondaryText":"جاننا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_061.mp3"},{"arabic":"_a_عَمِلَ_\/a_","secondaryText":"اس نے عمل کیا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_062.mp3"},{"arabic":"_a_یَعْمَلُ_\/a_","secondaryText":"وہ عمل کرتا ہے\/کرے گا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_063.mp3"},{"arabic":"_a_اِعْمَلْ_\/a_","secondaryText":"عمل کر","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_064.mp3"},{"arabic":"_a_عَامِل_\/a_","secondaryText":"عمل کرنے والا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_065.mp3"},{"arabic":"_a_مَعْمُول_\/a_","secondaryText":"جس پر عمل کیا گیا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_066.mp3"},{"arabic":"_a_عَمَل_\/a_","secondaryText":"عمل کرنا","isSecondaryTextArabic":false,"audioPath":"sabaq_20B_067.mp3"}]},{"header":{"text":"_a_اَلْمُحَادَثَۃُ الْعَرَبِیَّۃ_\/a_ (عربی بول چال)\r\nنیچے دیے گئے جملے میں ’’آپ‘‘ اور ’’میں‘‘ کو آپس میں بدلنا ہے (یاد رکھیے _a_ہ، ھُمْ، کَ، کُمْ_\/a_…جڑے ہوئے ہیں مگر ان کو ذہن میں الگ کر کے دیکھیے اور تھوڑا وقفہ دے کر پڑھیے۔","audioPath":"sabaq_20B_068.mp3"},"rows":[{"arabic":"ھَلْ ضَرَبْتَہٗ؟ (ھَلْ ضَرَبْت ہٗ)","secondaryText":"مَا ضَرَبْتُہٗ (مَا ضَرَبْتُہٗ )","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_069.mp3"},{"arabic":"ھَلْ نَصَرْتَہٗ (ھَلْ نَصَرْتَ ہٗ)","secondaryText":"مَا نَصَرْتُہٗ (مَا نَصَرْتُہٗ)","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_070.mp3"},{"arabic":"ھَلْ ذَکَرْتَہٗ؟ (ھَلْ ذَکَرْتَ ہٗ)","secondaryText":"مَا ذَکَرْتُہٗ؟ (مَا ذَکَرْتُہٗ؟)","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_071.mp3"},{"arabic":"ھَلْ ضَرَبْتُمُوْہٗ؟ (ھَلْ ضَرَبْتُمُوْہٗ)","secondaryText":"مَا ضَرَبْنَاہٗ (مَا ضَرَبْنَاہٗ)","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_072.mp3"},{"arabic":"ھَلْ نَصَرْتُمُوْہٗ؟ (ھَلْ نَصَرْتُمُوْہٗ)","secondaryText":"مَا نَصَرْنَاہٗ (مَا نَصَرْنَاہٗ)","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_073.mp3"},{"arabic":"ھَلْ ذَکَرْتُمُوْنَا؟ (ھَلْ ذَکَرْتُمُوْنَا)","secondaryText":"مَا ذَکَرْنَاکُمْ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_074.mp3"},{"arabic":"ھَلْ تَضْرَبُہٗ (ھَلْ تَضْرَبُہٗ)","secondaryText":"لَا أَضْرِبُہٗ (لَا أَضْرِبُہٗ)","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_075.mp3"},{"arabic":"ھَلْ تَنْصُرُہٗ؟ (ھَلْ تَنْصُرُہٗ)","secondaryText":"لَا أَنْصُرُہٗ (لَا أَنْصُرُہٗ)","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_076.mp3"},{"arabic":"ھَلْ تَذْکُرُہٗ؟ (ھَلْ تَذْکُرُہٗ)","secondaryText":"لَا أَذْکُرُہٗ (لَا أَذْکُرُہٗ)","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_077.mp3"},{"arabic":"ھَلْ تَضْرِبُونَہٗ (ھَلْ تَضْرِبُونَہٗ)","secondaryText":"لَا نَضْرِبُہٗ (لَا نَضْرِبُہٗ)","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_078.mp3"},{"arabic":"ھَلْ تَنْصُرُوْنَہٗ؟ (ھَلْ تَنْصُرُوْنَہٗ)","secondaryText":"لَا نَنْصُرُہٗ (لَا نَنْصُرُہٗ)","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_079.mp3"},{"arabic":"ھَلْ تَذْکُرُوْنَہٗ؟ (ھَلْ تَذْکُرُوْنَہٗ)","secondaryText":"لَا نَذْکُرُہٗ (لَا نَذْکُرُہٗ)","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_080.mp3"}]},{"header":{"text":"نیچے دیے گئے جملوں میں ’’آپ اور میں‘‘کو ’’میں اور آپ‘‘ سے بدلنا ہے۔ سارے سوالوں کا جواب نہ میں دیجیے (تاکہ نہ کی پریکٹس ہو!)","audioPath":""},"rows":[{"arabic":"ھَلْ ضَرَبْتَنِيْ؟ (ھَلْ ضَرَبْتَنِيْ)","secondaryText":"مَا ضَرَبْتُکَ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_082.mp3"},{"arabic":"ھَلْ نَصَرْتَنِيْ؟ (ھَلْ نَصَرْتَنِيْ)","secondaryText":"مَا نَصَرْتُکَ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_083.mp3"},{"arabic":"ھَلْ ذَکَرْتَنِيْ؟ (ھَلْ ذَکَرْتَنِيْ)","secondaryText":"مَا ذَکَرْتُکَ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_084.mp3"},{"arabic":"ھَلْ ضَرَبْتُمُونَا؟ (ھَلْ ضَرَبْتُمُونَا)","secondaryText":"مَا ضَرَبْنَاکُمْ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_085.mp3"},{"arabic":"ھَلْ نَصَرْتُمُونَا؟ (ھَلْ نَصَرْتُمُونَا)","secondaryText":"مَا نَصَرْنَاکُمْ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_086.mp3"},{"arabic":"ھَلْ ذَکَرْتُمُوْنَا؟ (ھَلْ ذَکَرْتُمُوْنَا)","secondaryText":"مَا ذَکَرْنَاکُمْ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_087.mp3"},{"arabic":"ھَلْ ضَرَبْتَنَا؟ (ھَلْ ضَرَبْتَنَا؟)","secondaryText":"مَا ضَرَبْتُکُمْ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_088.mp3"},{"arabic":"ھَلْ نَصَرْتَنَا؟ (ھَلْ نَصَرْتَنَا؟)","secondaryText":"مَا نَصَرْتُکُمْ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_089.mp3"},{"arabic":"ھَلْ ذَکَرْتَنَا؟ (ھَلْ ذَکَرْتَنَا؟)","secondaryText":"مَا ذَکَرْتُکُمْ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_090.mp3"},{"arabic":"ھَلْ ضَرَبْتُمُونَا؟ (ھَلْ ضَرَبْتُمُونَا؟)","secondaryText":"نَعَمْ! ضَرَبْنَاکُمْ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_091.mp3"},{"arabic":"ھَلْ سَمِعْتُمُونَا؟ (ھَلْ سَمِعْتُمُونَا؟)","secondaryText":"نَعَمَ! سَمِعْنَاکُمْ","isSecondaryTextArabic":true,"audioPath":"sabaq_20B_092.mp3"}]}],"lessonID":"020B"},
+  "lessonB/21B": {
+  "tables": [
+    {
+      "columns": [
+        {
+          "arabic": "قُلْ",
+          "detail": "آپ کہہ دیجیے (فعلِ امر)",
+          "count": "332",
+          "audioName": "sabaq_21B_001.mp3",
+          "translation": "کہہ دیجیے"
+        },
+        {
+          "arabic": "هُوَ اللَّهُ",
+          "detail": "وہ   |   اللہ ہے",
+          "count": "",
+          "audioName": "sabaq_21B_002.mp3",
+          "translation": "وہ   |   اللہ ہے"
+        },
+        {
+          "arabic": "أَحَدٌ",
+          "detail": "ایک، یکتا (کوئی دوسرا شریک نہیں)",
+          "count": "85",
+          "audioName": "sabaq_21B_003.mp3",
+          "translation": "ایک ہے"
+        }
+      ],
+      "footerText": "کہہ دیجیے کہ وہ اللہ ایک ہے"
+    },
+    {
+      "columns": [
+        {
+          "arabic": "اللَّهُ الصَّمَدُ",
+          "detail": "اللہ   |   بے نیاز (سب اس کے محتاج ہیں، وہ کسی کا محتاج نہیں)",
+          "count": "",
+          "audioName": "sabaq_21B_004.mp3",
+          "translation": "اللہ   |   بے نیاز ہے"
+        }
+      ],
+      "footerText": "اللہ بے نیاز ہے"
+    },
+    {
+      "columns": [
+        {
+          "arabic": "لَمْ يَلِدْ",
+          "detail": "نہ اس نے کسی کو جنا (نہ اس کی کوئی اولاد ہے)",
+          "count": "",
+          "audioName": "sabaq_21B_005.mp3",
+          "translation": "نہ اس نے جنا"
+        },
+        {
+          "arabic": "وَلَمْ يُولَدْ",
+          "detail": "اور نہ وہ خود جنا گیا (نہ وہ کسی کی اولاد ہے)",
+          "count": "",
+          "audioName": "sabaq_21B_006.mp3",
+          "translation": "اور نہ وہ جنا گیا"
+        }
+      ],
+      "footerText": "نہ اس کی کوئی اولاد ہے اور نہ وہ کسی کی اولاد ہے"
+    },
+    {
+      "columns": [
+        {
+          "arabic": "وَلَمْ يَكُنْ لَهُ",
+          "detail": "اور نہیں   |   ہے   |   اس کے لیے",
+          "count": "",
+          "audioName": "sabaq_21B_007.mp3",
+          "translation": "اور نہیں ہے اس کے لیے"
+        },
+        {
+          "arabic": "كُفُوًا أَحَدٌ",
+          "detail": "ہمسر / برابر   |   کوئی ایک",
+          "count": "",
+          "audioName": "sabaq_21B_008.mp3",
+          "translation": "کوئی ہمسر"
+        }
+      ],
+      "footerText": "اور کوئی اس کا ہمسر نہیں ہے"
+    }
+  ],
+  "lessonID": "021B"
+},
+  "lessonB/22B": {
+  "tables": [
+    {
+      "columns": [
+        {
+          "arabic": "إِنَّا أَعْطَيْنَاكَ",
+          "detail": "إِنَّا: بے شک ہم نے | أَعْطَيْنَا: عطا کی ہم نے | كَ: آپ کو",
+          "count": "",
+          "audioName": "sabaq_22B_001.mp3",
+          "translation": "بے شک ہم نے آپ کو عطا کی"
+        },
+        {
+          "arabic": "الْكَوْثَرَ",
+          "detail": "خیرِ کثیر، حوضِ کوثر",
+          "count": "",
+          "audioName": "sabaq_22B_002.mp3",
+          "translation": "کوثر (خیرِ کثیر)"
+        }
+      ],
+      "footerText": "بے شک ہم نے آپ کو کوثر عطا کی"
+    },
+    {
+      "columns": [
+        {
+          "arabic": "فَصَلِّ لِرَبِّكَ",
+          "detail": "فَ: پس | صَلِّ: نماز پڑھیے | لِ: لیے | رَبِّ: رب | كَ: اپنے",
+          "count": "",
+          "audioName": "sabaq_22B_003.mp3",
+          "translation": "پس آپ نماز پڑھیے اپنے رب کے لیے"
+        },
+        {
+          "arabic": "وَانْحَرْ",
+          "detail": "وَ: اور | انْحَرْ: قربانی کیجیے (نحر کیجیے)",
+          "count": "",
+          "audioName": "sabaq_22B_004.mp3",
+          "translation": "اور قربانی کیجیے"
+        }
+      ],
+      "footerText": "پس آپ اپنے رب ہی کے لیے نماز پڑھیے اور قربانی کیجیے"
+    },
+    {
+      "columns": [
+        {
+          "arabic": "إِنَّ شَانِئَكَ",
+          "detail": "إِنَّ: بے شک | شَانِئ: دشمن، بغض رکھنے والا | كَ: آپ کا",
+          "count": "",
+          "audioName": "sabaq_22B_005.mp3",
+          "translation": "بے شک آپ کا دشمن ہی"
+        },
+        {
+          "arabic": "هُوَ الْأَبْتَرُ",
+          "detail": "هُوَ: وہی | الْأَبْتَرُ: دم کٹا، بے نام و نشان",
+          "count": "",
+          "audioName": "sabaq_22B_006.mp3",
+          "translation": "بے نام و نشان ہے"
+        }
+      ],
+      "footerText": "بے شک آپ کا دشمن ہی بے نام و نشان ہے"
+    }
+  ],
+  "lessonID": "022B"
+},
   "lessonB/2B": {"tables":[{"header":{"text":"الفاظ كى قسمیں: ہم جو الفاظ لكھتے، پڑھتے اور بولتے ہیں، ان کی تین قسمیں ہیں:  (1)  اسم  (2) فعل   (3)حرف۔  اس سبق میں ہم اسم كے بارے میں پڑھیں گے۔\r\nاسم: کسی کا نام  (_a_کِتَاب،   _\/a__a_مَكَّة_\/a_) یا صفت  (_a_مُسْلِم، _\/a__a_مُؤْمِن_\/a_) وغيره\r\nاسم كى پهچان: جس لفظ كے شروع میں  _a_اَلْـ  _\/a_ہو یا آخر میں   _a_ـًـ،  _\/a__a_ـٍـ، _\/a__a_ـٌـ، _\/a_ _a_ـونَ، _\/a_ _a_ـيْنَ، _\/a_ ـات ميں سے كوئي ہو۔ جیسے  _a_اَلْكِتَابُ، _\/a__a_مُسْلِمٌ،  _\/a__a_مَكَّةُ،  _\/a__a_مُسلِمُوْنَ،_\/a_ _a_مُسْلِمَاتٌ _\/a_وغیره۔\r\nعام اور خاص اسم: جب کسی اسم کوخاص كرنا هو تواس  اسم كے شروع ميں  _a_اَلْـ  _\/a_لگاتے هيں،  جیسے:  _a_مُسْلِمٌ _\/a_كوئي مسلم،  _a_اَلْمُسْلِمُ  _\/a_خاص مسلم۔\r\n","audioPath":"sabaq_2B_001.mp3"},"rows":[{"arabic":"مُسْلِمٌ","secondaryText":"اَلْمُسْلِمُ","isSecondaryTextArabic":true,"imagePath":"","audioPath":"sabaq_2B_002.mp3"},{"arabic":"مُؤْمِنٌ","secondaryText":"اَلْمُؤْمِنُ","isSecondaryTextArabic":true,"audioPath":"sabaq_2B_003.mp3"},{"arabic":"صَالِحٌ","secondaryText":"اَلصَّالِحُ","isSecondaryTextArabic":true,"audioPath":"sabaq_2B_004.mp3"},{"arabic":"كَافِرٌ","secondaryText":"اَلْكَافِرُ","isSecondaryTextArabic":true,"audioPath":"sabaq_2B_005.mp3"},{"arabic":"مُشْرِكٌ","secondaryText":"اَلْمُشْرِكُ","isSecondaryTextArabic":true,"audioPath":"sabaq_2B_006.mp3"}]},{"header":{"text":"اسم کی جمع بنانے کا قاعدہ: ہر زبان میں جمع بنانے کے کچھ قواعد ہوتے ہیں جیسے انگلش میں ایک قاعدہ یہ ہے کہ کسی لفظ پر حرف \"S\"لگانے سے وہ واحد سے جمع ہوجاتا ہے، مثلاً Muslim کی جمع Muslims، اس طرح عربی میں جمع بنانے کا ایک قاعدہ یہ ہے کہ لفظ کے آگے ’’ون‘‘ یا ’’ین‘‘ لگادیتے ہیں، عربی کے تقریباً 60%الفاظ کی جمع اسی طرح بنائی جاتی ہے، یاد رکھیے گرامر کے ہر سبق کی TPIکے طریقے سے پریکٹس کیجیے تاکہ جلد سے جلد اور آسانی سے آپ ان الفاظ کو سیکھ لیں۔","audioPath":"sabaq_2B_007.mp3"},"rows":[{"arabic":"مُسْلِم","secondaryText":"مُسْلِمُوْن، مُسْلِمِيْن","isSecondaryTextArabic":true,"count":"42","audioPath":"sabaq_2B_008.mp3"},{"arabic":"مُؤْمِن ","secondaryText":"مُؤْمِنُوْن، مُؤْمِنِيْن","isSecondaryTextArabic":true,"count":"230","audioPath":"sabaq_2B_009.mp3"},{"arabic":"صَالِح ","secondaryText":"صَالِحُوْن، صَالِحِيْن","isSecondaryTextArabic":true,"count":"136","audioPath":"sabaq_2B_010.mp3"},{"arabic":"كَافِر","secondaryText":"كَافِرُوْن،  كَافِرِيْن","isSecondaryTextArabic":true,"count":"134","audioPath":"sabaq_2B_011.mp3"},{"arabic":"مُشْرِك ","secondaryText":"مُشْرِكُوْن، مُشْرِكِيْن","isSecondaryTextArabic":true,"count":"49","audioPath":"sabaq_2B_012.mp3"}]},{"header":{"text":"تو اب ان الفاظ کو _a_ھُوَ، _\/a__a_ھُمْ  _\/a_کے ساتھ ملاکر پریکٹس کیجیے جیساکہ نیچے دیا گیا ہے، TPIکے طریقے کو استعمال کرتے ہوئے:\r\n\r\n_a_مُسْلِم _\/a_کی پریکٹس  _a_هُوَ، _\/a__a_هُمْ…   _\/a_کے ساتھ","audioPath":"sabaq_2B_013.mp3"},"rows":[{"arabic":"_a_هُوَ مُسْلِم_\/a_","secondaryText":"وہ ایک مسلمان ہے","isSecondaryTextArabic":false,"type2":"غائب (3rd.)","count":"","imagePath":"","type1":"واحد (sr.)","audioPath":"sabaq_2B_014.mp3"},{"arabic":"_a_هُمْ مُسْلِمُوْن_\/a_","secondaryText":"وہ سب مسلمان ہیں","isSecondaryTextArabic":false,"type2":"غائب (3rd.)","count":"","imagePath":"","type1":"جمع (pl.)","audioPath":"sabaq_2B_014.mp3"},{"arabic":"_a_أَنْتَ مُسْلِم_\/a_","secondaryText":"آپ ایک مسلمان ہیں","isSecondaryTextArabic":false,"type2":"حاضر (2nd.)","count":"","imagePath":"","type1":"واحد (sr.)","audioPath":"sabaq_2B_015.mp3"},{"arabic":"_a_أَنْتُمْ مُسْلِمُوْن_\/a_","secondaryText":"آپ سب مسلمان ہیں","isSecondaryTextArabic":false,"type2":"حاضر (2nd.)","count":"","imagePath":"","type1":"جمع (pl.)","audioPath":"sabaq_2B_015.mp3"},{"arabic":"_a_أَنَا مُسْلِم_\/a_","secondaryText":"میں ایک مسلمان ہوں","isSecondaryTextArabic":false,"type2":"متکلم (1st.)","count":"","imagePath":"","type1":"واحد (sr.)","audioPath":"sabaq_2B_016.mp3"},{"arabic":"_a_نَحْنُ مُسْلِمُوْن_\/a_","secondaryText":"ہم  سب مسلمان ہیں","isSecondaryTextArabic":false,"type2":"متکلم (1st.)","count":"","imagePath":"","type1":"جمع (pl.)\r\nمثنی (dl.)","audioPath":"sabaq_2B_016.mp3"}]},{"header":{"text":"عربی بول چال","audioPath":""},"rows":[{"arabic":"هَلْ أَنْتَ مُسْلِم؟","secondaryText":"نَعَمْ، أَنَا مُسْلِم","isSecondaryTextArabic":true,"audioPath":"sabaq_2B_017.mp3"},{"arabic":"هَلْ أَنْتُمْ مُسْلِمُوْن؟","secondaryText":"نَعَمْ، نَحْنُ مُسْلِمُوْن","isSecondaryTextArabic":true,"audioPath":"sabaq_2B_018.mp3"},{"arabic":"هَلْ هُوَ مُسْلِم؟","secondaryText":"نَعَمْ، هُوَ مُسْلِم","isSecondaryTextArabic":true,"imagePath":"","audioPath":"sabaq_2B_019.mp3"},{"arabic":"هَلْ هُمْ مُسْلِمُوْن؟","secondaryText":"نَعَمْ، هُمْ مُسْلِمُوْن","isSecondaryTextArabic":true,"audioPath":"sabaq_2B_020.mp3"}]}],"lessonID":"002B"},
   "lessonB/3B": {"tables":[{"header":{"text":"گرامر : ہم نے اس سے پہلے كے سبق میں “وه، وه سب، آپ، آپ سب، میں اور ہم سب ” كے لیے عربی الفاظ سیکھے تھے، اب ہم “اس كا، ان سب  كا، آپ كا، آپ سب كا، میرا  اور ہمارا” كے لیے عربی الفاظ سیکھیں گے، عربی میں یہ الفاظ  (_a_ـهٗ،_\/a_ _a_ـهٖ،_\/a_ _a_ـهُمْ،_\/a_ _a_ـكَ،_\/a_ _a_ـكُمْ،_\/a_ _a_ـِي،_\/a_ _a_ـنَا_\/a_)  ہمیشہ کسی لفظ کے ساتھ جڑ کر آتے ہیں اس لیے ان کا گننا مشکل ہے،اور یہ قرآن مجید کی تقریبا ًہر لائن میں پائے جاتے ہیں، یعنی تقریباً  10 ہزار بار۔ ان کو  TPI کے طریقے سے پورے شوق كے ساتھ سیکھیے۔","audioPath":"sabaq_3B_001.mp3"},"rows":[]},{"header":{"text":"اس كا،  ان كا…","audioPath":""},"rows":[{"arabic":"_a_هٗ_\/a_","secondaryText":"اس کا","isSecondaryTextArabic":false,"type2":"غائب (3rd.)","count":"","type1":"واحد (sr.)","audioPath":"sabaq_3B_002.mp3"},{"arabic":"_a_ـهُمْ_\/a_ ","secondaryText":"ان سب  کا","isSecondaryTextArabic":false,"type2":"غائب (3rd.)","count":"","type1":"جمع (pl.)","audioPath":"sabaq_3B_002.mp3"},{"arabic":"_a_ــكَ_\/a_","secondaryText":"آپ کا","isSecondaryTextArabic":false,"type2":"حاضر (2nd.)","count":"","type1":"واحد (sr.)","audioPath":"sabaq_3B_003.mp3"},{"arabic":"_a_ـكُمْ_\/a_","secondaryText":"آپ سب کا","isSecondaryTextArabic":false,"type2":"حاضر (2nd.)","count":"","type1":"جمع (pl.)","audioPath":"sabaq_3B_003.mp3"},{"arabic":"_a_ــِيْ_\/a_","secondaryText":"میرا","isSecondaryTextArabic":false,"type2":"متکلم (1st.)","count":"","type1":"واحد (sr.)","audioPath":"sabaq_3B_004.mp3"},{"arabic":"_a_ـنَا_\/a_","secondaryText":"هم سب كا ","isSecondaryTextArabic":false,"type2":"متکلم (1st.)","count":"","type1":"جمع (pl.)\r\nمثنی (dl.)","audioPath":"sabaq_3B_004.mp3"}]},{"header":{"text":"971 رَب…+ (ـهٗ، ـهُمْ،…)","audioPath":""},"rows":[{"arabic":"_a_رَبُّهٗ_\/a_ ","secondaryText":"اس کا رب","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_005.mp3"},{"arabic":"_a_رَبُّهُمْ_\/a_ ","secondaryText":"ان سب کا رب","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_005.mp3"},{"arabic":"_a_رَبُّكَ_\/a_","secondaryText":"آپ کا رب","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_006.mp3"},{"arabic":"_a_رَبُّكُمْ_\/a_","secondaryText":"آپ سب کا رب","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_006.mp3"},{"arabic":"_a_رَبِّيْ_\/a_","secondaryText":"میرا رب","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_007.mp3"},{"arabic":"_a_رَبُّنَا_\/a_","secondaryText":"هم سب كا  رب","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_007.mp3"}]},{"header":{"text":"***   (عربی بول چال)  ***","audioPath":""},"rows":[{"arabic":"مَنْ رَبُّكَ؟","secondaryText":"رَبِّيَ  اللّٰهُ","isSecondaryTextArabic":true,"audioPath":"sabaq_3B_008.mp3"},{"arabic":"مَنْ رَبُّكُمْ؟","secondaryText":"رَبُّنَا  اللّٰهُ","isSecondaryTextArabic":true,"audioPath":"sabaq_3B_009.mp3"},{"arabic":"مَنْ رَبُّهٗ؟","secondaryText":"رَبُّهُ  اللّٰهُ","isSecondaryTextArabic":true,"imagePath":"","audioPath":"sabaq_3B_010.mp3"},{"arabic":"مَنْ رَبُّهُمْ؟","secondaryText":"رَبُّهُمُ  اللّٰهُ","isSecondaryTextArabic":true,"audioPath":"sabaq_3B_011.mp3"}]},{"header":{"text":"دِین…+ (ـهٗ، ـهُمْ،…)","audioPath":""},"rows":[{"arabic":"_a_دِینُہٗ_\/a_","secondaryText":"اس کا دین","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_012.mp3"},{"arabic":"_a_دِینُھُمْ_\/a_","secondaryText":"ان سب کا دین","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_012.mp3"},{"arabic":"_a_دِینُکَ_\/a_","secondaryText":"آپ کا دین","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_013.mp3"},{"arabic":"_a_دِینُکُمْ_\/a_","secondaryText":"آپ سب کا دین","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_013.mp3"},{"arabic":"_a_دِینِيْ_\/a_","secondaryText":"میرا دین","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_014.mp3"},{"arabic":"_a_دِینُنَا_\/a_","secondaryText":"ہمارا دین","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_3B_014.mp3"}]},{"header":{"text":"***   (عربی بول چال)  ***\r\nنئے الفاظ: \r\n( 2154)مَا؟ كيا۔","audioPath":""},"rows":[{"arabic":"مَا دِيْنُكَ؟","secondaryText":"دِيْنِيَ الْإِسْلَام","isSecondaryTextArabic":true,"audioPath":"sabaq_3B_015.mp3"},{"arabic":"مَا دِيْنُكُمْ؟","secondaryText":"دِيْنُنَا الْإِسْلَام","isSecondaryTextArabic":true,"audioPath":"sabaq_3B_016.mp3"},{"arabic":"مَا دِینُہٗ؟","secondaryText":"دِینُہُ الإِسْلَامُ","isSecondaryTextArabic":true,"audioPath":"sabaq_3B_017.mp3"},{"arabic":"مَا دِینُھُمْ؟","secondaryText":"دِینُھُمْ الإِسْلَامُ","isSecondaryTextArabic":true,"audioPath":"sabaq_3B_018.mp3"}]}],"lessonID":"003B"},
   "lessonB/4B": {"tables":[{"header":{"text":"گرامر: اس سبق میں مؤنث کا صیغہ اور مذکر سے مؤنث کے الفاظ بنانے کا طریقہ بھی سیکھیں گے، ان سب کو TPIکے طریقے سے سیکھیے۔\r\nجب آپ ھِيَ (وہ عورت) یا ھَا (اس عورت کا) کہیں تو بائیں ہاتھ کی تشہد کی انگلی سے بائیں جانب اشارہ کریں، گویا ’’وہ عورت‘‘ آپ کے بائیں جانب ہے۔","audioPath":"sabaq_4B_001.mp3"},"rows":[{"arabic":" _a_ھِيَ_\/a_","secondaryText":"وہ عورت","isSecondaryTextArabic":false,"count":"64","imagePath":"","audioPath":"sabaq_4B_002.mp3"},{"arabic":"_a_ھَا_\/a_","secondaryText":"اس عورت کا","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_4B_002.mp3"},{"arabic":"_a_رَبُّھَا_\/a_","secondaryText":"اس عورت کا رب","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_4B_002.mp3"},{"arabic":"_a_دِیْنُھَا_\/a_","secondaryText":"اس عورت کا دین\/طریقۂ زندگی","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_4B_002.mp3"}]},{"header":{"text":"مذکر سے مؤنث اور اس کی جمع: عربی زبان میں مذکر سے مؤنث بنانے کے لیے عام طور پر مذکر لفظ کے آگے گول تا ’’ۃ‘‘ کا اضافہ کردیتے ہیں، جیسے:\r\n\r\nمُذَكَّر سے مؤنث","audioPath":"sabaq_4B_003.mp3"},"rows":[{"arabic":"مُسْلِم","secondaryText":"مُسْلِمَة","isSecondaryTextArabic":true,"count":"","audioPath":"sabaq_4B_004.mp3"},{"arabic":"مُؤْمِن","secondaryText":"مُؤْمِنَة","isSecondaryTextArabic":true,"count":"","audioPath":"sabaq_4B_005.mp3"},{"arabic":"صَالِح","secondaryText":"صَالِحَة","isSecondaryTextArabic":true,"count":"","audioPath":"sabaq_4B_006.mp3"},{"arabic":"كَافِر","secondaryText":"كَافِرَة","isSecondaryTextArabic":true,"count":"","audioPath":"sabaq_4B_007.mp3"},{"arabic":"مُشْرِك","secondaryText":"مُشْرِكَة","isSecondaryTextArabic":true,"count":"","audioPath":"sabaq_4B_008.mp3"}]},{"header":{"text":"****   (عربی بول چال)  ****","audioPath":""},"rows":[{"arabic":"هُوَ مُسْلِم","secondaryText":"هِيَ مُسْلِمَة.","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_009.mp3"},{"arabic":"هُوَ مُؤْمِن","secondaryText":"هِيَ مُؤْمِنَة.","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_010.mp3"},{"arabic":"هُوَ صَالِح","secondaryText":"هِيَ صَالِحَة.","isSecondaryTextArabic":true,"imagePath":"","audioPath":"sabaq_4B_0011.mp3"},{"arabic":"ھُوَ کَافِر","secondaryText":"ھِيَ کَافِرَۃ","isSecondaryTextArabic":true,"imagePath":"","audioPath":"sabaq_4B_012.mp3"},{"arabic":"ھُوَ مُشْرِک","secondaryText":"ھِيَ مُشْرِکَۃ","isSecondaryTextArabic":true,"imagePath":"","audioPath":"sabaq_4B_013.mp3"}]},{"header":{"text":"کسی لفظ کے آخر میں _a_ھَا _\/a_لگائیں تو اس کا مطلب ہوگا: اس عورت کا۔\r\n\r\n مؤنث","audioPath":"sabaq_4B_014.mp3"},"rows":[{"arabic":"_a_رَبُّهَا_\/a_ ","secondaryText":"اس عورت كا رب","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_4B_015.mp3"},{"arabic":"_a_دِيْنُهَا_\/a_ ","secondaryText":"اس عورت كا دين","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_4B_016.mp3"},{"arabic":"_a_كِتَابُهَا_\/a_","secondaryText":"اس  عورت كی كتاب","isSecondaryTextArabic":false,"imagePath":"","audioPath":"sabaq_4B_017.mp3"}]},{"header":{"text":"نیچے دیے گئے ٹیبل کو غور سے پڑھیں اور مذکر اور مؤنث کا فرق نوٹ کریں۔\r\n\r\nمذکر سے مؤنث","audioPath":""},"rows":[{"arabic":"رَبُّہٗ","secondaryText":"رَبُّھَا","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_018.mp3"},{"arabic":"دِینُہٗ","secondaryText":"دِینُھَا","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_019.mp3"},{"arabic":"کِتَابُہٗ","secondaryText":"کِتَابُھَا","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_020.mp3"},{"arabic":"رَسُولُہٗ","secondaryText":"رَسُولُھَا","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_021.mp3"},{"arabic":"اِسْمُہٗ","secondaryText":"اِسْمُھَا","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_022.mp3"}]},{"header":{"text":"لفظ ’’ھا‘‘ کو یاد رکھنے کے لیے ان مثالوں کو یاد رکھیے۔ ہر صحابی کے نام کے بعد ہم رضی اﷲ عنہ استعمال کرتے ہیں اور صحابیہ کے نام کے بعد رضی اﷲ عنہا، _a_مثلاً اَبُوبَکْر رَضيَ اﷲُ عَنْہٗ،_\/a_  _a_عَائِشَۃ رَضِيَ اﷲُ عَنْھَا۔_\/a_","audioPath":""},"rows":[]},{"header":{"text":"****   (عربی بول چال)  ****","audioPath":""},"rows":[{"arabic":"مَنْ رَبُّہٗ؟","secondaryText":"رَبُّہُ اﷲُ","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_023.mp3"},{"arabic":"مَا دِینُہٗ؟","secondaryText":"دِینُہُ الْإسْلَام","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_025.mp3"},{"arabic":"مَا کِتَابُہٗ؟","secondaryText":"کِتَابُہُ الْقُراٰن","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_027.mp3"},{"arabic":"مَنْ رَسُولُہٗ؟","secondaryText":"رَسُولُہُ مُحَمَّد ﷺ","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_029.mp3"},{"arabic":"مَنْ رَبُّھَا؟","secondaryText":"رَبُّھَا اﷲُ","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_024.mp3"},{"arabic":"مَا دِینُھَا؟","secondaryText":"دِینُھَا الْإِسْلَامُ","isSecondaryTextArabic":true,"audioPath":"sabaq_4B_026.mp3"},{"arabic":"مَا کِتَابُھَا؟","secondaryText":"کِتَابُھَا الْقُرْاٰنُ","isSecondaryTextArabic":true,"imagePath":"","audioPath":"sabaq_4B_028.mp3"},{"arabic":"مَنْ رَسُولُھَا؟","secondaryText":"رَسُولُھَا مُحَمَّد ﷺ","isSecondaryTextArabic":true,"imagePath":"","audioPath":"sabaq_4B_030.mp3"}]},{"header":{"text":"مؤنث اور اس کی جمع: مؤنث کی جمع بنانا ہو تو لفظ کے آخر کا تا ’’ۃ‘‘ گرا کر ’’ا ت‘‘ کا اضافہ کردیتے ہیں، ذیل میں مثالیں دیکھیے:","audioPath":"sabaq_4B_031.mp3"},"rows":[{"arabic":"مُسْلِمَة","secondaryText":"مُسْلِمَات","isSecondaryTextArabic":true,"count":"","audioPath":"sabaq_4B_032.mp3"},{"arabic":"مُؤْمِنَة","secondaryText":"مُؤْمِنَات","isSecondaryTextArabic":true,"count":"","audioPath":"sabaq_4B_033.mp3"},{"arabic":"صَالِحَة","secondaryText":"صَالِحَات","isSecondaryTextArabic":true,"count":"","audioPath":"sabaq_4B_034.mp3"},{"arabic":"کَافِرَۃ","secondaryText":"کَافِرَات","isSecondaryTextArabic":true,"count":"","audioPath":"sabaq_4B_035.mp3"},{"arabic":"مُشْرِکَۃ","secondaryText":"مُشْرِکَات","isSecondaryTextArabic":true,"count":"","audioPath":"sabaq_4B_036.mp3"}]}],"lessonID":"004B"},

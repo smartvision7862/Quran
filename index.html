@@ -24,27 +24,31 @@
       <nav class="sidebar-nav">
         <a href="#dashboard" class="nav-item active" id="nav-dashboard">
           <span class="nav-icon">🏠</span>
-          <span class="nav-label">Dashboard</span>
+          <span class="nav-label" data-i18n="nav.dashboard">Dashboard</span>
         </a>
         <a href="#sabaq" class="nav-item" id="nav-sabaq">
           <span class="nav-icon">🎓</span>
-          <span class="nav-label">Learn Quran</span>
+          <span class="nav-label" data-i18n="nav.sabaq">Learn Quran</span>
         </a>
         <a href="#hadith" class="nav-item" id="nav-hadith">
           <span class="nav-icon">📚</span>
-          <span class="nav-label">Hadith Library</span>
+          <span class="nav-label" data-i18n="nav.hadith">Hadith Library</span>
         </a>
         <a href="#names" class="nav-item" id="nav-names">
           <span class="nav-icon">✨</span>
-          <span class="nav-label">99 Names</span>
+          <span class="nav-label" data-i18n="nav.names">99 Names</span>
         </a>
         <a href="#bookmarks" class="nav-item" id="nav-bookmarks">
           <span class="nav-icon">🔖</span>
-          <span class="nav-label">Bookmarks</span>
+          <span class="nav-label" data-i18n="nav.bookmarks">Bookmarks</span>
+        </a>
+        <a href="#chatbot" class="nav-item" id="nav-chatbot">
+          <span class="nav-icon">💬</span>
+          <span class="nav-label" data-i18n="nav.chatbot">Talkbot AI</span>
         </a>
         <a href="#settings" class="nav-item" id="nav-settings">
           <span class="nav-icon">⚙️</span>
-          <span class="nav-label">Settings</span>
+          <span class="nav-label" data-i18n="nav.settings">Settings</span>
         </a>
       </nav>
       <div class="sidebar-footer">
@@ -57,8 +61,33 @@
       <!-- Top header bar -->
       <header class="top-bar">
         <button class="menu-btn" id="menuBtn">☰</button>
-        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        <h1 class="page-title" id="pageTitle" data-i18n="nav.dashboard">Dashboard</h1>
         <div class="top-bar-actions">
+          <select id="langSelect" class="lang-select-header" onchange="applyLanguage(this.value)">
+            <option value="en">English</option>
+            <option value="ur">اردو</option>
+            <option value="ar">العربية</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="ta">தமிழ் (Tamil)</option>
+            <option value="te">తెలుగు (Telugu)</option>
+            <option value="mr">मराठी (Marathi)</option>
+            <option value="gu">ગુજરાتی (Gujarati)</option>
+            <option value="ml">മലയാളം (Malayalam)</option>
+            <option value="kn">ಕನ್ನಡ (Kannada)</option>
+            <option value="tr">Türkçe</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="fr">Français</option>
+            <option value="es">Español</option>
+            <option value="de">Deutsch</option>
+            <option value="ru">Русский</option>
+            <option value="fa">فارسی</option>
+            <option value="zh">中文</option>
+            <option value="ja">日本語</option>
+            <option value="pt">Português</option>
+            <option value="it">Italiano</option>
+          </select>
           <button id="themeToggleBtn" class="theme-toggle-btn" title="Toggle Theme">🌙</button>
         </div>
       </header>
@@ -69,35 +98,35 @@
         <!-- DASHBOARD VIEW -->
         <section id="view-dashboard" class="app-view active">
           <div class="dashboard-hero">
-            <h2>Assalamu Alaikum</h2>
+            <h2 data-i18n="dashboard.welcome">Assalamu Alaikum</h2>
             <p id="hijri-date">Loading date...</p>
           </div>
           <div class="dashboard-grid">
             <div class="card verse-card full-width">
               <div class="card-header">
-                <h3>Daily Inspiration</h3>
+                <h3 data-i18n="dashboard.inspiration">Daily Inspiration</h3>
                 <span class="badge">Quran</span>
               </div>
               <div class="card-body">
                 <p class="arabic-text" dir="rtl">اِنَّمَا الۡاَعۡمَالُ بِالنِّيَّاتِ ؕ وَ اِنَّمَا لِكُلِّ امۡرِیِٴٍ مَّا نَوٰی ؕ</p>
-                <p class="translation-text">"اعمال کا دارومدار نیتوں پر ہے، اور ہر انسان کے لیے وہی ہے جس کی اس نے نیت کی۔"</p>
-                <p class="reference">Sahih al-Bukhari, Hadith 1</p>
+                <p class="translation-text">"اعمال کا دارومدار نیتوں پر ہے، اور ہر انسان کے لیے وہی ہے جس کی اس نے نیت۔"</p>
+                <p class="reference" data-i18n="dashboard.reference">Sahih al-Bukhari, Hadith 1</p>
               </div>
             </div>
             <div class="card shortcut-card" onclick="location.hash='#sabaq'">
               <div class="shortcut-icon">🎓</div>
-              <h3>Learn Quran</h3>
-              <p>Word-by-word Urdu grammar & translation courses.</p>
+              <h3 data-i18n="nav.sabaq">Learn Quran</h3>
+              <p data-i18n="dashboard.learn_desc">Word-by-word Urdu grammar & translation courses.</p>
             </div>
             <div class="card shortcut-card" onclick="location.hash='#hadith'">
               <div class="shortcut-icon">📚</div>
-              <h3>Hadith Library</h3>
-              <p>Explore 9 core Hadith books with translations.</p>
+              <h3 data-i18n="nav.hadith">Hadith Library</h3>
+              <p data-i18n="dashboard.hadith_desc">Explore 9 core Hadith books with translations.</p>
             </div>
             <div class="card shortcut-card" onclick="location.hash='#names'">
               <div class="shortcut-icon">✨</div>
-              <h3>99 Names</h3>
-              <p>Beautify your day with Allah's Names & meanings.</p>
+              <h3 data-i18n="nav.names">99 Names</h3>
+              <p data-i18n="dashboard.names_desc">Beautify your day with Allah's Names & meanings.</p>
             </div>
           </div>
         </section>
@@ -198,13 +227,65 @@
           </div>
         </section>
 
+        <!-- TALKBOT AI CHATBOT VIEW -->
+        <section id="view-chatbot" class="app-view">
+          <div class="chatbot-container">
+            <div class="chatbot-grid">
+              <!-- Left Side: Interactive Avatar Card -->
+              <div class="avatar-card glass-card">
+                <div class="glow-ring-container">
+                  <div id="glowRing" class="glow-ring idle"></div>
+                  <div class="avatar-image-container">
+                    <div class="avatar-img-fallback">🤖</div>
+                    <!-- Waveform indicator overlay when speaking -->
+                    <div id="waveformOverlay" class="waveform-container">
+                      <span class="bar"></span>
+                      <span class="bar"></span>
+                      <span class="bar"></span>
+                      <span class="bar"></span>
+                      <span class="bar"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="status-indicator">
+                  <span id="statusIcon" class="status-dot online"></span>
+                  <span id="statusText" data-i18n="chat.ready">Quran360 AI Assistant is ready</span>
+                </div>
+              </div>
+
+              <!-- Right Side: Chat Message Console -->
+              <div class="chat-card glass-card">
+                <div class="chat-header">
+                  <div class="chat-header-info">
+                    <h3 data-i18n="chat.title">Quran360 AI Assistant</h3>
+                    <p><span class="chat-status-dot"></span> <span data-i18n="chat.voice">Voice Enabled</span></p>
+                  </div>
+                </div>
+                <div class="chat-body" id="chatMessages">
+                  <div class="message system-msg">
+                    <div class="msg-content" data-i18n="chat.welcome">
+                      👋 Welcome to Quran360 AI Assistant! I am here to help you learn the Quran, understand Hadiths, practice Arabic grammar, or guide you through your lessons.
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-footer">
+                  <button type="button" id="micBtn" class="chat-action-btn" title="Talk to Assistant">🎤</button>
+                  <textarea id="userInput" data-i18n="chat.placeholder" placeholder="Type or say something..." autocomplete="off" rows="1"></textarea>
+                  <button type="button" id="sendBtn" class="chat-action-btn" title="Send Message">➔</button>
+                  <button type="button" id="speakToggleBtn" class="chat-action-btn active" title="Mute/Unmute Speech">🔊</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- SETTINGS VIEW -->
         <section id="view-settings" class="app-view">
           <div class="settings-container">
             <div class="setting-group">
-              <h3>Appearance</h3>
+              <h3 data-i18n="settings.appearance">Appearance</h3>
               <div class="setting-row">
-                <label for="themeSelect">Theme</label>
+                <label for="themeSelect" data-i18n="settings.theme">Theme</label>
                 <select id="themeSelect">
                   <option value="dark">Dark Theme</option>
                   <option value="light">Light Theme</option>
@@ -213,22 +294,50 @@
               </div>
             </div>
             <div class="setting-group">
-              <h3>Typography</h3>
+              <h3 data-i18n="settings.typography">Typography</h3>
               <div class="setting-row">
-                <label for="arabicFontSize">Arabic Font Size</label>
+                <label for="arabicFontSize" data-i18n="settings.arabic_size">Arabic Font Size</label>
                 <input type="range" id="arabicFontSize" min="20" max="48" value="28">
                 <span id="arabicSizeVal">28px</span>
               </div>
               <div class="setting-row">
-                <label for="translationFontSize">Translation Font Size</label>
+                <label for="translationFontSize" data-i18n="settings.translation_size">Translation Font Size</label>
                 <input type="range" id="translationFontSize" min="14" max="28" value="16">
                 <span id="translationSizeVal">16px</span>
               </div>
             </div>
             <div class="setting-group">
-              <h3>Language Preference</h3>
+              <h3 data-i18n="settings.lang_pref">Language Settings</h3>
               <div class="setting-row">
-                <label for="defaultHadithLang">Default Hadith Language</label>
+                <label for="appInterfaceLang" data-i18n="settings.app_lang">Application Interface Language</label>
+                <select id="appInterfaceLang" onchange="applyLanguage(this.value); document.getElementById('langSelect').value = this.value;">
+                  <option value="en">English</option>
+                  <option value="ur">اردو</option>
+                  <option value="ar">العربية</option>
+                  <option value="hi">हिन्दी (Hindi)</option>
+                  <option value="bn">বাংলা (Bengali)</option>
+                  <option value="pa">ਪੰਜਾਬੀ (Punjabi)</option>
+                  <option value="ta">தமிழ் (Tamil)</option>
+                  <option value="te">తెలుగు (Telugu)</option>
+                  <option value="mr">مراठी (Marathi)</option>
+                  <option value="gu">ગુજરાتی (Gujarati)</option>
+                  <option value="ml">മലയാളം (Malayalam)</option>
+                  <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                  <option value="tr">Türkçe</option>
+                  <option value="id">Bahasa Indonesia</option>
+                  <option value="fr">Français</option>
+                  <option value="es">Español</option>
+                  <option value="de">Deutsch</option>
+                  <option value="ru">Русский</option>
+                  <option value="fa">فارسی</option>
+                  <option value="zh">中文</option>
+                  <option value="ja">日本語</option>
+                  <option value="pt">Português</option>
+                  <option value="it">Italiano</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <label for="defaultHadithLang" data-i18n="settings.default_hadith">Default Hadith Language</label>
                 <select id="defaultHadithLang">
                   <option value="1">Urdu</option>
                   <option value="2">English</option>
@@ -236,9 +345,16 @@
               </div>
             </div>
             <div class="setting-group">
-              <h3>Database Settings</h3>
+              <h3>AI Assistant Settings</h3>
               <div class="setting-row">
-                <button class="action-btn danger" id="clearAllBookmarksBtn">Clear All Bookmarks</button>
+                <label for="apiKey">OpenAI API Key (Optional)</label>
+                <input type="password" id="apiKey" placeholder="sk-...">
+              </div>
+            </div>
+            <div class="setting-group">
+              <h3 data-i18n="settings.db_settings">Database Settings</h3>
+              <div class="setting-row">
+                <button class="action-btn danger" id="clearAllBookmarksBtn" data-i18n="settings.clear_bookmarks">Clear All Bookmarks</button>
               </div>
             </div>
           </div>
@@ -252,6 +368,7 @@
   <audio id="sabaqAudio"></audio>
 
   <script src="lessons_data.js"></script>
+  <script src="i18n.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
