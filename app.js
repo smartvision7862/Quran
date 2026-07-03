@@ -104,9 +104,15 @@ async function loadDatabaseFile(dbFile) {
       try {
         const cachedResponse = await cache.match(absUrl);
         if (cachedResponse) {
-          console.log(`Loading database ${dbFile} from cache: ${relativeUrl}`);
           const buffer = await cachedResponse.arrayBuffer();
-          return new Uint8Array(buffer);
+          // Verify if it is a valid SQLite DB file (size > 1000 bytes)
+          if (buffer.byteLength > 1000) {
+            console.log(`Loading database ${dbFile} from cache: ${relativeUrl} (${buffer.byteLength} bytes)`);
+            return new Uint8Array(buffer);
+          } else {
+            console.warn(`Cached database ${dbFile} is too small (${buffer.byteLength} bytes). Deleting from cache.`);
+            await cache.delete(absUrl);
+          }
         }
       } catch (e) {
         console.warn(`Error reading cache for ${relativeUrl}:`, e);
@@ -119,19 +125,24 @@ async function loadDatabaseFile(dbFile) {
     try {
       const absUrl = new URL(relativeUrl, window.location.href).href;
       console.log(`Trying to fetch database ${dbFile} from: ${absUrl}`);
-      const response = await fetch(absUrl);
+      // Force fetching from network to bypass potential browser LFS pointer caching
+      const response = await fetch(absUrl, { cache: 'reload' });
       if (response.ok) {
         const responseClone = response.clone();
         const buffer = await response.arrayBuffer();
-        if (cache) {
-          try {
-            await cache.put(absUrl, responseClone);
-            console.log(`Saved database ${dbFile} from ${relativeUrl} into Cache API`);
-          } catch (e) {
-            console.warn("Failed to write to Cache API:", e);
+        if (buffer.byteLength > 1000) {
+          if (cache) {
+            try {
+              await cache.put(absUrl, responseClone);
+              console.log(`Saved database ${dbFile} from ${relativeUrl} into Cache API (${buffer.byteLength} bytes)`);
+            } catch (e) {
+              console.warn("Failed to write to Cache API:", e);
+            }
           }
+          return new Uint8Array(buffer);
+        } else {
+          console.warn(`Fetched database ${dbFile} from ${relativeUrl} is too small (${buffer.byteLength} bytes). Not caching or using.`);
         }
-        return new Uint8Array(buffer);
       }
     } catch (err) {
       lastError = err;
