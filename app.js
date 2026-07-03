@@ -42,13 +42,8 @@ function decryptUrdu(scrambledText) {
     // 1571 is the code point for 'أ'
     if (c === 1571) {
       result.push(' ');
-    } else if ((c >= 0x0600 && c <= 0x06FF) ||
-               (c >= 0x0750 && c <= 0x077F) ||
-               (c >= 0xFB50 && c <= 0xFDFF) ||
-               (c >= 0xFE70 && c <= 0xFEFF)) {
-      result.push(String.fromCharCode(c - 3));
     } else {
-      result.push(scrambledText.charAt(i));
+      result.push(String.fromCharCode(c - 3));
     }
   }
   return result.join('');
@@ -1278,7 +1273,7 @@ function getMockData(dbFile, sql, args) {
   }
   
   // 2. Count count mock
-  if (sql.includes("COUNT(*)")) {
+  if (sql.includes("COUNT(*)") && sql.includes("hadees")) {
     return [{ total: 2 }];
   }
   
@@ -2149,7 +2144,7 @@ async function loadQuranReaderVerses() {
       let transHTML = '';
       if (readerState.showTranslation) {
         transHTML = `
-          <div class="reader-trans-line urdu">${v.translation_urdu || ''}</div>
+          <div class="reader-trans-line urdu">${v.translation_urdu ? decryptUrdu(v.translation_urdu) : ''}</div>
           <div class="reader-trans-line">${v.translation_english || ''}</div>
         `;
       }
@@ -2259,13 +2254,13 @@ async function loadSupplications() {
     let dbFile = "quranDb.db";
 
     if (supplicationsState.currentTab === 'daily') {
-      sql = "SELECT category, serial_no, virtues, dua, translation, reference FROM tbl_dua_Urdu ORDER BY category, serial_no";
+      sql = "SELECT dua_title as category, dua_seq as serial_no, dua_desc as virtues, dua_arabic as dua, dua_urdu as translation, dua_ref as reference FROM tbl_dua_Urdu ORDER BY dua_title, dua_seq";
     } else if (supplicationsState.currentTab === 'roza') {
-      sql = "SELECT category, serial_no, virtues, dua, translation, reference FROM tbl_roza ORDER BY serial_no";
+      sql = "SELECT dua_title as category, dua_seq as serial_no, dua_desc as virtues, dua_arabic as dua, dua_urdu as translation, dua_ref as reference FROM tbl_roza ORDER BY dua_seq";
     } else if (supplicationsState.currentTab === 'janaza') {
-      sql = "SELECT category, serial_no, virtues, dua, translation, reference FROM tbl_namaz_e_janaza ORDER BY serial_no";
+      sql = "SELECT dua_title as category, dua_seq as serial_no, dua_desc as virtues, dua_arabic as dua, dua_urdu as translation, dua_ref as reference FROM tbl_namaz_e_janaza ORDER BY dua_seq";
     } else if (supplicationsState.currentTab === 'sunnah') {
-      sql = "SELECT category, serial_no, virtues, dua, translation, reference FROM tbl_sunnah ORDER BY serial_no";
+      sql = "SELECT dua_title as category, dua_seq as serial_no, dua_desc as virtues, dua_arabic as dua, dua_urdu as translation, dua_ref as reference FROM tbl_prayer ORDER BY dua_seq";
     }
 
     const list = await queryDatabase(dbFile, sql);
@@ -2378,7 +2373,7 @@ async function loadQuranTopics() {
   try {
     quranTopicsCache = await queryDatabase(
       "quranDb.db",
-      "SELECT id, surah_id, surah_name, start_ayah, end_ayah, topic_urdu, topic_english FROM tbl_QuranTopics ORDER BY id"
+      "SELECT topic_id as id, surat_id as surah_id, surat_name as surah_name, start_ayat_id as start_ayah, end_ayat_id as end_ayah, urdu_topics as topic_urdu, eng_topics as topic_english FROM tbl_QuranTopics ORDER BY topic_id"
     );
     renderQuranTopics(quranTopicsCache);
   } catch (e) {
@@ -2463,8 +2458,8 @@ async function showTopicVerses(surahId, startAyah, endAyah, topicUr, topicEn) {
         </div>
         <div class="reader-arabic-line" style="font-size: 24px; margin-bottom: 8px;">${v.arabic}</div>
         <div class="wbw-full-translations" style="margin-top: 8px;">
-          <div class="wbw-trans-line"><strong>Urdu:</strong> <p>${v.translation_urdu}</p></div>
-          <div class="wbw-trans-line"><strong>English:</strong> <p>${v.translation_english}</p></div>
+          <div class="wbw-trans-line"><strong>Urdu:</strong> <p>${v.translation_urdu ? decryptUrdu(v.translation_urdu) : ''}</p></div>
+          <div class="wbw-trans-line"><strong>English:</strong> <p>${v.translation_english || ''}</p></div>
         </div>
       `;
       body.appendChild(item);
@@ -2726,7 +2721,7 @@ function renderWbwVersesList(versesSlice, append = false) {
       <div class="wbw-full-translations">
         <div class="wbw-trans-line">
           <strong>اردو:</strong>
-          <p>${v.translation_urdu || 'Urdu translation not available.'}</p>
+          <p>${v.translation_urdu ? decryptUrdu(v.translation_urdu) : 'Urdu translation not available.'}</p>
         </div>
         <div class="wbw-trans-line">
           <strong>English:</strong>

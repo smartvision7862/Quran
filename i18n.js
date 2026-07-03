@@ -60,6 +60,14 @@ const i18n = {
     id: "Talkbot AI",
     fr: "Talkbot IA"
   },
+  "nav.seerat": {
+    en: "Seerat un Nabi",
+    ur: "سیرت النبی ﷺ",
+    ar: "سيرة النبي ﷺ",
+    tr: "Siyer-i Nebi",
+    id: "Seerat un Nabi",
+    fr: "Seerat un Nabi"
+  },
 
   // Dashboard View
   "dashboard.welcome": {
