@@ -19,7 +19,10 @@ const DB_PATH = path.join(__dirname, "..", "extracted_assets");
 function getDb(dbFile) {
   if (!Database) return null;
   if (!dbInstances[dbFile]) {
-    const fullPath = path.join(DB_PATH, dbFile);
+    let fullPath = path.join(DB_PATH, dbFile);
+    if (!fs.existsSync(fullPath)) {
+      fullPath = path.join(DB_PATH, "databases", dbFile);
+    }
     if (!fs.existsSync(fullPath)) { console.error("DB not found:", fullPath); return null; }
     try { dbInstances[dbFile] = new Database(fullPath, { readonly: true }); }
     catch(e) { console.error("DB open error:", e.message); return null; }

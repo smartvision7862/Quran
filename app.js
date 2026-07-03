@@ -52,6 +52,125 @@ function decryptUrdu(scrambledText) {
 // Check if running in Android app via bridge
 const isAndroid = typeof QuranAndroidBridge !== 'undefined';
 
+// Client-side WebAssembly SQLite (SQL.js) fallback support
+let sqlDbInstances = {}; // Cache of opened SQL.js database instances
+let sqlJsEngine = null;  // SQL.js library instance
+
+// Helper to update loading indicator text dynamically during database fetch/parsing
+function updateLoadingIndicators(text) {
+  document.querySelectorAll('.loading-indicator').forEach(el => {
+    el.textContent = text;
+  });
+}
+
+// Dynamically load SQL.js via WebAssembly from CDN
+async function getSqlJsEngine() {
+  if (sqlJsEngine) return sqlJsEngine;
+  if (typeof initSqlJs === 'undefined') {
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/sql-wasm.js';
+      script.onload = resolve;
+      script.onerror = () => reject(new Error("Failed to load SQL.js library from CDN"));
+      document.head.appendChild(script);
+    });
+  }
+  sqlJsEngine = await initSqlJs({
+    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.2/${file}`
+  });
+  return sqlJsEngine;
+}
+
+// Fetch database file, trying multiple common paths and caching using Cache API
+async function loadDatabaseFile(dbFile) {
+  const cacheName = 'quran-db-cache';
+  let cache = null;
+  try {
+    cache = await caches.open(cacheName);
+  } catch (e) {
+    console.warn("Cache API not supported or blocked:", e);
+  }
+
+  const urlsToTry = [
+    dbFile,
+    `databases/${dbFile}`,
+    `extracted_assets/${dbFile}`,
+    `extracted_assets/databases/${dbFile}`
+  ];
+
+  if (cache) {
+    for (const relativeUrl of urlsToTry) {
+      const absUrl = new URL(relativeUrl, window.location.href).href;
+      try {
+        const cachedResponse = await cache.match(absUrl);
+        if (cachedResponse) {
+          console.log(`Loading database ${dbFile} from cache: ${relativeUrl}`);
+          const buffer = await cachedResponse.arrayBuffer();
+          return new Uint8Array(buffer);
+        }
+      } catch (e) {
+        console.warn(`Error reading cache for ${relativeUrl}:`, e);
+      }
+    }
+  }
+
+  let lastError = null;
+  for (const relativeUrl of urlsToTry) {
+    try {
+      const absUrl = new URL(relativeUrl, window.location.href).href;
+      console.log(`Trying to fetch database ${dbFile} from: ${absUrl}`);
+      const response = await fetch(absUrl);
+      if (response.ok) {
+        const responseClone = response.clone();
+        const buffer = await response.arrayBuffer();
+        if (cache) {
+          try {
+            await cache.put(absUrl, responseClone);
+            console.log(`Saved database ${dbFile} from ${relativeUrl} into Cache API`);
+          } catch (e) {
+            console.warn("Failed to write to Cache API:", e);
+          }
+        }
+        return new Uint8Array(buffer);
+      }
+    } catch (err) {
+      lastError = err;
+      console.warn(`Failed to fetch from ${relativeUrl}:`, err);
+    }
+  }
+  throw lastError || new Error(`Database file ${dbFile} not found at any of the attempted paths.`);
+}
+
+// Query client-side SQLite using loaded SQL.js database
+async function queryDatabaseClientSide(dbFile, sql, argsArray = []) {
+  try {
+    if (!sqlDbInstances[dbFile]) {
+      console.log(`Initializing client-side database: ${dbFile}`);
+      updateLoadingIndicators(`Downloading database ${dbFile} (first time may take a moment)...`);
+      const SQL = await getSqlJsEngine();
+      const dbData = await loadDatabaseFile(dbFile);
+      updateLoadingIndicators(`Parsing database ${dbFile}...`);
+      sqlDbInstances[dbFile] = new SQL.Database(dbData);
+      console.log(`Database ${dbFile} initialized successfully`);
+    }
+
+    const db = sqlDbInstances[dbFile];
+    const stmt = db.prepare(sql);
+    stmt.bind(argsArray);
+    
+    const rows = [];
+    while (stmt.step()) {
+      rows.push(stmt.getAsObject());
+    }
+    stmt.free();
+    
+    return rows;
+  } catch (err) {
+    console.error(`Client-side SQL error for ${dbFile}:`, err);
+    throw err;
+  }
+}
+
 // Database query router
 async function queryDatabase(dbFile, sql, argsArray = []) {
   if (isAndroid) {
@@ -73,18 +192,30 @@ async function queryDatabase(dbFile, sql, argsArray = []) {
       });
       if (response.ok) {
         const data = await response.json();
-        // If server returned an error object (no DB available), fall through to mock
+        // If server returned an error object (no DB available), fall through to client-side
         if (!Array.isArray(data)) {
-          console.warn("API returned non-array, using mock data:", data);
-          return getMockData(dbFile, sql, argsArray);
+          console.warn("API returned non-array, attempting client-side query:", data);
+          try {
+            return await queryDatabaseClientSide(dbFile, sql, argsArray);
+          } catch (clientErr) {
+            console.warn("Client-side query failed, returning mock:", clientErr);
+            return getMockData(dbFile, sql, argsArray);
+          }
         }
         return data;
       }
     } catch (e) {
-      console.warn("API query failed, falling back to mock data:", e.message);
+      console.warn("API query failed, attempting client-side query:", e.message);
     }
-    // Fallback: mock data when server API is unavailable
-    return getMockData(dbFile, sql, argsArray);
+
+    // Try client-side SQL.js query
+    try {
+      return await queryDatabaseClientSide(dbFile, sql, argsArray);
+    } catch (clientErr) {
+      console.warn("Client-side query failed, falling back to mock data:", clientErr.message);
+      // Fallback: mock data when server API and SQL.js are both unavailable/failed
+      return getMockData(dbFile, sql, argsArray);
+    }
   }
 }
 
