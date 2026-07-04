@@ -1887,62 +1887,73 @@ function removeChatLoader(id) {
   if (loader) loader.remove();
 }
 
+let activeChatAudio = null;
+
 function speakText(text) {
   if (!state.voiceEnabled) return;
   
-  const cleanText = text.replace(/<[^>]*>/g, '').replace(/\*\*+/g, '');
+  const cleanText = text.replace(/<[^>]*>/g, '').replace(/\*\*+/g, '').trim();
+  
+  if (activeChatAudio) {
+    activeChatAudio.pause();
+    activeChatAudio = null;
+  }
   window.speechSynthesis.cancel();
   
-  const utterance = new SpeechSynthesisUtterance(cleanText);
   const langCodes = {
-    en: 'en-US',
-    ur: 'ur-PK',
-    ar: 'ar-SA',
-    hi: 'hi-IN',
-    bn: 'bn-IN',
-    pa: 'pa-IN',
-    ta: 'ta-IN',
-    te: 'te-IN',
-    mr: 'mr-IN',
-    gu: 'gu-IN',
-    ml: 'ml-IN',
-    kn: 'kn-IN',
-    tr: 'tr-TR',
-    id: 'id-ID',
-    fr: 'fr-FR',
-    es: 'es-ES',
-    de: 'de-DE',
-    ru: 'ru-RU',
-    fa: 'fa-IR',
-    zh: 'zh-CN',
-    ja: 'ja-JP',
-    pt: 'pt-PT',
-    it: 'it-IT'
+    en: 'en-US', ur: 'ur-PK', ar: 'ar-SA', hi: 'hi-IN', bn: 'bn-IN',
+    pa: 'pa-IN', ta: 'ta-IN', te: 'te-IN', mr: 'mr-IN', gu: 'gu-IN',
+    ml: 'ml-IN', kn: 'kn-IN', tr: 'tr-TR', id: 'id-ID', fr: 'fr-FR',
+    es: 'es-ES', de: 'de-DE', ru: 'ru-RU', fa: 'fa-IR', zh: 'zh-CN',
+    ja: 'ja-JP', pt: 'pt-PT', it: 'it-IT'
   };
-  utterance.lang = langCodes[window.currentLang || 'en'] || 'en-US';
-  
+  const activeLang = window.currentLang || 'en';
+  const voiceLangCode = langCodes[activeLang] || 'en-US';
+
   const waveformOverlay = document.getElementById("waveformOverlay");
   const glowRing = document.getElementById("glowRing");
   const statusText = document.getElementById("statusText");
 
-  utterance.onstart = () => {
+  const onStart = () => {
     if (waveformOverlay) waveformOverlay.classList.add("active");
     if (glowRing) glowRing.className = "glow-ring speaking";
-    if (statusText && window.i18n) statusText.textContent = window.i18n["chat.speaking"][window.currentLang || 'en'];
+    if (statusText && window.i18n) statusText.textContent = window.i18n["chat.speaking"][activeLang];
   };
 
-  utterance.onend = () => {
+  const onEnd = () => {
     if (waveformOverlay) waveformOverlay.classList.remove("active");
     if (glowRing) glowRing.className = "glow-ring idle";
-    if (statusText && window.i18n) statusText.textContent = window.i18n["chat.ready"][window.currentLang || 'en'];
+    if (statusText && window.i18n) statusText.textContent = window.i18n["chat.ready"][activeLang];
   };
 
-  utterance.onerror = () => {
-    if (waveformOverlay) waveformOverlay.classList.remove("active");
-    if (glowRing) glowRing.className = "glow-ring idle";
-    if (statusText && window.i18n) statusText.textContent = window.i18n["chat.ready"][window.currentLang || 'en'];
-  };
+  if (navigator.onLine) {
+    try {
+      const gLang = voiceLangCode.split('-')[0];
+      const url = "https://translate.google.com/translate_tts?ie=UTF-8&q=" + encodeURIComponent(cleanText) + "&tl=" + gLang + "&client=tw-ob";
+      activeChatAudio = new Audio(url);
+      activeChatAudio.onplay = onStart;
+      activeChatAudio.onended = onEnd;
+      activeChatAudio.onerror = () => {
+        fallbackChatNativeTTS(cleanText, voiceLangCode, onStart, onEnd);
+      };
+      activeChatAudio.play().catch(() => {
+        fallbackChatNativeTTS(cleanText, voiceLangCode, onStart, onEnd);
+      });
+      return;
+    } catch(e) {
+      console.warn("Chat audio TTS error:", e);
+    }
+  }
 
+  fallbackChatNativeTTS(cleanText, voiceLangCode, onStart, onEnd);
+}
+
+function fallbackChatNativeTTS(text, lang, onStart, onEnd) {
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = lang;
+  utterance.onstart = onStart;
+  utterance.onend = onEnd;
+  utterance.onerror = onEnd;
   window.speechSynthesis.speak(utterance);
 }
 
@@ -2565,27 +2576,72 @@ function switchDuaTab(tabName) {
   loadSupplications();
 }
 
+let activeDuaArAudio = null;
+let activeDuaTransAudio = null;
+
 window.speakDua = function(arabic, translation, category) {
+  // Clean translation and Arabic of brackets or tags
+  const cleanArabic = arabic.replace(/<[^>]*>/g, '').replace(/\([^)]*\)/g, '').trim();
+  const cleanTranslation = translation.replace(/<[^>]*>/g, '').replace(/\([^)]*\)/g, '').trim();
+
+  // Stop any active audio playbacks
+  if (activeDuaArAudio) { activeDuaArAudio.pause(); activeDuaArAudio = null; }
+  if (activeDuaTransAudio) { activeDuaTransAudio.pause(); activeDuaTransAudio = null; }
+  window.speechSynthesis.cancel();
+
+  // Try high-quality Google TTS if online
+  if (navigator.onLine) {
+    try {
+      const arUrl = "https://translate.google.com/translate_tts?ie=UTF-8&q=" + encodeURIComponent(cleanArabic) + "&tl=ar&client=tw-ob";
+      const isUrdu = /[\u0600-\u06FF]/.test(cleanTranslation);
+      const transLang = isUrdu ? 'ur' : 'en';
+      const transUrl = "https://translate.google.com/translate_tts?ie=UTF-8&q=" + encodeURIComponent(cleanTranslation) + "&tl=" + transLang + "&client=tw-ob";
+
+      activeDuaArAudio = new Audio(arUrl);
+      activeDuaTransAudio = new Audio(transUrl);
+
+      activeDuaArAudio.onended = () => {
+        activeDuaTransAudio.play().catch(err => {
+          console.warn("Translation audio error:", err);
+        });
+      };
+
+      activeDuaArAudio.play().catch(err => {
+        console.warn("Arabic audio play failed, falling back to local TTS:", err);
+        fallbackDuaNativeTTS(cleanArabic, cleanTranslation);
+      });
+      return;
+    } catch (e) {
+      console.warn("Google TTS initiation failed, falling back to local TTS:", e);
+    }
+  }
+
+  // Local fallback
+  fallbackDuaNativeTTS(cleanArabic, cleanTranslation);
+};
+
+function fallbackDuaNativeTTS(arabic, translation) {
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     
-    // Create Arabic utterance
     const arUtterance = new SpeechSynthesisUtterance(arabic);
     arUtterance.lang = 'ar-SA';
-    arUtterance.rate = 0.75; // Slower pace for clear recitation
+    arUtterance.rate = 0.75;
     
-    // Create translation utterance
     const transUtterance = new SpeechSynthesisUtterance(translation);
     const isUrdu = /[\u0600-\u06FF]/.test(translation);
     transUtterance.lang = isUrdu ? 'ur-PK' : 'en-US';
     transUtterance.rate = 0.9;
     
+    arUtterance.onend = () => {
+      window.speechSynthesis.speak(transUtterance);
+    };
+
     window.speechSynthesis.speak(arUtterance);
-    window.speechSynthesis.speak(transUtterance);
   } else {
-    alert("Speech Synthesis is not supported in this browser.");
+    console.error("Speech Synthesis is not supported in this browser.");
   }
-};
+}
 
 function renderDuas(list) {
   const container = document.getElementById('duasContainer');
