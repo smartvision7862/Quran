@@ -2175,7 +2175,7 @@ async function getLLMResponse(text) {
   const pageLang = window.currentLang || 'en';
   const pageDesc = pageInfo.description[pageLang] || pageInfo.description['en'];
   
-  const systemPrompt = `You are a helpful Quran and Hadith learning assistant inside Quran360 AI. Answer in the language the user asks. Keep responses highly educational, polite, and under 3-4 sentences.
+  const systemPrompt = `You are a versatile, friendly, and smart AI Assistant (like Google Assistant or Siri) inside the Quran360 AI application. You are capable of answering ANY question the user asks, including general knowledge, history, science, mathematics, coding, translation, daily productivity, or casual chat. You also specialize in helping users study the Quran and navigate this application. Answer in the language the user asks. Keep responses direct, helpful, and under 3-4 sentences.
 
 Application Navigation & Feature Details:
 1. **Dashboard (#dashboard)**: Main hub. Quick links to Sabaq (Quran lessons), Hadith Library, Names of Allah, and Duas.
