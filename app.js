@@ -2636,15 +2636,22 @@ window.speakDua = function(arabic, translation, category, btnEl) {
 
     const arUtterance = new SpeechSynthesisUtterance(cleanArabic);
     arUtterance.lang = 'ar-SA';
-    arUtterance.rate = 0.75;
+    arUtterance.rate = 0.6;   // Slow, clear Quranic-style recitation
+    arUtterance.pitch = 1.0;
     arUtterance.volume = 1;
 
     const transUtterance = new SpeechSynthesisUtterance(cleanTranslation);
     transUtterance.lang = transLang;
-    transUtterance.rate = 0.9;
+    transUtterance.rate = 0.75;  // Calm, easy to understand
+    transUtterance.pitch = 1.0;
     transUtterance.volume = 1;
 
-    arUtterance.onend = () => { window.speechSynthesis.speak(transUtterance); };
+    // 800ms natural pause between Arabic and translation
+    arUtterance.onend = () => {
+      setTimeout(() => {
+        if (duaSpeaking) window.speechSynthesis.speak(transUtterance);
+      }, 800);
+    };
     transUtterance.onend = resetBtn;
     arUtterance.onerror = transUtterance.onerror = () => { resetBtn(); window.speechSynthesis.cancel(); };
 
