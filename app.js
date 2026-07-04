@@ -270,6 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Load Default Views
   updateHijriDate();
+  loadDailyInspiration();
   loadLessonsGrid();
   loadHadithBooks();
   loadAllahNames();
@@ -667,6 +668,108 @@ function updateHijriDate() {
   }
 
   document.getElementById('hijri-date').textContent = `${gregDate} | ${hijriDate}`;
+}
+
+// Deterministic Daily Verse & Hadith Inspirations
+function loadDailyInspiration() {
+  const dailyVerses = [
+    {
+      arabic: "إِنَّ مَعَ الْعُسْرِ يُسْرًا",
+      translation: "Indeed, with hardship [will be] ease.",
+      ref: "Surah Ash-Sharh 94:6"
+    },
+    {
+      arabic: "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا",
+      translation: "Our Lord, let not our hearts deviate after You have guided us.",
+      ref: "Surah Ali 'Imran 3:8"
+    },
+    {
+      arabic: "وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ",
+      translation: "And when My servants ask you concerning Me, indeed I am near.",
+      ref: "Surah Al-Baqarah 2:186"
+    },
+    {
+      arabic: "فَاذْكُرُونِي أَذْكُرْكُمْ",
+      translation: "So remember Me; I will remember you.",
+      ref: "Surah Al-Baqarah 2:152"
+    },
+    {
+      arabic: "وَتَوَكَّلْ عَلَى الْحَيِّ الَّذِي لَا يَمُوتُ",
+      translation: "And trust in the Ever-Living who does not die.",
+      ref: "Surah Al-Furqan 25:58"
+    },
+    {
+      arabic: "إِنَّ اللَّهَ لَا يُغَيِّرُ مَا بِقَوْمٍ حَتَّىٰ يُغَيِّرُوا مَا بِأَنفُسِهِمْ",
+      translation: "Indeed, Allah will not change the condition of a people until they change what is in themselves.",
+      ref: "Surah Ar-Ra'd 13:11"
+    },
+    {
+      arabic: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",
+      translation: "Indeed, Allah is with the patient.",
+      ref: "Surah Al-Baqarah 2:153"
+    },
+    {
+      arabic: "ادْعُونِي أَسْتَجِبْ لَكُمْ",
+      translation: "Call upon Me; I will respond to you.",
+      ref: "Surah Ghafir 40:60"
+    }
+  ];
+
+  const dailyHadiths = [
+    {
+      text: "The Prophet (ﷺ) said: 'The best among you are those who learn the Qur'an and teach it.'",
+      ref: "Sahih al-Bukhari 5027"
+    },
+    {
+      text: "The Prophet (ﷺ) said: 'Verily, actions are judged by intentions, and every person will have only what they intended.'",
+      ref: "Sahih al-Bukhari 1"
+    },
+    {
+      text: "The Prophet (ﷺ) said: 'Cleanliness is half of faith.'",
+      ref: "Sahih Muslim 223"
+    },
+    {
+      text: "The Prophet (ﷺ) said: 'Make things easy for people and do not make them difficult, and give good tidings and do not pull people away.'",
+      ref: "Sahih al-Bukhari 6125"
+    },
+    {
+      text: "The Prophet (ﷺ) said: 'A good word is charity.'",
+      ref: "Sahih al-Bukhari 2989"
+    },
+    {
+      text: "The Prophet (ﷺ) said: 'None of you truly believes until he loves for his brother what he loves for himself.'",
+      ref: "Sahih al-Bukhari 13"
+    },
+    {
+      text: "The Prophet (ﷺ) said: 'The most beloved of deeds to Allah are those that are most consistent, even if they are small.'",
+      ref: "Sahih al-Bukhari 6464"
+    },
+    {
+      text: "The Prophet (ﷺ) said: 'Avoid jealousy, for indeed jealousy consumes good deeds just as fire consumes wood.'",
+      ref: "Sunan Abi Dawood 4903"
+    }
+  ];
+
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 0);
+  const diff = now - startOfYear;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dayOfYear = Math.floor(diff / oneDay);
+
+  const verse = dailyVerses[dayOfYear % dailyVerses.length];
+  const hadith = dailyHadiths[dayOfYear % dailyHadiths.length];
+
+  const arEl = document.getElementById('daily-verse-arabic');
+  const transEl = document.getElementById('daily-verse-translation');
+  const refEl = document.getElementById('daily-verse-ref');
+  const hTextEl = document.getElementById('daily-hadith-text');
+  const hRefEl = document.getElementById('daily-hadith-ref');
+
+  if (arEl) arEl.textContent = verse.arabic;
+  if (transEl) transEl.textContent = verse.translation;
+  if (refEl) refEl.textContent = verse.ref;
+  if (hTextEl) hTextEl.textContent = hadith.text;
+  if (hRefEl) hRefEl.textContent = hadith.ref;
 }
 
 // Learn Quran - Course Cards Populating
