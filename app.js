@@ -2583,9 +2583,12 @@ let duaSpeaking = false;
 window.speakDua = function(arabic, translation, category, btnEl) {
   // Stop any currently playing Dua
   if (duaSpeaking) {
-    window.speechSynthesis.cancel();
     duaSpeaking = false;
-    // Reset all listen buttons
+    if (window.QuranAndroidBridge) {
+      window.QuranAndroidBridge.stopSpeech();
+    } else {
+      window.speechSynthesis.cancel();
+    }
     document.querySelectorAll('.dua-audio-btn').forEach(b => {
       b.textContent = '🔊 Listen';
       b.classList.remove('playing');
@@ -2593,18 +2596,11 @@ window.speakDua = function(arabic, translation, category, btnEl) {
     return;
   }
 
-  if (!('speechSynthesis' in window)) {
-    alert('Sorry, your browser does not support speech synthesis. Please use Chrome or a Chromium-based browser.');
-    return;
-  }
-
-  window.speechSynthesis.cancel();
-
   const cleanArabic = arabic.replace(/<[^>]*>/g, '').trim();
   const cleanTranslation = translation.replace(/<[^>]*>/g, '').trim();
   const isUrdu = /[\u0600-\u06FF]/.test(cleanTranslation);
+  const transLang = isUrdu ? 'ur-PK' : 'en-US';
 
-  // Visual feedback — button shows "⏹ Stop"
   const btn = btnEl || null;
   if (btn) {
     btn.textContent = '⏹ Stop';
@@ -2612,25 +2608,7 @@ window.speakDua = function(arabic, translation, category, btnEl) {
   }
   duaSpeaking = true;
 
-  // Arabic utterance
-  const arUtterance = new SpeechSynthesisUtterance(cleanArabic);
-  arUtterance.lang = 'ar-SA';
-  arUtterance.rate = 0.75;
-  arUtterance.volume = 1;
-
-  // Translation utterance
-  const transUtterance = new SpeechSynthesisUtterance(cleanTranslation);
-  transUtterance.lang = isUrdu ? 'ur-PK' : 'en-US';
-  transUtterance.rate = 0.9;
-  transUtterance.volume = 1;
-
-  // When Arabic ends, play translation
-  arUtterance.onend = () => {
-    window.speechSynthesis.speak(transUtterance);
-  };
-
-  // When translation ends, reset button
-  transUtterance.onend = () => {
+  const resetBtn = () => {
     duaSpeaking = false;
     if (btn) {
       btn.textContent = '🔊 Listen';
@@ -2638,17 +2616,45 @@ window.speakDua = function(arabic, translation, category, btnEl) {
     }
   };
 
-  // On any error, reset
-  arUtterance.onerror = transUtterance.onerror = () => {
-    duaSpeaking = false;
-    if (btn) {
-      btn.textContent = '🔊 Listen';
-      btn.classList.remove('playing');
-    }
+  // ✅ Android WebView native TTS bridge
+  if (window.QuranAndroidBridge && typeof window.QuranAndroidBridge.speakText === 'function') {
+    window.QuranAndroidBridge.speakText(cleanArabic, 'ar-SA');
+    // Play translation after estimated Arabic duration (1 char ≈ 150ms at rate 0.75)
+    const estimatedMs = Math.max(2000, cleanArabic.length * 150);
+    setTimeout(() => {
+      if (!duaSpeaking) return;
+      window.QuranAndroidBridge.speakText(cleanTranslation, transLang);
+      const transDuration = Math.max(2000, cleanTranslation.length * 80);
+      setTimeout(resetBtn, transDuration);
+    }, estimatedMs);
+    return;
+  }
+
+  // ✅ Web browser Web Speech API
+  if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
-  };
 
-  window.speechSynthesis.speak(arUtterance);
+    const arUtterance = new SpeechSynthesisUtterance(cleanArabic);
+    arUtterance.lang = 'ar-SA';
+    arUtterance.rate = 0.75;
+    arUtterance.volume = 1;
+
+    const transUtterance = new SpeechSynthesisUtterance(cleanTranslation);
+    transUtterance.lang = transLang;
+    transUtterance.rate = 0.9;
+    transUtterance.volume = 1;
+
+    arUtterance.onend = () => { window.speechSynthesis.speak(transUtterance); };
+    transUtterance.onend = resetBtn;
+    arUtterance.onerror = transUtterance.onerror = () => { resetBtn(); window.speechSynthesis.cancel(); };
+
+    window.speechSynthesis.speak(arUtterance);
+    return;
+  }
+
+  // No TTS available at all
+  resetBtn();
+  console.warn('No TTS engine available on this device.');
 };
 
 function renderDuas(list) {
