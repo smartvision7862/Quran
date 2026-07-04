@@ -2605,6 +2605,16 @@ body:has(#view-chatbot.active) .floating-whatsapp {
 .dua-audio-btn:active {
   transform: translateY(1px);
 }
+.dua-audio-btn.playing {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  border-color: #dc2626;
+  color: #fff;
+  animation: duaPulse 1.2s ease-in-out infinite;
+}
+@keyframes duaPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5); }
+  50% { box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+}
 .dua-category-badge {
   background-color: rgba(13, 148, 136, 0.15);
   border: 1px solid rgba(13, 148, 136, 0.3);

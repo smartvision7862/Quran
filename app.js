@@ -2578,70 +2578,78 @@ function switchDuaTab(tabName) {
 
 let activeDuaArAudio = null;
 let activeDuaTransAudio = null;
+let duaSpeaking = false;
 
-window.speakDua = function(arabic, translation, category) {
-  // Clean translation and Arabic of brackets or tags
-  const cleanArabic = arabic.replace(/<[^>]*>/g, '').replace(/\([^)]*\)/g, '').trim();
-  const cleanTranslation = translation.replace(/<[^>]*>/g, '').replace(/\([^)]*\)/g, '').trim();
+window.speakDua = function(arabic, translation, category, btnEl) {
+  // Stop any currently playing Dua
+  if (duaSpeaking) {
+    window.speechSynthesis.cancel();
+    duaSpeaking = false;
+    // Reset all listen buttons
+    document.querySelectorAll('.dua-audio-btn').forEach(b => {
+      b.textContent = '🔊 Listen';
+      b.classList.remove('playing');
+    });
+    return;
+  }
 
-  // Stop any active audio playbacks
-  if (activeDuaArAudio) { activeDuaArAudio.pause(); activeDuaArAudio = null; }
-  if (activeDuaTransAudio) { activeDuaTransAudio.pause(); activeDuaTransAudio = null; }
+  if (!('speechSynthesis' in window)) {
+    alert('Sorry, your browser does not support speech synthesis. Please use Chrome or a Chromium-based browser.');
+    return;
+  }
+
   window.speechSynthesis.cancel();
 
-  // Try high-quality Google TTS if online
-  if (navigator.onLine) {
-    try {
-      const arUrl = "https://translate.google.com/translate_tts?ie=UTF-8&q=" + encodeURIComponent(cleanArabic) + "&tl=ar&client=tw-ob";
-      const isUrdu = /[\u0600-\u06FF]/.test(cleanTranslation);
-      const transLang = isUrdu ? 'ur' : 'en';
-      const transUrl = "https://translate.google.com/translate_tts?ie=UTF-8&q=" + encodeURIComponent(cleanTranslation) + "&tl=" + transLang + "&client=tw-ob";
+  const cleanArabic = arabic.replace(/<[^>]*>/g, '').trim();
+  const cleanTranslation = translation.replace(/<[^>]*>/g, '').trim();
+  const isUrdu = /[\u0600-\u06FF]/.test(cleanTranslation);
 
-      activeDuaArAudio = new Audio(arUrl);
-      activeDuaTransAudio = new Audio(transUrl);
+  // Visual feedback — button shows "⏹ Stop"
+  const btn = btnEl || null;
+  if (btn) {
+    btn.textContent = '⏹ Stop';
+    btn.classList.add('playing');
+  }
+  duaSpeaking = true;
 
-      activeDuaArAudio.onended = () => {
-        activeDuaTransAudio.play().catch(err => {
-          console.warn("Translation audio error:", err);
-        });
-      };
+  // Arabic utterance
+  const arUtterance = new SpeechSynthesisUtterance(cleanArabic);
+  arUtterance.lang = 'ar-SA';
+  arUtterance.rate = 0.75;
+  arUtterance.volume = 1;
 
-      activeDuaArAudio.play().catch(err => {
-        console.warn("Arabic audio play failed, falling back to local TTS:", err);
-        fallbackDuaNativeTTS(cleanArabic, cleanTranslation);
-      });
-      return;
-    } catch (e) {
-      console.warn("Google TTS initiation failed, falling back to local TTS:", e);
+  // Translation utterance
+  const transUtterance = new SpeechSynthesisUtterance(cleanTranslation);
+  transUtterance.lang = isUrdu ? 'ur-PK' : 'en-US';
+  transUtterance.rate = 0.9;
+  transUtterance.volume = 1;
+
+  // When Arabic ends, play translation
+  arUtterance.onend = () => {
+    window.speechSynthesis.speak(transUtterance);
+  };
+
+  // When translation ends, reset button
+  transUtterance.onend = () => {
+    duaSpeaking = false;
+    if (btn) {
+      btn.textContent = '🔊 Listen';
+      btn.classList.remove('playing');
     }
-  }
+  };
 
-  // Local fallback
-  fallbackDuaNativeTTS(cleanArabic, cleanTranslation);
-};
-
-function fallbackDuaNativeTTS(arabic, translation) {
-  if ('speechSynthesis' in window) {
+  // On any error, reset
+  arUtterance.onerror = transUtterance.onerror = () => {
+    duaSpeaking = false;
+    if (btn) {
+      btn.textContent = '🔊 Listen';
+      btn.classList.remove('playing');
+    }
     window.speechSynthesis.cancel();
-    
-    const arUtterance = new SpeechSynthesisUtterance(arabic);
-    arUtterance.lang = 'ar-SA';
-    arUtterance.rate = 0.75;
-    
-    const transUtterance = new SpeechSynthesisUtterance(translation);
-    const isUrdu = /[\u0600-\u06FF]/.test(translation);
-    transUtterance.lang = isUrdu ? 'ur-PK' : 'en-US';
-    transUtterance.rate = 0.9;
-    
-    arUtterance.onend = () => {
-      window.speechSynthesis.speak(transUtterance);
-    };
+  };
 
-    window.speechSynthesis.speak(arUtterance);
-  } else {
-    console.error("Speech Synthesis is not supported in this browser.");
-  }
-}
+  window.speechSynthesis.speak(arUtterance);
+};
 
 function renderDuas(list) {
   const container = document.getElementById('duasContainer');
@@ -2670,7 +2678,7 @@ function renderDuas(list) {
     card.innerHTML = `
       <div class="dua-card-header">
         <span class="dua-category-badge">${item.category || 'Supplication'}</span>
-        <button class="dua-audio-btn" onclick="speakDua('${escapedDua}', '${escapedTranslation}', '${escapedCategory}')" title="Play Audio Recitation">🔊 Listen</button>
+        <button class="dua-audio-btn" onclick="speakDua('${escapedDua}', '${escapedTranslation}', '${escapedCategory}', this)" title="Play Audio Recitation">🔊 Listen</button>
       </div>
       <div class="dua-arabic">${item.dua}</div>
       <div class="dua-translation-box">
