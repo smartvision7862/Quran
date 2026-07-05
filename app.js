@@ -3476,13 +3476,23 @@ async function initPrayerTimes() {
   if (!locEl) return;
   
   try {
-    // Try to get location via ipapi (free, no location prompt required)
-    const ipRes = await fetch('https://ipapi.co/json/');
-    if (!ipRes.ok) throw new Error('IP API failed');
-    const ipData = await ipRes.json();
+    let city = 'Mecca';
+    let country = 'Saudi Arabia';
     
-    const city = ipData.city || 'Mecca';
-    const country = ipData.country_name || 'Saudi Arabia';
+    try {
+      // Try ipwho.is first (more reliable for CORS/browser fetch)
+      const ipRes = await fetch('https://ipwho.is/');
+      if (ipRes.ok) {
+        const ipData = await ipRes.json();
+        if (ipData.success) {
+          city = ipData.city || 'Mecca';
+          country = ipData.country || 'Saudi Arabia';
+        }
+      }
+    } catch (ipErr) {
+      console.warn("First IP API failed, trying fallback...");
+    }
+    
     locEl.textContent = `${city}, ${country}`;
     
     // Fetch Aladhan Timings
