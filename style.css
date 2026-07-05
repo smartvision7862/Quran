@@ -3567,3 +3567,13 @@ body:has(#view-chatbot.active) .floating-whatsapp {
   font-style: italic;
   text-align: right;
 }
+@keyframes spin3d {
+  0% { transform: perspective(800px) rotateY(0deg) scale(1); filter: drop-shadow(0 0 10px rgba(13, 148, 136, 0.5)); }
+  50% { transform: perspective(800px) rotateY(180deg) scale(1.05); filter: drop-shadow(0 0 25px rgba(13, 148, 136, 0.8)); }
+  100% { transform: perspective(800px) rotateY(360deg) scale(1); filter: drop-shadow(0 0 10px rgba(13, 148, 136, 0.5)); }
+}
+
+.logo-3d-animated {
+  animation: spin3d 10s linear infinite, float 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
