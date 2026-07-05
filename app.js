@@ -3405,18 +3405,25 @@ async function runUnifiedSearch() {
   } catch (e) { console.error('Quran search failed', e); }
   
   // 2. Search Hadith Books
+  const isNumber = /^\d+$/.test(query);
   for (const book of hadithBooks) {
     try {
       statusText.textContent = 'Scanning ' + book.name + '...';
       await new Promise(r => setTimeout(r, 50));
-      const hadithQuery = '%' + query + '%';
       
-      const searchTerm = scrambleUrdu ? scrambleUrdu(query) : query;
-      const searchWildcard = '%' + searchTerm + '%';
+      let results;
+      if (isNumber) {
+        results = await queryDatabase(book.file, "SELECT h.hadees_number, h.arabic, hl.hadees as translation FROM hadees h JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id WHERE h.hadees_number = ? AND hl.language_id = 1 LIMIT 15", [parseInt(query)]);
+      } else {
+        const hadithQuery = '%' + query + '%';
+        const searchTerm = typeof scrambleUrdu === 'function' ? scrambleUrdu(query) : query;
+        const searchWildcard = '%' + searchTerm + '%';
 
-      const results = await queryDatabase(book.file, "SELECT h.hadees_number, h.arabic, hl.hadees as translation FROM hadees h JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id WHERE (hl.hadees LIKE ? OR h.arabic LIKE ?) AND hl.language_id = 1 LIMIT 15", [searchWildcard, hadithQuery]);
+        results = await queryDatabase(book.file, "SELECT h.hadees_number, h.arabic, hl.hadees as translation FROM hadees h JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id WHERE (hl.hadees LIKE ? OR h.arabic LIKE ?) AND hl.language_id = 1 LIMIT 15", [searchWildcard, hadithQuery]);
+      }
+      
       results.forEach(row => {
-        allResults.push({ source: book.name, id: 'Hadith ' + row.hadees_number, arabic: row.arabic, translation: decryptUrdu ? decryptUrdu(row.translation) : row.translation });
+        allResults.push({ source: book.name, id: 'Hadith ' + row.hadees_number, arabic: row.arabic, translation: typeof decryptUrdu === 'function' ? decryptUrdu(row.translation) : row.translation });
       });
     } catch(e) { console.error(book.name + ' search failed', e); }
   }
