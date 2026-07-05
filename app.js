@@ -2548,6 +2548,9 @@ async function loadSupplications() {
       sql = "SELECT dua_title as category, dua_seq as serial_no, dua_desc as virtues, dua_arabic as dua, dua_urdu as translation, dua_ref as reference FROM tbl_namaz_e_janaza ORDER BY dua_seq";
     } else if (supplicationsState.currentTab === 'sunnah') {
       sql = "SELECT dua_title as category, dua_seq as serial_no, dua_desc as virtues, dua_arabic as dua, dua_urdu as translation, dua_ref as reference FROM tbl_prayer ORDER BY dua_seq";
+    } else if (supplicationsState.currentTab === 'masnoon') {
+      dbFile = "masnoon_dua.db";
+      sql = "SELECT title as category, id as serial_no, intro || '<br/><br/>' || virtues as virtues, arabic_text as dua, translation as translation, '' as reference FROM data ORDER BY id";
     }
 
     const list = await queryDatabase(dbFile, sql);
@@ -2561,7 +2564,7 @@ function switchDuaTab(tabName) {
   supplicationsState.currentTab = tabName;
 
   // Toggle tab buttons
-  const tabs = ['daily', 'roza', 'janaza', 'sunnah'];
+  const tabs = ['daily', 'roza', 'janaza', 'sunnah', 'masnoon'];
   tabs.forEach(t => {
     const btn = document.getElementById(`dua-tab-${t}`);
     if (btn) {
