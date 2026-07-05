@@ -280,6 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadFahmVocabulary();
   loadSupplications();
   loadQuranTopics();
+  setupGlobalSearch();
   
   // Listen for hash changes
   window.addEventListener('hashchange', handleRouting);
@@ -331,13 +332,14 @@ function handleRouting() {
   // Update Topbar Title with i18n
   const titles = {
     '#dashboard': 'Dashboard',
-    '#sabaq': 'Learn Quran',
+    '#sabaq': 'Learn Quran (Sabaq)',
     '#hadith': 'Hadith Library',
+    '#search': 'Global Search',
     '#names': '99 Names of Allah',
-    '#bookmarks': 'My Bookmarks',
+    '#bookmarks': 'Bookmarks',
     '#chatbot': 'Talkbot AI',
     '#settings': 'Settings',
-    '#seerat': 'Seerat un Nabi (S.A.W)',
+    '#seerat': 'Seerat un Nabi',
     '#quran-read': 'Quran Reader (Mushaf)',
     '#fahm': 'Fahm-ul-Quran Vocabulary',
     '#duas': 'Islamic Supplications',
@@ -348,6 +350,7 @@ function handleRouting() {
     '#dashboard': 'nav.dashboard',
     '#sabaq': 'nav.sabaq',
     '#hadith': 'nav.hadith',
+    '#search': 'nav.search',
     '#names': 'nav.names',
     '#bookmarks': 'nav.bookmarks',
     '#chatbot': 'nav.chatbot',
@@ -3362,3 +3365,82 @@ document.addEventListener('keydown', function(e) {
     closeDawatModal(null, true);
   }
 });
+
+// --- GLOBAL UNIFIED SEARCH ENGINE ---
+function setupGlobalSearch() {
+  const btn = document.getElementById('globalEngineBtn');
+  const input = document.getElementById('globalEngineSearch');
+  if (btn && input) {
+    btn.addEventListener('click', runUnifiedSearch);
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') runUnifiedSearch();
+    });
+  }
+}
+
+async function runUnifiedSearch() {
+  const query = document.getElementById('globalEngineSearch').value.trim();
+  if (!query) return;
+  
+  const progressDiv = document.getElementById('global-search-progress');
+  const resultsDiv = document.getElementById('global-search-results');
+  const statusText = document.getElementById('global-search-status');
+  
+  progressDiv.style.display = 'block';
+  resultsDiv.innerHTML = '';
+  
+  let allResults = [];
+  
+  // 1. Search Quran
+  try {
+    statusText.textContent = 'Scanning Quran...';
+    await new Promise(r => setTimeout(r, 50)); // let UI update
+    const quranQuery = '%' + query + '%';
+    const quranResults = await queryDatabase('quranDb.db', "SELECT 'Quran' as source, surat_id || ':' || ayat_number as id, arabic, translation_urdu, translation_english FROM tbl_QuranComplete WHERE arabic LIKE ? OR translation_urdu LIKE ? OR translation_english LIKE ? LIMIT 15", [quranQuery, quranQuery, quranQuery]);
+    quranResults.forEach(row => {
+      allResults.push({ source: 'Quran', id: row.id, arabic: row.arabic, translation: row.translation_urdu || row.translation_english });
+    });
+  } catch (e) { console.error('Quran search failed', e); }
+  
+  // 2. Search Hadith Books
+  for (const book of hadithBooks) {
+    try {
+      statusText.textContent = 'Scanning ' + book.name + '...';
+      await new Promise(r => setTimeout(r, 50));
+      const hadithQuery = '%' + query + '%';
+      
+      const searchTerm = scrambleUrdu ? scrambleUrdu(query) : query;
+      const searchWildcard = '%' + searchTerm + '%';
+
+      const results = await queryDatabase(book.file, "SELECT h.hadees_number, h.arabic, hl.hadees as translation FROM hadees h JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id WHERE (hl.hadees LIKE ? OR h.arabic LIKE ?) AND hl.language_id = 1 LIMIT 15", [searchWildcard, hadithQuery]);
+      results.forEach(row => {
+        allResults.push({ source: book.name, id: 'Hadith ' + row.hadees_number, arabic: row.arabic, translation: decryptUrdu ? decryptUrdu(row.translation) : row.translation });
+      });
+    } catch(e) { console.error(book.name + ' search failed', e); }
+  }
+  
+  progressDiv.style.display = 'none';
+  
+  if (allResults.length === 0) {
+    resultsDiv.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-muted);">No results found across any database.</div>';
+    return;
+  }
+  
+  allResults.forEach((res, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card hadith-card stagger-item';
+    card.style.animationDelay = (idx * 0.05) + 's';
+    
+    const badgeColor = res.source === 'Quran' ? 'var(--accent-teal)' : 'var(--accent-gold)';
+    
+    card.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <span style="background-color: ${badgeColor}; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold;">${res.source}</span>
+        <span style="color: var(--text-muted); font-size: 14px;">${res.id}</span>
+      </div>
+      <div class="arabic-text" dir="rtl">${res.arabic || ''}</div>
+      <div class="urdu-text" dir="rtl">${res.translation || ''}</div>
+    `;
+    resultsDiv.appendChild(card);
+  });
+}

@@ -80,6 +80,10 @@
           <span class="nav-icon">🏠</span>
           <span class="nav-label" data-i18n="nav.dashboard">Dashboard</span>
         </a>
+        <a href="#search" class="nav-item ripple-btn" id="nav-search">
+          <span class="nav-icon">🔍</span>
+          <span class="nav-label">Global Search</span>
+        </a>
         <a href="#sabaq" class="nav-item ripple-btn" id="nav-sabaq">
           <span class="nav-icon">🎓</span>
           <span class="nav-label" data-i18n="nav.sabaq">Learn Quran</span>
@@ -225,6 +229,11 @@
           <!-- Quran Core Features Highlights -->
           <h2 class="section-title">Core Quran Features</h2>
           <div class="features-grid">
+            <div class="feature-card glass-card ripple-btn" onclick="location.hash='#search'" style="border: 1px solid var(--accent-gold);">
+              <div class="feature-icon-wrapper">🔍</div>
+              <h3>Global Search</h3>
+              <p>Search keywords across the Quran and 9 Hadith books simultaneously.</p>
+            </div>
             <div class="feature-card glass-card ripple-btn" onclick="location.hash='#sabaq'">
               <div class="feature-icon-wrapper">🎓</div>
               <h3>Understand Quran</h3>
@@ -471,6 +480,36 @@
             </div>
           </div>
 
+        </section>
+
+        <!-- GLOBAL SEARCH VIEW -->
+        <section id="view-search" class="app-view">
+          <div class="view-header flex-header" style="flex-direction: column; align-items: stretch;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+              <div>
+                <h2>Global Search Engine</h2>
+                <p>Search across the entire Quran and all Hadith books instantly.</p>
+              </div>
+              <button class="back-btn action-btn ripple-btn" onclick="location.hash='#dashboard'">Back</button>
+            </div>
+            
+            <div class="search-bar-container" style="max-width: 100%;">
+              <input type="text" id="globalEngineSearch" placeholder="🔍 Search keywords, hadith numbers, or topics..." style="font-size: 1.1rem; padding: 16px;">
+              <button class="search-btn ripple-btn" id="globalEngineBtn" style="padding: 16px 24px; font-size: 1.1rem;">Search</button>
+            </div>
+          </div>
+
+          <div id="global-search-progress" style="display: none; padding: 20px; text-align: center; color: var(--accent-teal);">
+            <div class="skeleton-loader" style="height: 100px;"></div>
+            <p id="global-search-status" style="margin-top: 10px; font-weight: bold;">Initializing search engines...</p>
+          </div>
+
+          <div class="hadith-cards-container" id="global-search-results">
+            <!-- Dynamic unified results will appear here -->
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+              Type a keyword above to search across the Quran and 9 Hadith books simultaneously.
+            </div>
+          </div>
         </section>
 
 
