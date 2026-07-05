@@ -3695,3 +3695,40 @@ function customTasbeehGoal() {
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(initTasbeeh, 1000);
 });
+
+function initApkBanner() {
+  if (isAndroid) return;
+  if (localStorage.getItem("apkPromptDismissed") === "true") return;
+  
+  const banner = document.getElementById("apk-download-banner");
+  const dismissBtn = document.getElementById("apk-dismiss-btn");
+  const downloadBtn = document.getElementById("apk-download-btn");
+  
+  if (!banner) return;
+  
+  setTimeout(() => {
+    banner.classList.remove("hidden");
+    setTimeout(() => banner.classList.add("show"), 50);
+  }, 3000);
+  
+  if (dismissBtn) {
+    dismissBtn.addEventListener("click", () => {
+      banner.classList.remove("show");
+      setTimeout(() => banner.classList.add("hidden"), 600);
+      localStorage.setItem("apkPromptDismissed", "true");
+    });
+  }
+  
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", () => {
+      banner.classList.remove("show");
+      setTimeout(() => banner.classList.add("hidden"), 600);
+      localStorage.setItem("apkPromptDismissed", "true");
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(initApkBanner, 1000);
+});
+

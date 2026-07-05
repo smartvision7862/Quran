@@ -3814,3 +3814,43 @@ body:has(#view-chatbot.active) .floating-whatsapp {
   background: rgba(13, 148, 136, 0.2);
   border-color: var(--accent-teal);
 }
+
+/* APK Download Banner */
+.apk-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(150%);
+  width: calc(100% - 40px);
+  max-width: 500px;
+  background: rgba(30, 41, 59, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 16px 20px;
+  z-index: 9999;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.apk-banner.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.apk-banner-content {
+  display: flex;
+  align-items: center;
+}
+
+.apk-banner-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
