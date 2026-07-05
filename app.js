@@ -3395,7 +3395,11 @@ async function runUnifiedSearch() {
   
   // 1. Search Quran
   try {
-    statusText.textContent = 'Scanning Quran...';
+    if (!sqlDbInstances['quranDb.db'] && !isAndroid) {
+      statusText.innerHTML = `Downloading <b>Quran</b> database...<br><small style="font-size:11px; opacity:0.8;">(First time only, may take 1-2 minutes)</small>`;
+    } else {
+      statusText.innerHTML = 'Scanning <b>Quran</b>...';
+    }
     await new Promise(r => setTimeout(r, 50)); // let UI update
     const quranQuery = '%' + query + '%';
     const quranResults = await queryDatabase('quranDb.db', "SELECT 'Quran' as source, surat_id || ':' || ayat_number as id, arabic, translation_urdu, translation_english FROM tbl_QuranComplete WHERE arabic LIKE ? OR translation_urdu LIKE ? OR translation_english LIKE ? LIMIT 15", [quranQuery, quranQuery, quranQuery]);
@@ -3414,6 +3418,13 @@ async function runUnifiedSearch() {
       let results;
       const langId = (typeof state !== 'undefined' && state.hadithLang) ? state.hadithLang : 1;
       
+      if (!sqlDbInstances[book.file] && !isAndroid) {
+        statusText.innerHTML = `Downloading <b>${book.name}</b> database...<br><small style="font-size:11px; opacity:0.8;">(First time only, may take 1-2 minutes depending on internet speed)</small>`;
+      } else {
+        statusText.innerHTML = `Scanning <b>${book.name}</b>...`;
+      }
+      await new Promise(r => setTimeout(r, 50));
+
       if (isNumber) {
         results = await queryDatabase(book.file, "SELECT h.hadees_number, h.arabic, hl.hadees as translation, hl.language_id FROM hadees h JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id WHERE h.hadees_number = ? AND hl.language_id = ? LIMIT 15", [parseInt(query), langId]);
       } else {
