@@ -3628,7 +3628,7 @@ function updateTasbeehUI() {
   const btnEl = document.getElementById('tasbeeh-btn');
   
   if (countEl) countEl.textContent = tasbeehCount;
-  if (targetEl) targetEl.textContent = / ;
+  if (targetEl) targetEl.textContent = `/ ${tasbeehTarget}`;
   if (titleEl) titleEl.textContent = tasbeehTitle;
   
   if (btnEl) {
