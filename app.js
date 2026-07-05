@@ -660,24 +660,26 @@ function setupSettingsListeners() {
 }
 
 // Dynamic Dates Info
-function updateHijriDate() {
+async function updateHijriDate() {
   const now = new Date();
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  const gregDate = now.toLocaleDateString('en-US', options);
+  const options = { weekday: "long", year: "numeric", month: "long", day: "numeric" };
+  const gregDate = now.toLocaleDateString("en-US", options);
 
-  let hijriDate = '';
+  let hijriDate = "";
   try {
-    hijriDate = new Intl.DateTimeFormat('en-US-u-ca-islamic-umalqura', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    }).format(now);
+    const res = await fetch(`https://api.aladhan.com/v1/gToH/${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()}`);
+    if (res.ok) {
+      const data = await res.json();
+      hijriDate = `${data.data.hijri.day} ${data.data.hijri.month.en} ${data.data.hijri.year} AH`;
+    } else {
+      throw new Error("API failed");
+    }
   } catch (e) {
     const approximateYear = Math.floor((now.getFullYear() - 622) * (365.25 / 354.36));
     hijriDate = `${approximateYear} AH`;
   }
 
-  document.getElementById('hijri-date').textContent = `${gregDate} | ${hijriDate}`;
+  document.getElementById("hijri-date").textContent = `${gregDate} | ${hijriDate}`;
 }
 
 // Deterministic Daily Verse & Hadith Inspirations
@@ -4038,6 +4040,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.location.hash === "#qibla") initQiblaCompass();
   });
 });
+
+
 
 
 

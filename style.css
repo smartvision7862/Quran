@@ -4031,3 +4031,17 @@ body:has(#view-chatbot.active) .floating-whatsapp {
   .timeline-item::after { left: 12px !important; }
 }
 
+
+.cta-btn.primary {
+  background-color: var(--accent-gold);
+  color: var(--bg-dark);
+  border: 1px solid var(--accent-gold);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cta-btn.primary:hover {
+  background-color: #ffd700;
+  transform: translateY(-2px);
+}
