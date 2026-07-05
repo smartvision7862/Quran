@@ -92,6 +92,7 @@ async function loadDatabaseFile(dbFile) {
   }
 
   const urlsToTry = [
+    `https://smartvision7862.github.io/Quran/${dbFile}`,
     dbFile,
     `databases/${dbFile}`,
     `extracted_assets/${dbFile}`,
@@ -4040,6 +4041,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.location.hash === "#qibla") initQiblaCompass();
   });
 });
+
 
 
 
