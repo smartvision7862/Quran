@@ -3412,18 +3412,21 @@ async function runUnifiedSearch() {
       await new Promise(r => setTimeout(r, 50));
       
       let results;
+      const langId = (typeof state !== 'undefined' && state.hadithLang) ? state.hadithLang : 1;
+      
       if (isNumber) {
-        results = await queryDatabase(book.file, "SELECT h.hadees_number, h.arabic, hl.hadees as translation FROM hadees h JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id WHERE h.hadees_number = ? AND hl.language_id = 1 LIMIT 15", [parseInt(query)]);
+        results = await queryDatabase(book.file, "SELECT h.hadees_number, h.arabic, hl.hadees as translation, hl.language_id FROM hadees h JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id WHERE h.hadees_number = ? AND hl.language_id = ? LIMIT 15", [parseInt(query), langId]);
       } else {
         const hadithQuery = '%' + query + '%';
-        const searchTerm = typeof scrambleUrdu === 'function' ? scrambleUrdu(query) : query;
-        const searchWildcard = '%' + searchTerm + '%';
+        const searchUrdu = typeof scrambleUrdu === 'function' ? scrambleUrdu(query) : query;
+        const searchUrduWildcard = '%' + searchUrdu + '%';
 
-        results = await queryDatabase(book.file, "SELECT h.hadees_number, h.arabic, hl.hadees as translation FROM hadees h JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id WHERE (hl.hadees LIKE ? OR h.arabic LIKE ?) AND hl.language_id = 1 LIMIT 15", [searchWildcard, hadithQuery]);
+        results = await queryDatabase(book.file, "SELECT h.hadees_number, h.arabic, hl.hadees as translation, hl.language_id FROM hadees h JOIN hadees_languages hl ON h.record_id = hl.hadees_record_id WHERE ((hl.language_id = 1 AND hl.hadees LIKE ?) OR (hl.language_id = 2 AND hl.hadees LIKE ?) OR h.arabic LIKE ?) AND hl.language_id IN (1, 2) LIMIT 15", [searchUrduWildcard, hadithQuery, hadithQuery]);
       }
       
       results.forEach(row => {
-        allResults.push({ source: book.name, id: 'Hadith ' + row.hadees_number, arabic: row.arabic, translation: typeof decryptUrdu === 'function' ? decryptUrdu(row.translation) : row.translation });
+        const transText = (row.language_id === 1 && typeof decryptUrdu === 'function') ? decryptUrdu(row.translation) : row.translation;
+        allResults.push({ source: book.name, id: 'Hadith ' + row.hadees_number, arabic: row.arabic, translation: transText });
       });
     } catch(e) { console.error(book.name + ' search failed', e); }
   }
