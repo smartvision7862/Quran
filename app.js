@@ -336,6 +336,9 @@ function handleRouting() {
     '#hadith': 'Hadith Library',
     '#search': 'Global Search',
     '#tasbeeh': 'Tasbeeh Counter',
+    '#qibla': 'Qibla Compass',
+    '#calendar': 'Islamic Calendar',
+    '#zakat': 'Zakat Calculator',
     '#names': '99 Names of Allah',
     '#bookmarks': 'Bookmarks',
     '#chatbot': 'Talkbot AI',
@@ -2426,11 +2429,17 @@ async function loadQuranReaderVerses() {
       [readerState.selectedSurah]
     );
 
-    container.innerHTML = '';
+        container.innerHTML = '';
     if (verses.length === 0) {
       container.innerHTML = '<div class="empty-indicator">No verses found in database.</div>';
       return;
     }
+
+    const selectEl = document.getElementById('quranReadSurahSelect');
+    const surahName = selectEl ? selectEl.options[selectEl.selectedIndex].text : 'Unknown';
+    const safeSurahName = surahName.replace(/'/g, "\\'");
+    const audioBtnHTML = `<div style="text-align: center; margin-bottom: 20px;"><button class="btn btn-secondary" onclick="playSurahAudio(${readerState.selectedSurah}, '')" style="background: rgba(255,215,0,0.1); color: var(--accent-gold); border: 1px solid var(--accent-gold);">?? Play Surah Audio</button></div>`;
+    container.innerHTML = audioBtnHTML;
 
     verses.forEach(v => {
       const vDiv = document.createElement('div');
@@ -3731,4 +3740,285 @@ function initApkBanner() {
 document.addEventListener("DOMContentLoaded", () => {
   setTimeout(initApkBanner, 1000);
 });
+
+
+// ==========================================
+// QIBLA COMPASS
+// ==========================================
+function initQiblaCompass() {
+  const statusEl = document.getElementById("qibla-status");
+  const dialEl = document.getElementById("compass-dial");
+  const degreeEl = document.getElementById("qibla-degree");
+  const locationText = document.getElementById("qibla-location-text");
+  const calibrateBtn = document.getElementById("qibla-calibrate-btn");
+  
+  if (!statusEl || statusEl.dataset.initialized) return;
+  statusEl.dataset.initialized = "true";
+
+  const MECCA_LAT = 21.4225;
+  const MECCA_LNG = 39.8262;
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const userLat = position.coords.latitude;
+        const userLng = position.coords.longitude;
+        locationText.textContent = `Lat: ${userLat.toFixed(2)}, Lng: ${userLng.toFixed(2)}`;
+        
+        const bearing = calculateQiblaBearing(userLat, userLng, MECCA_LAT, MECCA_LNG);
+        degreeEl.textContent = `${Math.round(bearing)}°`;
+        statusEl.textContent = "Location found. Waiting for compass sensor...";
+        
+        startCompassSensor(bearing, dialEl, statusEl, calibrateBtn);
+      },
+      (error) => {
+        statusEl.textContent = "Location access denied. Cannot calculate Qibla.";
+      }
+    );
+  } else {
+    statusEl.textContent = "Geolocation is not supported by your browser.";
+  }
+}
+
+function calculateQiblaBearing(lat1, lon1, lat2, lon2) {
+  const toRad = deg => deg * Math.PI / 180;
+  const toDeg = rad => rad * 180 / Math.PI;
+
+  const rLat1 = toRad(lat1);
+  const rLat2 = toRad(lat2);
+  const dLon = toRad(lon2 - lon1);
+
+  const y = Math.sin(dLon) * Math.cos(rLat2);
+  const x = Math.cos(rLat1) * Math.sin(rLat2) - Math.sin(rLat1) * Math.cos(rLat2) * Math.cos(dLon);
+  
+  let brng = toDeg(Math.atan2(y, x));
+  return (brng + 360) % 360;
+}
+
+function startCompassSensor(qiblaBearing, dialEl, statusEl, calibrateBtn) {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+  if (isIOS && typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
+    calibrateBtn.style.display = "block";
+    calibrateBtn.textContent = "Enable Compass Sensor";
+    statusEl.textContent = "Tap the button below to allow compass access.";
+    
+    calibrateBtn.onclick = () => {
+      DeviceOrientationEvent.requestPermission().then(permissionState => {
+        if (permissionState === "granted") {
+          calibrateBtn.style.display = "none";
+          attachOrientationListener(qiblaBearing, dialEl, statusEl);
+        } else {
+          statusEl.textContent = "Compass access denied.";
+        }
+      }).catch(console.error);
+    };
+  } else {
+    attachOrientationListener(qiblaBearing, dialEl, statusEl);
+  }
+}
+
+function attachOrientationListener(qiblaBearing, dialEl, statusEl) {
+  window.addEventListener("deviceorientationabsolute", handleOrientation, true);
+  if (!("ondeviceorientationabsolute" in window)) {
+    window.addEventListener("deviceorientation", handleOrientation, true);
+  }
+
+  function handleOrientation(event) {
+    let alpha = event.webkitCompassHeading;
+    if (typeof alpha === "undefined" || alpha === null) {
+      alpha = event.alpha;
+      if (alpha === null) {
+        statusEl.textContent = "Compass sensor not detected on this device.";
+        return;
+      }
+      alpha = 360 - alpha; 
+    }
+    statusEl.textContent = "Compass Active";
+    const kaabaDirection = qiblaBearing - alpha;
+    dialEl.style.transform = `rotate(${kaabaDirection}deg)`;
+  }
+}
+
+// ==========================================
+// ZAKAT CALCULATOR
+// ==========================================
+window.calculateZakat = function() {
+  const cash = parseFloat(document.getElementById("zakat-cash").value) || 0;
+  const gold = parseFloat(document.getElementById("zakat-gold").value) || 0;
+  const invest = parseFloat(document.getElementById("zakat-invest").value) || 0;
+  const business = parseFloat(document.getElementById("zakat-business").value) || 0;
+  const debts = parseFloat(document.getElementById("zakat-debts").value) || 0;
+  const nisab = parseFloat(document.getElementById("zakat-nisab").value) || 0;
+
+  const totalAssets = cash + gold + invest + business;
+  const netWorth = totalAssets - debts;
+
+  const resultDiv = document.getElementById("zakat-result");
+  const amountEl = document.getElementById("zakat-amount");
+  const summaryEl = document.getElementById("zakat-summary");
+
+  resultDiv.style.display = "block";
+  summaryEl.textContent = `Net Worth: $${netWorth.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+
+  if (nisab > 0 && netWorth >= nisab) {
+    const zakatPayable = netWorth * 0.025;
+    amountEl.textContent = `$${zakatPayable.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+    amountEl.style.color = "var(--accent-gold)";
+  } else if (nisab > 0 && netWorth < nisab) {
+    amountEl.textContent = "$0.00";
+    amountEl.style.color = "#ff6b6b";
+    summaryEl.textContent += " (Below Nisab Threshold)";
+  } else {
+    if (netWorth > 0) {
+      const zakatPayable = netWorth * 0.025;
+      amountEl.textContent = `$${zakatPayable.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+      amountEl.style.color = "var(--accent-gold)";
+      summaryEl.textContent += " (Nisab not checked)";
+    } else {
+      amountEl.textContent = "$0.00";
+      amountEl.style.color = "#ff6b6b";
+    }
+  }
+};
+
+// ==========================================
+// ISLAMIC CALENDAR
+// ==========================================
+async function loadHijriCalendar() {
+  const timelineEl = document.getElementById("calendar-timeline");
+  if (!timelineEl) return;
+  if (timelineEl.hasAttribute("data-loaded")) return;
+
+  try {
+    const today = new Date();
+    const year = today.getFullYear();
+    const res = await fetch(`https://api.aladhan.com/v1/gToH/${today.getDate()}-${today.getMonth() + 1}-${year}`);
+    const data = await res.json();
+    const hijriYear = data.data.hijri.year;
+    
+    document.getElementById("current-hijri-year").textContent = `${hijriYear} AH`;
+
+    const events = [
+      { name: "Islamic New Year", date: `1 Muharram ${hijriYear}` },
+      { name: "Day of Ashura", date: `10 Muharram ${hijriYear}` },
+      { name: "Mawlid al-Nabi", date: `12 Rabi al-Awwal ${hijriYear}` },
+      { name: "Ramadan Begins", date: `1 Ramadan ${hijriYear}` },
+      { name: "Laylat al-Qadr", date: `27 Ramadan ${hijriYear}` },
+      { name: "Eid al-Fitr", date: `1 Shawwal ${hijriYear}` },
+      { name: "Day of Arafah", date: `9 Dhu al-Hijjah ${hijriYear}` },
+      { name: "Eid al-Adha", date: `10 Dhu al-Hijjah ${hijriYear}` }
+    ];
+
+    let html = "";
+    events.forEach((ev, idx) => {
+      const position = idx % 2 === 0 ? "left" : "right";
+      html += `
+        <div class="timeline-item ${position}">
+          <div class="timeline-content glass-panel">
+            <h4 style="margin: 0; color: var(--accent-gold);">${ev.name}</h4>
+            <p style="margin: 5px 0 0; font-size: 0.85rem; color: var(--text-muted);">${ev.date}</p>
+          </div>
+        </div>
+      `;
+    });
+    timelineEl.innerHTML = html;
+    timelineEl.setAttribute("data-loaded", "true");
+
+  } catch (e) {
+    console.error("Calendar load error:", e);
+    timelineEl.innerHTML = "<div style=\"text-align:center; color:#ff6b6b;\">Failed to load calendar data.</div>";
+  }
+}
+
+// ==========================================
+// QURAN AUDIO PLAYER
+// ==========================================
+const audioState = {
+  element: document.getElementById("quran-audio-element"),
+  player: document.getElementById("quran-audio-player"),
+  playBtn: document.getElementById("audio-play-btn"),
+  progress: document.getElementById("audio-progress"),
+  currentTimeEl: document.getElementById("audio-current-time"),
+  durationEl: document.getElementById("audio-duration"),
+  surahNameEl: document.getElementById("audio-surah-name"),
+  surahNumber: 1
+};
+
+window.playSurahAudio = function(surahNumber, surahName) {
+  if (!audioState.element) return;
+  
+  audioState.surahNumber = surahNumber;
+  audioState.surahNameEl.textContent = `Surah ${surahName}`;
+  
+  const formattedNumber = String(surahNumber).padStart(3, "0");
+  const audioUrl = `https://server8.mp3quran.net/afs/${formattedNumber}.mp3`;
+  
+  audioState.element.src = audioUrl;
+  audioState.player.classList.remove("hidden");
+  setTimeout(() => audioState.player.classList.add("show"), 50);
+  
+  audioState.element.play()
+    .then(() => {
+      audioState.playBtn.textContent = "?";
+    })
+    .catch(e => console.error("Audio play blocked:", e));
+};
+
+if (audioState.element) {
+  audioState.playBtn.addEventListener("click", () => {
+    if (audioState.element.paused) {
+      audioState.element.play();
+      audioState.playBtn.textContent = "?";
+    } else {
+      audioState.element.pause();
+      audioState.playBtn.textContent = "?";
+    }
+  });
+
+  audioState.element.addEventListener("timeupdate", () => {
+    const current = audioState.element.currentTime;
+    const duration = audioState.element.duration;
+    
+    if (duration) {
+      audioState.progress.value = (current / duration) * 100;
+      audioState.currentTimeEl.textContent = formatAudioTime(current);
+      audioState.durationEl.textContent = formatAudioTime(duration);
+    }
+  });
+
+  audioState.progress.addEventListener("input", (e) => {
+    const duration = audioState.element.duration;
+    if (duration) {
+      audioState.element.currentTime = (e.target.value / 100) * duration;
+    }
+  });
+  
+  document.getElementById("audio-close-btn").addEventListener("click", () => {
+    audioState.element.pause();
+    audioState.player.classList.remove("show");
+    setTimeout(() => audioState.player.classList.add("hidden"), 600);
+  });
+}
+
+function formatAudioTime(seconds) {
+  if (isNaN(seconds)) return "0:00";
+  const min = Math.floor(seconds / 60);
+  const sec = Math.floor(seconds % 60);
+  return `${min}:${sec.toString().padStart(2, "0")}`;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Wait to load views
+  const hash = window.location.hash;
+  if (hash === "#calendar") setTimeout(loadHijriCalendar, 1000);
+  if (hash === "#qibla") setTimeout(initQiblaCompass, 1000);
+  
+  window.addEventListener("hashchange", () => {
+    if (window.location.hash === "#calendar") loadHijriCalendar();
+    if (window.location.hash === "#qibla") initQiblaCompass();
+  });
+});
+
+
 

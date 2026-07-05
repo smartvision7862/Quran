@@ -3854,3 +3854,180 @@ body:has(#view-chatbot.active) .floating-whatsapp {
   justify-content: flex-end;
 }
 
+
+/* Audio Player */
+.audio-player {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(150%);
+  width: calc(100% - 40px);
+  max-width: 500px;
+  background: rgba(30, 41, 59, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 24px;
+  padding: 20px;
+  z-index: 9998;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.audio-player.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.audio-player-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+/* Qibla Compass */
+.compass-container {
+  width: 280px;
+  height: 280px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.compass-outer {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(255,255,255,0.05), rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.compass-outer::before {
+  content: "N";
+  position: absolute;
+  top: 10px;
+  color: #ff6b6b;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.compass-outer::after {
+  content: "S";
+  position: absolute;
+  bottom: 10px;
+  color: var(--text-muted);
+  font-weight: bold;
+}
+
+.compass-dial {
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.compass-kaaba {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.compass-needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 50%;
+  background: linear-gradient(to top, transparent, var(--accent-gold));
+  transform-origin: bottom center;
+  transform: translateX(-50%) translateY(-100%);
+  border-radius: 4px;
+}
+
+/* Zakat Calculator */
+.zakat-input {
+  width: 100%;
+  padding: 12px;
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  margin-top: 5px;
+  transition: border-color 0.3s;
+}
+.zakat-input:focus {
+  border-color: var(--accent-gold);
+  outline: none;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Islamic Calendar */
+.calendar-timeline {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+.calendar-timeline::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  background: rgba(255, 215, 0, 0.3);
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -1px;
+}
+.timeline-item {
+  padding: 10px 40px;
+  position: relative;
+  background: inherit;
+  width: 50%;
+  box-sizing: border-box;
+}
+.timeline-item.left { left: 0; text-align: right; }
+.timeline-item.right { left: 50%; text-align: left; }
+.timeline-item::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: -8px;
+  background: var(--bg-dark);
+  border: 3px solid var(--accent-gold);
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+.timeline-item.right::after {
+  left: -8px;
+}
+.timeline-content {
+  padding: 15px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+@media (max-width: 600px) {
+  .calendar-timeline::after { left: 20px; }
+  .timeline-item { width: 100%; padding-left: 50px; padding-right: 15px; text-align: left !important; left: 0 !important; }
+  .timeline-item::after { left: 12px !important; }
+}
+

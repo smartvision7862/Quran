@@ -100,6 +100,18 @@
           <span class="nav-icon">📿</span>
           <span class="nav-label">Tasbeeh Counter</span>
         </a>
+        <a href="#qibla" class="nav-item ripple-btn" id="nav-qibla">
+          <span class="nav-icon">🧭</span>
+          <span class="nav-label">Qibla Compass</span>
+        </a>
+        <a href="#calendar" class="nav-item ripple-btn" id="nav-calendar">
+          <span class="nav-icon">📅</span>
+          <span class="nav-label">Islamic Calendar</span>
+        </a>
+        <a href="#zakat" class="nav-item ripple-btn" id="nav-zakat">
+          <span class="nav-icon">💰</span>
+          <span class="nav-label">Zakat Calculator</span>
+        </a>
         <a href="#names" class="nav-item ripple-btn" id="nav-names">
           <span class="nav-icon">✨</span>
           <span class="nav-label" data-i18n="nav.names">99 Names</span>
@@ -1367,6 +1379,100 @@ function switchSeeratTab(button, panel) {
           </div>
         </section>
 
+        <!-- Qibla Compass View -->
+        <section id="view-qibla" class="app-view">
+          <div class="view-header">
+            <h2>Qibla Compass</h2>
+            <p>Find the exact direction of the Kaaba from your location.</p>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 40px;">
+            <p id="qibla-status" style="color: var(--text-muted); margin-bottom: 20px;">Detecting location and sensors...</p>
+            <div class="compass-container">
+              <div class="compass-outer">
+                <div class="compass-dial" id="compass-dial">
+                  <div class="compass-kaaba">🕋</div>
+                  <div class="compass-needle"></div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 30px; text-align: center; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); min-width: 250px;">
+              <p style="margin: 0 0 10px 0; color: var(--text-muted); font-size: 0.9rem;">Mecca Bearing</p>
+              <h3 id="qibla-degree" style="margin: 0; color: var(--accent-gold); font-size: 2rem;">--°</h3>
+              <p id="qibla-location-text" style="margin: 10px 0 0 0; font-size: 0.85rem; opacity: 0.8;">--</p>
+            </div>
+            <button id="qibla-calibrate-btn" class="btn btn-primary" style="margin-top: 20px; display: none;">Calibrate Compass</button>
+          </div>
+        </section>
+
+        <!-- Islamic Calendar View -->
+        <section id="view-calendar" class="app-view">
+          <div class="view-header">
+            <h2>Islamic Calendar</h2>
+            <p>Major Hijri events for the current year.</p>
+          </div>
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h3 id="current-hijri-year" style="color: var(--accent-gold); font-size: 2rem; margin: 0;">1445 AH</h3>
+          </div>
+          <div id="calendar-timeline" class="calendar-timeline">
+            <div style="text-align:center; opacity:0.7;">Loading events...</div>
+          </div>
+        </section>
+
+        <!-- Zakat Calculator View -->
+        <section id="view-zakat" class="app-view">
+          <div class="view-header">
+            <h2>Zakat Calculator</h2>
+            <p>Calculate your annual 2.5% Zakat contribution easily.</p>
+          </div>
+          <div class="zakat-container" style="max-width: 600px; margin: 0 auto;">
+            <div class="zakat-card glass-panel" style="padding: 20px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: var(--accent-gold); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">1. Assets (What you own)</h3>
+              
+              <div class="form-group">
+                <label>Cash in hand & Bank accounts</label>
+                <input type="number" id="zakat-cash" class="zakat-input" placeholder="0.00" min="0">
+              </div>
+              <div class="form-group">
+                <label>Gold & Silver Value</label>
+                <input type="number" id="zakat-gold" class="zakat-input" placeholder="0.00" min="0">
+              </div>
+              <div class="form-group">
+                <label>Investments & Stocks</label>
+                <input type="number" id="zakat-invest" class="zakat-input" placeholder="0.00" min="0">
+              </div>
+              <div class="form-group">
+                <label>Business Inventory/Stock</label>
+                <input type="number" id="zakat-business" class="zakat-input" placeholder="0.00" min="0">
+              </div>
+            </div>
+
+            <div class="zakat-card glass-panel" style="padding: 20px; margin-bottom: 20px;">
+              <h3 style="margin-top: 0; color: #ff6b6b; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">2. Liabilities (What you owe)</h3>
+              
+              <div class="form-group">
+                <label>Debts & Loans to pay</label>
+                <input type="number" id="zakat-debts" class="zakat-input" placeholder="0.00" min="0">
+              </div>
+            </div>
+
+            <div class="zakat-card glass-panel" style="padding: 20px; margin-bottom: 30px; text-align: center; background: rgba(var(--accent-gold-rgb), 0.05);">
+              <h3 style="margin-top: 0; color: var(--text-color);">Nisab Threshold</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Enter the current monetary value of 85 grams of Gold (or 595 grams of Silver).</p>
+              <div class="form-group" style="max-width: 200px; margin: 0 auto;">
+                <input type="number" id="zakat-nisab" class="zakat-input" placeholder="e.g. 5000" min="0" style="text-align: center; font-size: 1.2rem; font-weight: bold; color: var(--accent-gold);">
+              </div>
+            </div>
+
+            <button class="btn btn-primary" style="width: 100%; padding: 15px; font-size: 1.1rem;" onclick="calculateZakat()">Calculate Zakat</button>
+
+            <div id="zakat-result" class="glass-panel" style="display: none; margin-top: 20px; padding: 30px 20px; text-align: center; border: 2px solid var(--accent-gold);">
+              <h3 style="margin: 0 0 10px 0;">Total Zakat Payable</h3>
+              <h1 id="zakat-amount" style="margin: 0; color: var(--accent-gold); font-size: 3rem;">$0.00</h1>
+              <p id="zakat-summary" style="margin: 15px 0 0 0; font-size: 0.9rem; color: var(--text-muted);">Net Worth: $0.00</p>
+            </div>
+          </div>
+        </section>
+
       </div>
     </main>
   </div>
@@ -1391,6 +1497,26 @@ function switchSeeratTab(button, panel) {
       <button class="btn btn-secondary" id="apk-dismiss-btn" style="background: rgba(255,255,255,0.1); font-size: 0.85rem; padding: 6px 12px;">Later</button>
       <a href="mp.apk" download="Quran360.apk" class="btn btn-primary" id="apk-download-btn" style="font-size: 0.85rem; padding: 6px 16px;">Download APK</a>
     </div>
+  </div>
+
+  <!-- Global Audio Player -->
+  <div id="quran-audio-player" class="audio-player hidden">
+    <audio id="quran-audio-element"></audio>
+    <div class="audio-player-info">
+      <h4 id="audio-surah-name" style="margin: 0; font-size: 1rem; color: var(--accent-gold);">Surah Al-Fatiha</h4>
+      <p id="audio-reciter-name" style="margin: 2px 0 0; font-size: 0.8rem; color: var(--text-muted);">Mishary Rashid Alafasy</p>
+    </div>
+    <div class="audio-player-controls">
+      <button class="icon-btn" id="audio-prev-btn" style="background: none; border: none; color: var(--text-color); font-size: 1.2rem; cursor: pointer;">⏮</button>
+      <button class="icon-btn" id="audio-play-btn" style="background: var(--accent-gold); border: none; color: #1e293b; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; display: flex; align-items: center; justify-content: center;">▶</button>
+      <button class="icon-btn" id="audio-next-btn" style="background: none; border: none; color: var(--text-color); font-size: 1.2rem; cursor: pointer;">⏭</button>
+    </div>
+    <div class="audio-player-progress-container" style="display: flex; align-items: center; width: 100%; gap: 10px; margin-top: 10px; font-size: 0.75rem;">
+      <span id="audio-current-time">0:00</span>
+      <input type="range" id="audio-progress" value="0" min="0" max="100" style="flex: 1; accent-color: var(--accent-gold); height: 4px; outline: none; -webkit-appearance: none; background: rgba(255,255,255,0.2); border-radius: 2px;">
+      <span id="audio-duration">0:00</span>
+    </div>
+    <button id="audio-close-btn" style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: var(--text-muted); cursor: pointer;">✕</button>
   </div>
 
   <script src="lessons_data.js"></script>
