@@ -3758,25 +3758,44 @@ function initQiblaCompass() {
   const MECCA_LAT = 21.4225;
   const MECCA_LNG = 39.8262;
 
-  if (navigator.geolocation) {
+    if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
-        locationText.textContent = `Lat: ${userLat.toFixed(2)}, Lng: ${userLng.toFixed(2)}`;
-        
-        const bearing = calculateQiblaBearing(userLat, userLng, MECCA_LAT, MECCA_LNG);
-        degreeEl.textContent = `${Math.round(bearing)}°`;
-        statusEl.textContent = "Location found. Waiting for compass sensor...";
-        
-        startCompassSensor(bearing, dialEl, statusEl, calibrateBtn);
+        handleLocationSuccess(position.coords.latitude, position.coords.longitude);
       },
       (error) => {
-        statusEl.textContent = "Location access denied. Cannot calculate Qibla.";
-      }
+        console.warn("GPS failed, trying IP fallback...", error);
+        fallbackToIpLocation();
+      },
+      { timeout: 5000, enableHighAccuracy: true }
     );
   } else {
-    statusEl.textContent = "Geolocation is not supported by your browser.";
+    fallbackToIpLocation();
+  }
+
+  async function fallbackToIpLocation() {
+    try {
+      statusEl.textContent = "GPS unavailable. Detecting location via IP...";
+      const ipRes = await fetch("https://ipwho.is/");
+      if (ipRes.ok) {
+        const ipData = await ipRes.json();
+        if (ipData.success && ipData.latitude && ipData.longitude) {
+          handleLocationSuccess(ipData.latitude, ipData.longitude);
+          return;
+        }
+      }
+      throw new Error("IP API failed");
+    } catch (e) {
+      statusEl.textContent = "Location access denied and IP fallback failed. Cannot calculate Qibla.";
+    }
+  }
+
+  function handleLocationSuccess(userLat, userLng) {
+    locationText.textContent = `Lat: ${userLat.toFixed(2)}, Lng: ${userLng.toFixed(2)}`;
+    const bearing = calculateQiblaBearing(userLat, userLng, MECCA_LAT, MECCA_LNG);
+    degreeEl.textContent = `${Math.round(bearing)}°`;
+    statusEl.textContent = "Location found. Waiting for compass sensor...";
+    startCompassSensor(bearing, dialEl, statusEl, calibrateBtn);
   }
 }
 
@@ -4019,6 +4038,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (window.location.hash === "#qibla") initQiblaCompass();
   });
 });
+
 
 
 
