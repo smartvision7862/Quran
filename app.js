@@ -3444,3 +3444,134 @@ async function runUnifiedSearch() {
     resultsDiv.appendChild(card);
   });
 }
+
+// --- PRAYER TIMES ENGINE ---
+let prayerCountdownInterval;
+
+async function initPrayerTimes() {
+  const locEl = document.getElementById('prayer-location');
+  if (!locEl) return;
+  
+  try {
+    // Try to get location via ipapi (free, no location prompt required)
+    const ipRes = await fetch('https://ipapi.co/json/');
+    if (!ipRes.ok) throw new Error('IP API failed');
+    const ipData = await ipRes.json();
+    
+    const city = ipData.city || 'Mecca';
+    const country = ipData.country_name || 'Saudi Arabia';
+    locEl.textContent = `${city}, ${country}`;
+    
+    // Fetch Aladhan Timings
+    const today = new Date();
+    const formattedDate = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
+    const aladhanUrl = `https://api.aladhan.com/v1/timingsByCity/${formattedDate}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=2`;
+    
+    const timeRes = await fetch(aladhanUrl);
+    const timeData = await timeRes.json();
+    
+    if (timeData && timeData.data && timeData.data.timings) {
+      updatePrayerUI(timeData.data.timings);
+    }
+  } catch (e) {
+    console.error('Error fetching prayer times:', e);
+    locEl.textContent = 'Mecca, Saudi Arabia (Default)';
+    // Default fallback to Mecca
+    const timeRes = await fetch('https://api.aladhan.com/v1/timingsByCity?city=Mecca&country=Saudi+Arabia&method=4');
+    const timeData = await timeRes.json();
+    if (timeData && timeData.data && timeData.data.timings) {
+      updatePrayerUI(timeData.data.timings);
+    }
+  }
+}
+
+function updatePrayerUI(timings) {
+  // Format: HH:MM (24 hour)
+  const prayers = [
+    { id: 'fajr', name: 'Fajr', time: timings.Fajr },
+    { id: 'dhuhr', name: 'Dhuhr', time: timings.Dhuhr },
+    { id: 'asr', name: 'Asr', time: timings.Asr },
+    { id: 'maghrib', name: 'Maghrib', time: timings.Maghrib },
+    { id: 'isha', name: 'Isha', time: timings.Isha }
+  ];
+  
+  // Convert 24h to 12h for UI display
+  const format12h = (time24) => {
+    let [h, m] = time24.split(':');
+    h = parseInt(h);
+    const ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    return `${h}:${m} ${ampm}`;
+  };
+  
+  // Set UI
+  prayers.forEach(p => {
+    const el = document.getElementById(`pt-${p.id}`);
+    if (el) {
+      el.querySelector('.pt-time').textContent = format12h(p.time);
+    }
+  });
+  
+  // Calculate next prayer
+  startPrayerCountdown(prayers);
+}
+
+function startPrayerCountdown(prayers) {
+  if (prayerCountdownInterval) clearInterval(prayerCountdownInterval);
+  
+  const updateCountdown = () => {
+    const now = new Date();
+    const currentH = now.getHours();
+    const currentM = now.getMinutes();
+    const currentS = now.getSeconds();
+    const currentAbsoluteSeconds = (currentH * 3600) + (currentM * 60) + currentS;
+    
+    let nextPrayer = null;
+    let nextPrayerAbsoluteSeconds = 0;
+    
+    // Find next prayer today
+    for (let p of prayers) {
+      let [h, m] = p.time.split(':');
+      let pSecs = (parseInt(h) * 3600) + (parseInt(m) * 60);
+      if (pSecs > currentAbsoluteSeconds) {
+        nextPrayer = p;
+        nextPrayerAbsoluteSeconds = pSecs;
+        break;
+      }
+    }
+    
+    // If no prayer left today, next is Fajr tomorrow
+    if (!nextPrayer) {
+      nextPrayer = prayers[0];
+      let [h, m] = nextPrayer.time.split(':');
+      nextPrayerAbsoluteSeconds = (parseInt(h) * 3600) + (parseInt(m) * 60) + 86400; // Add 24h
+    }
+    
+    // Highlight next in UI
+    prayers.forEach(p => {
+      const el = document.getElementById(`pt-${p.id}`);
+      if (el) {
+        if (p.id === nextPrayer.id) el.classList.add('next-up');
+        else el.classList.remove('next-up');
+      }
+    });
+    
+    // Calculate difference
+    let diff = nextPrayerAbsoluteSeconds - currentAbsoluteSeconds;
+    let dH = Math.floor(diff / 3600);
+    let dM = Math.floor((diff % 3600) / 60);
+    let dS = diff % 60;
+    
+    document.getElementById('next-prayer-name').textContent = `until ${nextPrayer.name}`;
+    document.getElementById('next-prayer-time').textContent = 
+      `${dH.toString().padStart(2, '0')}:${dM.toString().padStart(2, '0')}:${dS.toString().padStart(2, '0')}`;
+  };
+  
+  updateCountdown();
+  prayerCountdownInterval = setInterval(updateCountdown, 1000);
+}
+
+// Call on load
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initPrayerTimes, 1500); // slight delay so it doesn't block main render
+});
