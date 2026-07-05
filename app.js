@@ -1451,7 +1451,7 @@ function scrambleUrdu(clearText) {
 // 99 Names of Allah loader
 async function loadAllahNames() {
   const container = document.getElementById('names-grid');
-  container.innerHTML = '<p class="empty-state">Loading Names...</p>';
+  container.innerHTML = Array(6).fill('<div class="skeleton-loader" style="height: 60px;"></div>').join('');
   
   try {
     const data = await fetchLocalJson('99names/allah_names.txt');
@@ -1459,7 +1459,8 @@ async function loadAllahNames() {
     container.innerHTML = '';
     data.AllNames.forEach((n, idx) => {
       const card = document.createElement('div');
-      card.className = 'name-card';
+      card.className = 'name-card stagger-item';
+      card.style.animationDelay = `${idx * 0.05}s`;
       card.innerHTML = `
         <div class="name-card-inner">
           <div class="name-front">
@@ -2411,7 +2412,7 @@ async function loadQuranReaderVerses() {
   const container = document.getElementById('quranReaderContainer');
   if (!container) return;
 
-  container.innerHTML = '<div class="loading-indicator">Loading Quranic text...</div>';
+  container.innerHTML = Array(5).fill('<div class="skeleton-loader" style="height: 100px;"></div>').join('');
 
   try {
     const verses = await queryDatabase(
@@ -2467,7 +2468,7 @@ async function loadFahmVocabulary() {
     return;
   }
 
-  container.innerHTML = '<div class="loading-indicator">Loading Vocabulary builder...</div>';
+  container.innerHTML = Array(5).fill('<div class="skeleton-loader" style="height: 80px;"></div>').join('');
 
   try {
     fahmVocabCache = await queryDatabase("quranDb.db", "SELECT id, ayat, urdu, english FROM faham_quran ORDER BY id");
@@ -2487,9 +2488,10 @@ function renderFahmVocabulary(list) {
     return;
   }
 
-  list.forEach(item => {
+  list.forEach((item, idx) => {
     const card = document.createElement('div');
-    card.className = 'fahm-word-card glass-card';
+    card.className = 'fahm-word-card glass-card stagger-item';
+    card.style.animationDelay = `${idx * 0.05}s`;
     card.innerHTML = `
       <div class="fahm-word-arabic">${item.ayat}</div>
       <div class="fahm-word-meanings">
@@ -2536,7 +2538,7 @@ async function loadSupplications() {
   const container = document.getElementById('duasContainer');
   if (!container) return;
 
-  container.innerHTML = '<div class="loading-indicator">Loading Supplications...</div>';
+  container.innerHTML = Array(5).fill('<div class="skeleton-loader" style="height: 80px;"></div>').join('');
 
   try {
     let sql = "";
@@ -2679,9 +2681,10 @@ function renderDuas(list) {
     return;
   }
 
-  list.forEach(item => {
+  list.forEach((item, idx) => {
     const card = document.createElement('div');
-    card.className = 'dua-card glass-card';
+    card.className = 'dua-card glass-card stagger-item';
+    card.style.animationDelay = `${idx * 0.05}s`;
 
     let virtuesHTML = '';
     if (item.virtues) {
@@ -2726,7 +2729,7 @@ async function loadQuranTopics() {
     return;
   }
 
-  container.innerHTML = '<div class="loading-indicator">Loading Subject index...</div>';
+  container.innerHTML = Array(5).fill('<div class="skeleton-loader" style="height: 70px;"></div>').join('');
 
   try {
     quranTopicsCache = await queryDatabase(
@@ -2749,9 +2752,10 @@ function renderQuranTopics(list) {
     return;
   }
 
-  list.forEach(item => {
+  list.forEach((item, idx) => {
     const card = document.createElement('div');
-    card.className = 'topic-card glass-card';
+    card.className = 'topic-card glass-card stagger-item';
+    card.style.animationDelay = `${idx * 0.05}s`;
     card.onclick = () => showTopicVerses(item.surah_id, item.start_ayah, item.end_ayah, item.topic_urdu, item.topic_english);
 
     card.innerHTML = `
@@ -2954,7 +2958,7 @@ async function loadWbwVerses() {
   if (!container) return;
 
   if (wbwState.pageIndex === 0) {
-    container.innerHTML = '<div class="loading-indicator">Loading Quranic data...</div>';
+    container.innerHTML = Array(4).fill('<div class="skeleton-loader" style="height: 120px;"></div>').join('');
   }
 
   try {
@@ -3043,9 +3047,10 @@ function renderWbwVersesList(versesSlice, append = false) {
     return;
   }
 
-  versesSlice.forEach(v => {
+  versesSlice.forEach((v, idx) => {
     const card = document.createElement('div');
-    card.className = 'wbw-verse-card glass-card';
+    card.className = 'wbw-verse-card glass-card stagger-item';
+    card.style.animationDelay = `${idx * 0.05}s`;
 
     let wbwHTML = '';
     if (v.wbwText) {
