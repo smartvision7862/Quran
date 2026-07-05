@@ -341,6 +341,7 @@ function handleRouting() {
     '#quran-read': 'Quran Reader (Mushaf)',
     '#fahm': 'Fahm-ul-Quran Vocabulary',
     '#duas': 'Islamic Supplications',
+    '#book': 'Momin Ka Hathyar',
     '#topics': 'Quran Subject Index'
   };
   const titleKey = {
@@ -355,6 +356,7 @@ function handleRouting() {
     '#quran-read': 'nav.quran_read',
     '#fahm': 'nav.fahm',
     '#duas': 'nav.duas',
+    '#book': 'nav.book',
     '#topics': 'nav.topics'
   }[hash] || 'nav.dashboard';
 

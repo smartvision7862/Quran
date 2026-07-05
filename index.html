@@ -112,6 +112,10 @@
           <span class="nav-icon">🤲</span>
           <span class="nav-label">Duas Center</span>
         </a>
+        <a href="#book" class="nav-item" id="nav-book">
+          <span class="nav-icon">📖</span>
+          <span class="nav-label">Read Book</span>
+        </a>
         <a href="#topics" class="nav-item" id="nav-topics">
           <span class="nav-icon">🏷️</span>
           <span class="nav-label">Quran Topics</span>
@@ -250,6 +254,11 @@
               <div class="feature-icon-wrapper">🤲</div>
               <h3>Supplications & Duas</h3>
               <p>Read daily Masnoon supplications, Fasting Duas (Roza), and the Funeral Prayer guide.</p>
+            </div>
+            <div class="feature-card glass-card" onclick="location.hash='#book'">
+              <div class="feature-icon-wrapper">📖</div>
+              <h3>Read Book</h3>
+              <p>Read the complete Masnoon Duain and Momin Ka Hathyar book inside the app.</p>
             </div>
             <div class="feature-card glass-card" onclick="location.hash='#topics'">
               <div class="feature-icon-wrapper">🏷️</div>
@@ -1171,6 +1180,20 @@ function switchSeeratTab(button, panel) {
         </section>
 
         <!-- DUAS CENTER VIEW -->
+        <!-- BOOK VIEW -->
+        <section id="view-book" class="app-view">
+          <div class="view-header flex-header">
+            <div>
+              <h2>Momin Ka Hathyar / Masnoon Duain</h2>
+              <p>Read the Masnoon Prays PDF book directly inside the app.</p>
+            </div>
+            <button class="back-btn action-btn" onclick="location.hash='#dashboard'">Back to Dashboard</button>
+          </div>
+          <div style="height: 80vh; width: 100%; overflow: hidden; border-radius: 12px; margin-top: 20px;">
+            <iframe src="masnoon_duain.pdf" width="100%" height="100%" style="border: none;"></iframe>
+          </div>
+        </section>
+
         <section id="view-duas" class="app-view">
           <div class="view-header flex-header">
             <div>
