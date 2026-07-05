@@ -92,6 +92,14 @@
           <span class="nav-icon">📚</span>
           <span class="nav-label" data-i18n="nav.hadith">Hadith Library</span>
         </a>
+        <a href="#duas" class="nav-item ripple-btn" id="nav-duas">
+          <span class="nav-icon">🤲</span>
+          <span class="nav-label" data-i18n="nav.duas">Supplications</span>
+        </a>
+        <a href="#tasbeeh" class="nav-item ripple-btn" id="nav-tasbeeh">
+          <span class="nav-icon">📿</span>
+          <span class="nav-label">Tasbeeh Counter</span>
+        </a>
         <a href="#names" class="nav-item ripple-btn" id="nav-names">
           <span class="nav-icon">✨</span>
           <span class="nav-label" data-i18n="nav.names">99 Names</span>
@@ -1324,6 +1332,37 @@ function switchSeeratTab(button, panel) {
               <div id="topicModalBody" class="topic-modal-body">
                 <!-- Verses will load here -->
               </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TASBEEH COUNTER VIEW -->
+        <section id="view-tasbeeh" class="app-view">
+          <div class="view-header flex-header" style="flex-direction: column; align-items: center; text-align: center;">
+            <div style="margin-bottom: 10px;">
+              <h2>Digital Tasbeeh</h2>
+              <p>Keep track of your daily Zikr.</p>
+            </div>
+            
+            <div class="tasbeeh-presets" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 15px;">
+              <button class="preset-btn ripple-btn" onclick="setTasbeeh('SubhanAllah', 33)">SubhanAllah (33)</button>
+              <button class="preset-btn ripple-btn" onclick="setTasbeeh('Alhamdulillah', 33)">Alhamdulillah (33)</button>
+              <button class="preset-btn ripple-btn" onclick="setTasbeeh('Allahu Akbar', 34)">Allahu Akbar (34)</button>
+              <button class="preset-btn ripple-btn" onclick="setTasbeeh('Astaghfirullah', 100)">Astaghfirullah (100)</button>
+            </div>
+          </div>
+
+          <div class="tasbeeh-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 40px; padding-bottom: 100px;">
+            <h3 id="tasbeeh-title" style="font-size: 24px; font-weight: 700; color: var(--accent-gold); margin-bottom: 20px;">SubhanAllah</h3>
+            
+            <div class="tasbeeh-circle" id="tasbeeh-btn">
+              <span class="tasbeeh-count" id="tasbeeh-count">0</span>
+              <span class="tasbeeh-target" id="tasbeeh-target">/ 33</span>
+            </div>
+
+            <div style="display: flex; gap: 20px; margin-top: 40px;">
+              <button class="action-btn ripple-btn" onclick="resetTasbeeh()" style="background: rgba(255,50,50,0.1); color: #ff6b6b; border: 1px solid rgba(255,50,50,0.3); padding: 12px 30px;">Reset</button>
+              <button class="action-btn ripple-btn" onclick="customTasbeehGoal()" style="background: rgba(255,255,255,0.05); padding: 12px 30px;">Custom Goal</button>
             </div>
           </div>
         </section>

@@ -335,6 +335,7 @@ function handleRouting() {
     '#sabaq': 'Learn Quran (Sabaq)',
     '#hadith': 'Hadith Library',
     '#search': 'Global Search',
+    '#tasbeeh': 'Tasbeeh Counter',
     '#names': '99 Names of Allah',
     '#bookmarks': 'Bookmarks',
     '#chatbot': 'Talkbot AI',
@@ -351,6 +352,7 @@ function handleRouting() {
     '#sabaq': 'nav.sabaq',
     '#hadith': 'nav.hadith',
     '#search': 'nav.search',
+    '#tasbeeh': 'nav.tasbeeh',
     '#names': 'nav.names',
     '#bookmarks': 'nav.bookmarks',
     '#chatbot': 'nav.chatbot',
@@ -3574,4 +3576,91 @@ function startPrayerCountdown(prayers) {
 // Call on load
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(initPrayerTimes, 1500); // slight delay so it doesn't block main render
+});
+
+// --- TASBEEH COUNTER ENGINE ---
+let tasbeehCount = parseInt(localStorage.getItem('tasbeehCount')) || 0;
+let tasbeehTarget = parseInt(localStorage.getItem('tasbeehTarget')) || 33;
+let tasbeehTitle = localStorage.getItem('tasbeehTitle') || 'SubhanAllah';
+
+function initTasbeeh() {
+  updateTasbeehUI();
+  
+  const btn = document.getElementById('tasbeeh-btn');
+  if (btn && !btn.hasAttribute('data-tasbeeh-init')) {
+    btn.setAttribute('data-tasbeeh-init', 'true');
+    btn.addEventListener('click', () => {
+      tasbeehCount++;
+      localStorage.setItem('tasbeehCount', tasbeehCount);
+      
+      // Haptic feedback
+      if (navigator.vibrate) {
+        if (tasbeehCount === tasbeehTarget) {
+          navigator.vibrate([100, 50, 100, 50, 200]); // long vibration on goal
+        } else {
+          navigator.vibrate(50); // short click
+        }
+      }
+      
+      // Add tap animation class
+      btn.classList.add('tapped');
+      setTimeout(() => btn.classList.remove('tapped'), 150);
+      
+      updateTasbeehUI();
+    });
+  }
+}
+
+function updateTasbeehUI() {
+  const countEl = document.getElementById('tasbeeh-count');
+  const targetEl = document.getElementById('tasbeeh-target');
+  const titleEl = document.getElementById('tasbeeh-title');
+  const btnEl = document.getElementById('tasbeeh-btn');
+  
+  if (countEl) countEl.textContent = tasbeehCount;
+  if (targetEl) targetEl.textContent = / ;
+  if (titleEl) titleEl.textContent = tasbeehTitle;
+  
+  if (btnEl) {
+    if (tasbeehCount >= tasbeehTarget) {
+      btnEl.style.borderColor = 'var(--accent-gold)';
+      btnEl.style.boxShadow = '0 0 40px rgba(234, 179, 8, 0.4)';
+    } else {
+      btnEl.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+      btnEl.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.3)';
+    }
+  }
+}
+
+function setTasbeeh(name, target) {
+  tasbeehTitle = name;
+  tasbeehTarget = target;
+  tasbeehCount = 0;
+  
+  localStorage.setItem('tasbeehTitle', tasbeehTitle);
+  localStorage.setItem('tasbeehTarget', tasbeehTarget);
+  localStorage.setItem('tasbeehCount', tasbeehCount);
+  
+  updateTasbeehUI();
+}
+
+function resetTasbeeh() {
+  if (confirm('Are you sure you want to reset your counter?')) {
+    tasbeehCount = 0;
+    localStorage.setItem('tasbeehCount', tasbeehCount);
+    updateTasbeehUI();
+  }
+}
+
+function customTasbeehGoal() {
+  const goal = prompt('Enter custom target:', tasbeehTarget);
+  if (goal && !isNaN(goal)) {
+    tasbeehTarget = parseInt(goal);
+    localStorage.setItem('tasbeehTarget', tasbeehTarget);
+    updateTasbeehUI();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(initTasbeeh, 1000);
 });
