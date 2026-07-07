@@ -3552,6 +3552,39 @@ function updatePrayerUI(timings) {
   // Set UI
   prayers.forEach(p => {
     const el = document.getElementById(`pt-${p.id}`);
+    if (el) {
+      el.querySelector('.pt-time').textContent = format12h(p.time);
+    }
+  });
+
+  // Calculate next prayer
+  startPrayerCountdown(prayers);
+
+  // Azan Scheduling
+  const azanToggle = document.getElementById('azan-toggle');
+  if (azanToggle) {
+    const isAzanEnabled = localStorage.getItem('azan_enabled') === 'true';
+    azanToggle.checked = isAzanEnabled;
+    
+    const handleAzanUpdate = (enabled) => {
+      localStorage.setItem('azan_enabled', enabled);
+      if (window.QuranAndroidBridge) {
+        if (enabled && window.QuranAndroidBridge.scheduleAzanAlarms) {
+          window.QuranAndroidBridge.scheduleAzanAlarms(JSON.stringify(timings));
+        } else if (!enabled && window.QuranAndroidBridge.cancelAzanAlarms) {
+          window.QuranAndroidBridge.cancelAzanAlarms();
+        }
+      }
+    };
+    
+    handleAzanUpdate(isAzanEnabled);
+    azanToggle.addEventListener('change', (e) => handleAzanUpdate(e.target.checked));
+  }
+}
+
+function startPrayerCountdown(prayers) {
+  if (prayerCountdownInterval) clearInterval(prayerCountdownInterval);
+
   const updateCountdown = () => {
     const now = new Date();
     const currentH = now.getHours();
